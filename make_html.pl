@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.2 2003-07-20 09:00:22 mitch Exp $
+# $Id: make_html.pl,v 1.3 2003-07-20 09:01:54 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
@@ -23,7 +23,7 @@ foreach my $time (@time) {
     $time2 =~ s/yly$/ily/;
 
     print HTML "<html><head><title>$time2 statistics</title>";
-    print HTML '<meta http-equiv="refresh" content="150; URL=day.html">';
+    print HTML "<meta http-equiv=\"refresh\" content=\"150; URL=$time.html\">";
     print HTML "</head><body>";
 
     insert_links($time);
