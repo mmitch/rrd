@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.1 2003-04-06 09:10:09 mitch Exp $
+# $Id: network.pl,v 1.2 2003-04-06 09:59:39 mitch Exp $
 #
 # RRD script to display network
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -32,7 +32,8 @@ close NETDEV or die "can't close /proc/net/dev: $!";
 my %device;
 foreach ( @netdev ) {
     my ($dev, $data) = split /:/;
-    $device{$dev} = [ split /\s+/, $data ];
+    $dev =~ tr/ //d;
+    $device{$dev} = [ split /\s+/, ' '.$data ];
 }
 
 # iterate over all given devices
@@ -69,7 +70,7 @@ foreach ( @devices ) {
     # update database
     if ( exists $device{$device} ) {
 	RRDs::update($datafile,
-		     "N:@{$device{$device}}[0]:@{$device{$device}}[8]"
+		     "N:@{$device{$device}}[1]:@{$device{$device}}[9]"
 		     );
       } else {
 	RRDs::update($datafile,
