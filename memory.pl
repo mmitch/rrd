@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.12 2004-07-10 18:14:20 mitch Exp $
+# $Id: memory.pl,v 1.13 2004-07-10 18:38:32 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -128,6 +128,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'STACK:buffer#F0A000:mem buffer',
 		'STACK:used#E00070:mem used',
 		'COMMENT:\n',
+		'COMMENT: ',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

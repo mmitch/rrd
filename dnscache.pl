@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.7 2004-07-10 18:14:41 mitch Exp $
+# $Id: dnscache.pl,v 1.8 2004-07-10 18:38:41 mitch Exp $
 #
 # RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -93,6 +93,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'LINE1:miss#0000D0:cache misses [1/sec]',
 		'LINE1:hit#00D000:cache hits [1/sec]',
 		'COMMENT:\n',
+		'COMMENT: ',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
