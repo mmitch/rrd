@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: connects.pl,v 1.1 2004-11-27 22:01:24 mitch Exp $
+# $Id: connects.pl,v 1.2 2004-11-27 22:12:30 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -50,18 +50,18 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
                 "--start=-${time}",
                 '--lazy',
                 '--imgformat=PNG',
-                "--title=${hostname} TCP connections (last $scale)",
+                "--title=${hostname} ppp status (last $scale)",
                 '--base=1024',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 
-                "DEF:connect=${datafile}:active:AVERAGE",
-                "DEF:disconnect=${datafile}:passive:AVERAGE",
+                "DEF:connect=${datafile}:connect:AVERAGE",
+                "DEF:disconnect=${datafile}:disconnect:AVERAGE",
 
 		"CDEF:disconnect_down=0,disconnect,-",
 
-                'LINE1:disconnect_down#D00000:disconnects',
-                'LINE1:connect#00D000:connects',
+                'AREA:disconnect_down#D00000:disconnects',
+                'AREA:connect#00D000:connects',
                 );
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
