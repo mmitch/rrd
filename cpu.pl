@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.9 2004-10-31 21:05:49 mitch Exp $
+# $Id: cpu.pl,v 1.10 2004-10-31 21:11:09 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -95,7 +95,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'STACK:system#2020F0:system',
 		'STACK:user#F0A000:user',
 		'STACK:nice#E0E000:nice',
-		'STACK:idle#60D050:idle'
+		'STACK:idle#60D050:idle',
 		'COMMENT:\n',
 		'COMMENT: ',
 		);
