@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.4 2003-04-05 15:25:26 mitch Exp $
+# $Id: memory.pl,v 1.5 2003-04-05 16:26:37 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -24,7 +24,6 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max <2GB for each value
     RRDs::create($datafile,
-		 "--start=" . time(),
 		 "DS:used:GAUGE:600:0:2000000000",
 		 "DS:free:GAUGE:600:0:2000000000",
 		 "DS:buffer:GAUGE:600:0:2000000000",

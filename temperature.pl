@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.1 2003-04-05 15:56:14 mitch Exp $
+# $Id: temperature.pl,v 1.2 2003-04-05 16:26:24 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -26,7 +26,6 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 9000 for fan, 100 for temperature
     RRDs::create($datafile,
-		 "--start=" . time(),
 		 "DS:fan0:GAUGE:600:0:9000",
 		 "DS:fan1:GAUGE:600:0:9000",
 		 "DS:temp0:GAUGE:600:0:100",

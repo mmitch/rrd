@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.2 2003-04-05 15:24:27 mitch Exp $
+# $Id: diskfree.pl,v 1.3 2003-04-05 16:26:49 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -48,7 +48,6 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 100% for each value
     RRDs::create($datafile,
-		 "--start=" . time(),
 		 "DS:disk00:GAUGE:600:0:100",
 		 "DS:disk01:GAUGE:600:0:100",
 		 "DS:disk02:GAUGE:600:0:100",
