@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.15 2004-04-01 09:16:47 mitch Exp $
+# $Id: temperature.pl,v 1.16 2004-07-10 17:42:37 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -19,7 +19,7 @@ eval(`cat ~/.rrd-conf.pl`);
 my $datafile = "/home/mitch/rrd/temperature.rrd";
 my $picbase  = "/home/mitch/pub/rrd/temperature-";
 my $sensors  = "/usr/bin/sensors";
-my $hddtemp  = "/usr/bin/sudo /usr/local/bin/hddtemp.sh";
+my $hddtemp  = "/usr/bin/sudo /usr/local/sbin/hddtemp.sh";
 my $chip     = "w83697hf-isa-0290";
 
 # global error variable
