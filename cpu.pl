@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.4 2003-08-02 11:47:27 mitch Exp $
+# $Id: cpu.pl,v 1.5 2004-01-19 23:03:41 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -33,6 +33,9 @@ if ( ! -e $datafile ) {
 		 "DS:nice:COUNTER:600:0:60000",
 		 "DS:system:COUNTER:600:0:60000",
 		 "DS:idle:COUNTER:600:0:60000",
+		 "DS:iowait:COUNTER:600:0:60000",
+		 "DS:hw_irq:COUNTER:600:0:60000",
+		 "DS:sw_irq:COUNTER:600:0:60000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
@@ -52,11 +55,14 @@ while ($cpu = <PROC>) {
 close PROC or die "can't close /proc/stat: $!\n";
 
 chomp $cpu;
-my (undef, $user, $nice, $system, $idle) = split /\s+/, $cpu;
+my (undef, $user, $nice, $system, $idle, $iowait, $hw_irq, $sw_irq) = split /\s+/, $cpu;
+$iowait = 0 unless defined $iowait;
+$hw_irq = 0 unless defined $hw_irq;
+$sw_irq = 0 unless defined $sw_irq;
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${user}:${nice}:${system}:${idle}"
+	     time() . ":${user}:${nice}:${system}:${idle}:${iowait}:${hw_irq}:${sw_irq}"
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
@@ -75,8 +81,14 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:nice=${datafile}:nice:AVERAGE",
 		"DEF:system=${datafile}:system:AVERAGE",
 		"DEF:idle=${datafile}:idle:AVERAGE",
+		"DEF:iowait=${datafile}:iowait:AVERAGE",
+		"DEF:hw_irq=${datafile}:hw_irq:AVERAGE",
+		"DEF:sw_irq=${datafile}:sw_irq:AVERAGE",
 
-		'AREA:system#E00070:system',
+		'AREA:hw_irq#FFFFFF:hw_irq',
+		'STACK:sw_irq#7000E0:sw_irq',
+		'STACK:iowait#00E070:iowait',
+		'STACK:system#E00070:system',
 		'STACK:user#F0A000:user',
 		'STACK:nice#E0E000:nice',
 		'STACK:idle#60D050:idle'
