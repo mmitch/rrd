@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.11 2003-10-25 22:17:34 mitch Exp $
+# $Id: temperature.pl,v 1.12 2004-01-19 22:33:46 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -16,6 +16,7 @@ my $datafile = "/home/mitch/rrd/temperature.rrd";
 my $picbase  = "/home/mitch/pub/rrd/temperature-";
 my $sensors  = "/usr/bin/sensors";
 my $hddtemp  = "/usr/bin/sudo /usr/local/bin/hddtemp.sh";
+my $chip     = "w83697hf-isa-0290";
 
 # global error variable
 my $ERR;
@@ -51,7 +52,7 @@ if ( ! -e $datafile ) {
 }
 
 # get cpu data
-open SENSORS, "$sensors -A |", or die "can't open $sensors: $!\n";
+open SENSORS, "$sensors -A $chip |", or die "can't open $sensors: $!\n";
 my ( undef, undef, undef, undef, undef, undef, undef, undef, undef, $fan1, $fan2, $temp1, $temp2 )
     = (<SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>);
 close SENSORS, or die "can't close $sensors: $!\n";
