@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.10 2004-07-22 09:52:19 mitch Exp $
+# $Id: dnscache.pl,v 1.11 2004-10-31 21:11:50 mitch Exp $
 #
 # RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -87,20 +87,26 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--title=${hostname} dnscache stats (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		"--lower-limit=-1",
 		
 		"DEF:hit=${datafile}:hit:AVERAGE",
 		"DEF:miss=${datafile}:miss:AVERAGE",
 		"DEF:hit_max=${datafile}:hit:MAX",
 		"DEF:miss_max=${datafile}:miss:MAX",
+		"CDEF:total=0,hit,-,miss,-",
+		"CDEF:ratio=hit,total,/",
 		
 #		'AREA:miss',
 #		'STACK:miss_max#B0B0F0',
 #		'AREA:hit',
 #		'STACK:hit_max#B0F0B0',
-		'LINE1:miss#0000D0:cache misses [1/sec]',
-		'LINE1:hit#00D000:cache hits [1/sec]',
+		'LINE1:miss#D00000:cache misses [1/sec]',
+		'LINE1:hit#0000D0:cache hits [1/sec]',
+		'AREA:ratio#00D000:cache hit ratio',
 		'COMMENT:\n',
 		'COMMENT: ',
+		'HRULE:0#000000',
+		'HRULE:-1#000000',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
