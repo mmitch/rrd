@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.4 2003-04-06 06:54:47 mitch Exp $
+# $Id: load.pl,v 1.5 2003-04-06 10:15:39 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -60,22 +60,24 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--start=-$time",
 		"--lazy",
 		"--title=${hostname} system load (last $scale)",
-		"DEF:load1x=${datafile}:load1:AVERAGE",
-		"DEF:load2x=${datafile}:load2:AVERAGE",
-		"DEF:load3x=${datafile}:load3:AVERAGE",
-		"DEF:procs=${datafile}:procs:AVERAGE",
-		"DEF:procmin=${datafile}:procs:MIN",
-		"DEF:procmax=${datafile}:procs:MAX",
-		'CDEF:load1=load1x,100,*',
-		'CDEF:load2=load2x,100,*',
-		'CDEF:load3=load3x,100,*',
-		'CDEF:procrange=procmax,procmin,-',
+
+		"DEF:load1=${datafile}:load1:AVERAGE",
+		"DEF:load2=${datafile}:load2:AVERAGE",
+		"DEF:load3=${datafile}:load3:AVERAGE",
+		"DEF:procsx=${datafile}:procs:AVERAGE",
+		"DEF:procminx=${datafile}:procs:MIN",
+		"DEF:procmaxx=${datafile}:procs:MAX",
+
+		'CDEF:procs=procsx,100,/',
+		'CDEF:procmin=procminx,100,/',
+		'CDEF:procrange=procmaxx,procminx,-,100,/',
 		'AREA:procmin',
 		'STACK:procrange#E0E0E0',
-		'AREA:load3#000099:loadavg3 [*100]',
-		'LINE2:load2#0000FF:loadavg2 [*100]',
-		'LINE1:load1#9999FF:loadavg1 [*100]',
-		'LINE1:procs#000000:processes',
+		'AREA:load3#000099:loadavg3',
+		'LINE2:load2#0000FF:loadavg2',
+		'LINE1:load1#9999FF:loadavg1',
+		'COMMENT:\n',
+		'LINE1:procs#000000:processes/100',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
