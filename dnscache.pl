@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.9 2004-07-11 20:05:23 mitch Exp $
+# $Id: dnscache.pl,v 1.10 2004-07-22 09:52:19 mitch Exp $
 #
 # RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -31,8 +31,8 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     RRDs::create($datafile,
 		 "--step=60",
-		 "DS:hit:COUNTER:600:0:U",
-		 "DS:miss:COUNTER:600:0:U",
+		 "DS:hit:COUNTER:600:0:150000",
+		 "DS:miss:COUNTER:600:0:150000",
 		 'RRA:AVERAGE:0.5:1:600',
 		 'RRA:AVERAGE:0.5:6:700',
 		 'RRA:AVERAGE:0.5:24:775',
