@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.2 2003-04-06 09:59:39 mitch Exp $
+# $Id: network.pl,v 1.3 2003-04-06 10:25:05 mitch Exp $
 #
 # RRD script to display network
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -84,20 +84,23 @@ foreach ( @devices ) {
     foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
 	my ($time, $scale) = @{$_};
 	RRDs::graph($picbase . $scale . ".png",
-		    "--start=-$time",
-		    "--lazy",
+		    "--start=-${time}",
+		    '--lazy',
 		    "--title=${hostname} ${device} network traffic (last $scale)",
+
 		    "DEF:input=${datafile}:input:AVERAGE",
 		    "DEF:outputx=${datafile}:output:AVERAGE",
 		    "DEF:input_max=${datafile}:input:MAX",
 		    "DEF:output_maxx=${datafile}:output:MAX",
+
 		    'CDEF:output=0,outputx,-',
 		    'CDEF:output_max=0,output_maxx,-',
-		    'AREA:input_max#B0F0B0:max input [bytes]',
-		    'AREA:output_max#B0B0F0:max output [bytes] ',
+
+		    'AREA:input_max#B0F0B0:max input [octets/sec]',
+		    'AREA:output_max#B0B0F0:max output [octets/sec]',
 		    'COMMENT:\n',
-		    'AREA:input#00D000:avg input [bytes]',
-		    'AREA:output#0000D0:avg output [bytes]'
+		    'AREA:input#00D000:avg input [octets/sec]',
+		    'AREA:output#0000D0:avg output [octets/sec]'
 		    );
 	$ERR=RRDs::error;
 	die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
