@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.1 2003-07-18 18:37:44 mitch Exp $
+# $Id: ups.pl,v 1.2 2003-07-18 19:06:54 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -65,8 +65,6 @@ RRDs::update($datafile,
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
-exit 0;
-
 # draw pictures
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
@@ -74,26 +72,24 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--start=-${time}",
 		'--lazy',
 		'--imgformat=PNG',
-		"--title=${hostname} memory usage (last $scale)",
-		'--base=1024',
+		"--title=${hostname} ups status (last $scale)",
+		'--base=1000',
 
-		"DEF:used_x=${datafile}:used:AVERAGE",
-		"DEF:free=${datafile}:free:AVERAGE",
-		"DEF:buffer=${datafile}:buffer:AVERAGE",
-		"DEF:cache=${datafile}:cache:AVERAGE",
-		"DEF:swap_used=${datafile}:swap_used:AVERAGE",
-		"DEF:swap_free=${datafile}:swap_free:AVERAGE",
+		"DEF:volt_i=${datafile}:utility:AVERAGE",
+		"DEF:volt_o=${datafile}:outvolt:AVERAGE",
+		"DEF:volt_bat=${datafile}:battvolt:AVERAGE",
+		"DEF:batt=${datafile}:battpct:AVERAGE",
+		"DEF:load=${datafile}:loadpct:AVERAGE",
 
-		"CDEF:used=used_x,buffer,-,cache,-",
-		"CDEF:swap_total=0,swap_free,-,swap_used,-",
+		'CDEF:volt_in=volt_i,2,/',
+		'CDEF:volt_out=volt_o,2,/',
 
-		'AREA:swap_total',
-		'STACK:swap_used#7000E0:swap used',
-		'STACK:swap_free#60D050:swap free',
-		'STACK:free#90E000:mem free',
-		'STACK:cache#E0E000:mem cache',
-		'STACK:buffer#F0A000:mem buffer',
-		'STACK:used#E00070:mem used'
+		'AREA:batt#D0FFD0:battery charge [%]',
+		'LINE2:volt_out#D0D0FF:output [V/2]',
+		'LINE1:volt_in#0000A0:input [V/2]',
+		'LINE2:volt_bat#00A000:battery [V]',
+		'LINE2:load#F0C040:AC freq [Hz]',
+		'LINE1:load#F00000:load [%]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
