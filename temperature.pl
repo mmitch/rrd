@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.9 2003-04-20 15:32:19 mitch Exp $
+# $Id: temperature.pl,v 1.10 2003-07-21 21:42:10 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -93,8 +93,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:disk03=${datafile}:disk03:AVERAGE",
 
 		'CDEF:fan0=fan0x,100,/',
-		'CDEF:temp0_low=temp0,0,33,LIMIT',
-		'CDEF:temp0_medium=temp0,33,37,LIMIT',
+		'CDEF:temp0_low=temp0,0,34.5,LIMIT',
+		'CDEF:temp0_medium=temp0,34.5,37,LIMIT',
 		'CDEF:temp0_high=temp0,37,999,LIMIT',
 		'CDEF:temp1_low=temp1,0,52,LIMIT',
 		'CDEF:temp1_medium=temp1,52,56,LIMIT',
