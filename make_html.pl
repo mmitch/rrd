@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.4 2003-08-02 11:55:02 mitch Exp $
+# $Id: make_html.pl,v 1.5 2003-08-22 10:25:51 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
@@ -34,7 +34,7 @@ foreach my $time (@time) {
     insert_links($time);
 
     foreach my $rrd (@rrd) {
-	print HTML "<img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\">";
+	print HTML "<img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\" align=\"top\">";
     }
 
     print HTML "<hr>";
