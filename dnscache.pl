@@ -1,8 +1,8 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.1 2004-07-08 22:23:32 mitch Exp $
+# $Id: dnscache.pl,v 1.2 2004-07-08 23:38:40 mitch Exp $
 #
 # RRD script to display network
-# 2003 (c) by Christian Garbs <mitch@cgarbs.de>
+# 2004 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -86,11 +86,12 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:hit_max=${datafile}:hit:MAX",
 		"DEF:miss_max=${datafile}:miss:MAX",
 		
-		'LINE2:hit#B0F0B0:cache hits [1/sec]',
-		'LINE2:miss#B0B0F0:cache misses [1/sec]',
-#		'COMMENT:\n',
-#		'AREA:input#00D000:avg input [octets/sec]',
-#		'AREA:output#0000D0:avg output [octets/sec]'
+		'AREA:miss',
+		'STACK:miss_max#B0B0F0',
+		'AREA:hit',
+		'STACK:hit_max#B0F0B0',
+		'LINE1:miss#0000D0:cache misses [1/sec]',
+		'LINE1:hit#00D000:cache hits [1/sec]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
