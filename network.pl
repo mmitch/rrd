@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.6 2003-04-17 08:02:52 mitch Exp $
+# $Id: network.pl,v 1.7 2003-05-16 21:44:21 mitch Exp $
 #
 # RRD script to display network
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -16,6 +16,7 @@ my $datafile_template = "/home/mitch/rrd/DEVICE.rrd";
 my $picbase_template  = "/home/mitch/pub/rrd/DEVICE-";
 my @devices  = ( # device    in_max,  out_max
 		 [ "eth0", 15000000, 15000000],
+		 [ "eth1", 15000000, 15000000],
 		 [ "tr0" ,  2500000,  2500000],
 		 [ "ppp0",   110000,    20000],
 		 );
