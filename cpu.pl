@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.3 2003-07-24 18:50:26 mitch Exp $
+# $Id: cpu.pl,v 1.4 2003-08-02 11:47:27 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -11,9 +11,13 @@ use strict;
 use warnings;
 use RRDs;
 
-# Configurable stuff here
-my $datafile = "/home/mitch/rrd/cpu.rrd";
-my $picbase  = "/home/mitch/pub/rrd/cpu-";
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
+
+# set variables
+my $datafile = "$conf{DBPATH}/cpu.rrd";
+my $picbase  = "$conf{OUTPATH}/cpu-";
 
 # global error variable
 my $ERR;

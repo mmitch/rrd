@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: netstat.pl,v 1.1 2003-07-29 20:55:33 mitch Exp $
+# $Id: netstat.pl,v 1.2 2003-08-02 11:49:27 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -11,9 +11,13 @@ use strict;
 use warnings;
 use RRDs;
 
-# Configurable stuff here
-my $datafile = "/home/mitch/rrd/netstat.rrd";
-my $picbase  = "/home/mitch/pub/rrd/netstat-";
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
+
+# set variables
+my $datafile = "$conf{DBPATH}/netstat.rrd";
+my $picbase  = "$conf{OUTPATH}/netstat-";
 
 # global error variable
 my $ERR;

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.3 2003-08-02 09:08:51 mitch Exp $
+# $Id: io.pl,v 1.4 2003-08-02 11:47:21 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -11,9 +11,13 @@ use strict;
 use warnings;
 use RRDs;
 
-# Configurable stuff here
-my $datafile = "/home/mitch/rrd/io.rrd";
-my $picbase  = "/home/mitch/pub/rrd/io-";
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
+
+# set variables
+my $datafile = "$conf{DBPATH}/io.rrd";
+my $picbase  = "$conf{OUTPATH}/io-";
 
 # watch these paths
 my @dev = (

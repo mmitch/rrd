@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.10 2003-07-20 09:22:41 mitch Exp $
+# $Id: diskfree.pl,v 1.11 2003-08-02 11:47:05 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -11,33 +11,16 @@ use strict;
 use warnings;
 use RRDs;
 
-# Configurable stuff here
-my $datafile = "/home/mitch/rrd/diskfree.rrd";
-my $picbase  = "/home/mitch/pub/rrd/diskfree-";
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
+
+# set variables
+my $datafile = "$conf{DBPATH}/diskfree.rrd";
+my $picbase  = "$conf{OUTPATH}/diskfree-";
 
 # watch these paths
-my @path = (
-	     "/",
-	     "/tmp",
-	     "/mnt/root",
-	     "/mnt/big",
-	     "/mnt/home",
-	     "/mnt/storage",
-	     "/mnt/tomochan",
-	     "/mnt/luggage",
-	     "/mnt/win",
-	     "/mnt/images",
-	     "/mnt/neu",
-	     "",
-	     "",
-	     "",
-	     "",
-	     "",
-	     "",
-	     "",
-	     "",
-	     ""
-	     );
+my @path = @{$conf{'DISKFREE_PATHS'}};
 my $paths = grep { $_ ne "" } @path;
 my @size;
 
