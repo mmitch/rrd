@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: netstat.pl,v 1.2 2003-08-02 11:49:27 mitch Exp $
+# $Id: netstat.pl,v 1.3 2004-04-01 09:17:17 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -98,6 +98,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
                 '--imgformat=PNG',
                 "--title=${hostname} TCP connections (last $scale)",
                 '--base=1024',
+		"--width=$conf{GRAPH_WIDTH}",
+		"--height=$conf{GRAPH_HEIGHT}",
 
                 "DEF:active=${datafile}:active:AVERAGE",
                 "DEF:passive=${datafile}:passive:AVERAGE",

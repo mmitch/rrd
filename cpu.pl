@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.6 2004-02-09 13:40:36 mitch Exp $
+# $Id: cpu.pl,v 1.7 2004-04-01 09:17:02 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -76,6 +76,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--imgformat=PNG',
 		"--title=${hostname} cpu usage (last $scale)",
 		'--base=1024',
+		"--width=$conf{GRAPH_WIDTH}",
+		"--height=$conf{GRAPH_HEIGHT}",
 
 		"DEF:user=${datafile}:user:AVERAGE",
 		"DEF:nice=${datafile}:nice:AVERAGE",

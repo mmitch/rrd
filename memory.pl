@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.10 2004-01-19 22:52:59 mitch Exp $
+# $Id: memory.pl,v 1.11 2004-04-01 09:17:11 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -107,6 +107,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--imgformat=PNG',
 		"--title=${hostname} memory usage (last $scale)",
 		'--base=1024',
+		"--width=$conf{GRAPH_WIDTH}",
+		"--height=$conf{GRAPH_HEIGHT}",
 
 		"DEF:used_x=${datafile}:used:AVERAGE",
 		"DEF:free=${datafile}:free:AVERAGE",

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.5 2004-01-20 20:29:12 mitch Exp $
+# $Id: io.pl,v 1.6 2004-04-01 09:17:26 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -157,6 +157,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--lazy',
 		'--imgformat=PNG',
 		"--title=${hostname} io statistics (last $scale)",
+		"--width=$conf{GRAPH_WIDTH}",
+		"--height=$conf{GRAPH_HEIGHT}",
 
 		@def,
 
