@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.8 2004-04-12 22:10:14 mitch Exp $
+# $Id: cpu.pl,v 1.9 2004-10-31 21:05:49 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -96,6 +96,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'STACK:user#F0A000:user',
 		'STACK:nice#E0E000:nice',
 		'STACK:idle#60D050:idle'
+		'COMMENT:\n',
+		'COMMENT: ',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
