@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.3 2003-04-05 15:13:40 mitch Exp $
+# $Id: memory.pl,v 1.4 2003-04-05 15:25:26 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -15,6 +15,10 @@ my $picbase  = "/home/mitch/rrd/memory-";
 
 # global error variable
 my $ERR;
+
+# whoami?
+my $hostname = `/bin/hostname`;
+chomp $hostname;
 
 # generate database if absent
 if ( ! -e $datafile ) {
@@ -61,7 +65,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
     RRDs::graph($picbase . $scale . ".png",
 		"--start=-$time",
 		"--lazy",
-		"--title=Yggdrasil memory usage (last $scale)",
+		"--title=${hostname} memory usage (last $scale)",
 		"--base=1024",
 		"DEF:used_x=${datafile}:used:AVERAGE",
 		"DEF:free=${datafile}:free:AVERAGE",

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.1 2003-04-05 15:23:30 mitch Exp $
+# $Id: diskfree.pl,v 1.2 2003-04-05 15:24:27 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -39,6 +39,10 @@ my @path = (
 
 # global error variable
 my $ERR;
+
+# whoami?
+my $hostname = `/bin/hostname`;
+chomp $hostname;
 
 # generate database if absent
 if ( ! -e $datafile ) {
@@ -109,7 +113,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
     RRDs::graph($picbase . $scale . ".png",
 		"--start=-$time",
 		"--lazy",
-		"--title=Yggdrasil disk usage (last $scale)",
+		"--title=${hostname} disk usage (last $scale)",
 		"--upper-limit=100",
 		"DEF:disk00=${datafile}:disk00:AVERAGE",
 		"DEF:disk01=${datafile}:disk01:AVERAGE",
