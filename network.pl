@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.10 2004-07-10 17:51:28 mitch Exp $
+# $Id: network.pl,v 1.11 2004-12-12 13:42:27 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -92,6 +92,7 @@ foreach ( @devices ) {
 		    "--title=${hostname} ${device} network traffic (last $scale)",
 		    "--width=$conf{GRAPH_WIDTH}",
 		    "--height=$conf{GRAPH_HEIGHT}",
+		    "--alt-autoscale",
 
 		    "DEF:input=${datafile}:input:AVERAGE",
 		    "DEF:outputx=${datafile}:output:AVERAGE",
