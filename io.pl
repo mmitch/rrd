@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.4 2003-08-02 11:47:21 mitch Exp $
+# $Id: io.pl,v 1.5 2004-01-20 20:29:12 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -21,15 +21,25 @@ my $picbase  = "$conf{OUTPATH}/io-";
 
 # watch these paths
 my @dev = (
-	   "3,0",
-	   "3,1",
-	   "",
-	   "",
+	   "hda",
+	   "hdb",
+	   "hdc",
+	   "hdd",
 	   "",
 	   "",
 	   "",
 	   "",
 	   );
+# 2.4: my @dev = (
+#	   "8,0",
+#	   "",
+#	   "",
+#	   "",
+#	   "",
+#	   "",
+#	   "",
+#	   "",
+#	   );
 my $devs = grep { $_ ne "" } @dev;
 my (@read, @write);
 
@@ -80,23 +90,33 @@ for my $idx ( 0..7 ) {
 }
 
 # get io stats
-open PROC, "<", "/proc/stat" or die "can't open /proc/stat: $!\n";
-my $io;
-while ($io = <PROC>) {
-    last if $io =~ /^disk_io:/;
-}
-close PROC or die "can't close /proc/stat: $!\n";
-
-my @devices = split /\s+/, $io;
-shift @devices;
-
-foreach my $device ( @devices ) {
-    $device =~ /\((.*)\):\(\d+,\d+,(\d+),\d+,(\d+)\)/;
-    if ( exists $dev{ $1 } ) {
-	$read[  $dev{$1} ] = $2;
-	$write[ $dev{$1} ] = $3;
+open PROC, "<", "/proc/diskstats" or die "can't open /proc/diskstats: $!\n";
+while (<PROC>) {
+    my @io = split /\s+/;
+    if ( exists $dev{ $io[3] } ) {
+	$read[  $dev{$io[3] } ] = $io[ 6];
+	$write[ $dev{$io[3] } ] = $io[10];
     }
 }
+close PROC or die "can't close /proc/diskstats: $!\n";
+
+# 2.4: open PROC, "<", "/proc/stat" or die "can't open /proc/stat: $!\n";
+#my $io;
+#while ($io = <PROC>) {
+#    last if $io =~ /^disk_io:/;
+#}
+#close PROC or die "can't close /proc/stat: $!\n";
+#
+#my @devices = split /\s+/, $io;
+#shift @devices;
+#
+#foreach my $device ( @devices ) {
+#    $device =~ /\((.*)\):\(\d+,\d+,(\d+),\d+,(\d+)\)/;
+#    if ( exists $dev{ $1 } ) {
+#	$read[  $dev{$1} ] = $2;
+#	$write[ $dev{$1} ] = $3;
+#    }
+#}
 
 # update database
 my $string=time();
@@ -145,4 +165,3 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
 }
-
