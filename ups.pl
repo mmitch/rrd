@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.2 2003-07-18 19:06:54 mitch Exp $
+# $Id: ups.pl,v 1.3 2003-07-18 19:22:19 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -56,7 +56,6 @@ my $battvolt =  (split / /, $data[6])[1];
 my $status   = ((split / /, $data[7])[1] eq "OL") ? 1 : 0;
 my $acfreq   =  (split / /, $data[8])[1];
 my $loadpct  =  (split / /, $data[9])[1];
-print $status;
 
 # update database
 RRDs::update($datafile,
