@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.7 2003-04-17 08:03:29 mitch Exp $
+# $Id: diskfree.pl,v 1.8 2003-04-20 15:27:39 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -26,7 +26,7 @@ my @path = (
 	     "/mnt/tomochan",
 	     "/mnt/luggage",
 	     "/mnt/win",
-	     "",
+	     "/mnt/images",
 	     "",
 	     "",
 	     "",
