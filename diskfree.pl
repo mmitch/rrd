@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.9 2003-07-04 18:26:42 mitch Exp $
+# $Id: diskfree.pl,v 1.10 2003-07-20 09:22:41 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -114,6 +114,7 @@ die "ERROR while updating $datafile: $ERR\n" if $ERR;
 my (@def, @line, @gprint);
 my $draw = 0;
 my $PI = 3.14159265356237;
+$paths-- if $paths > 1;
 for my $idx ( 0..19 ) {
     if ( $path[$idx] ne "" ) {
 	my $color = sprintf '%02X%02X%02X'
