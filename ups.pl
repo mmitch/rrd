@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.3 2003-07-18 19:22:19 mitch Exp $
+# $Id: ups.pl,v 1.4 2003-07-18 19:54:37 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -47,20 +47,19 @@ open UPS, "upsc mustek\@localhost|" or die "can't read from `upsc mustek\@localh
 my @data = <UPS>;
 close UPS or die "can't close `upsc mustek\@localhost|': $!\n";
 
-chomp @data;
-
-my $utility  =  (split / /, $data[3])[1];
-my $outvolt  =  (split / /, $data[4])[1];
-my $battpct  =  (split / /, $data[5])[1];
-my $battvolt =  (split / /, $data[6])[1];
-my $status   = ((split / /, $data[7])[1] eq "OL") ? 1 : 0;
-my $acfreq   =  (split / /, $data[8])[1];
-my $loadpct  =  (split / /, $data[9])[1];
+my $utility  =  (split / /, $data[3])[1] + 0;
+my $outvolt  =  (split / /, $data[4])[1] + 0;
+my $battpct  =  (split / /, $data[5])[1] + 0;
+my $battvolt =  (split / /, $data[6])[1] + 0;
+my $status   = ((split / /, $data[7])[1] =~ /^OL/) ? 1 : 0;
+my $acfreq   =  (split / /, $data[8])[1] + 0;
+my $loadpct  =  (split / /, $data[9])[1] + 0;
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${utility}:${outvolt}:${battpct}:${battvolt}:${status}:${acfreq}:${loadpct}"
+	     time() . ":${utility}:${outvolt}:${battpct}:${battvolt}:${acfreq}:${loadpct}:${status}"
 	     );
+
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
@@ -79,16 +78,22 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:volt_bat=${datafile}:battvolt:AVERAGE",
 		"DEF:batt=${datafile}:battpct:AVERAGE",
 		"DEF:load=${datafile}:loadpct:AVERAGE",
+		"DEF:freq=${datafile}:acfreq:AVERAGE",
+		"DEF:status=${datafile}:online:AVERAGE",
 
 		'CDEF:volt_in=volt_i,2,/',
 		'CDEF:volt_out=volt_o,2,/',
+		'CDEF:online=status,100,*',
+		'CDEF:offline=100,online,-',
 
-		'AREA:batt#D0FFD0:battery charge [%]',
+		'AREA:online#D0FFD0:online [%]',
+		'STACK:offline#FFD0D0:offline [%]',
+		'AREA:batt#D0D0FF:battery charge [%]\n',
 		'LINE2:volt_out#D0D0FF:output [V/2]',
 		'LINE1:volt_in#0000A0:input [V/2]',
 		'LINE2:volt_bat#00A000:battery [V]',
-		'LINE2:load#F0C040:AC freq [Hz]',
-		'LINE1:load#F00000:load [%]',
+		'LINE2:freq#F0C840:AC freq [Hz]',
+		'LINE2:load#F00000:load [%]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
