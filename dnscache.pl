@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.3 2004-07-09 15:40:01 mitch Exp $
+# $Id: dnscache.pl,v 1.4 2004-07-09 17:26:15 mitch Exp $
 #
 # RRD script to display network
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -86,10 +86,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:hit_max=${datafile}:hit:MAX",
 		"DEF:miss_max=${datafile}:miss:MAX",
 		
-		'AREA:miss',
-		'STACK:miss_max#B0B0F0',
-		'AREA:hit',
-		'STACK:hit_max#B0F0B0',
+#		'AREA:miss',
+#		'STACK:miss_max#B0B0F0',
+#		'AREA:hit',
+#		'STACK:hit_max#B0F0B0',
 		'LINE1:miss#0000D0:cache misses [1/sec]',
 		'LINE1:hit#00D000:cache hits [1/sec]',
 		);
