@@ -1,7 +1,7 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.5 2004-07-09 22:32:37 mitch Exp $
+# $Id: dnscache.pl,v 1.6 2004-07-10 17:51:40 mitch Exp $
 #
-# RRD script to display network
+# RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
