@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.12 2004-01-19 22:33:46 mitch Exp $
+# $Id: temperature.pl,v 1.13 2004-01-19 22:44:26 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -65,14 +65,15 @@ $temp2 = 0 + substr $temp2, 10, 6;
 
 # get disk data
 open HDDTEMP, "$hddtemp |", or die "can't open $hddtemp: $!\n";
-my ($hda, $hdb, $hdc, $hdd, $sda, $sdb, $sdc, $sdd)
-    = (<HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>);
+my @hd = <HDDTEMP>;
 close HDDTEMP, or die "can't close $hddtemp: $!\n";
-chomp ($hda, $hdb, $hdc, $hdd, $sda, $sdb, $sdc, $sdd);
+foreach my $i (0..7) {
+    $hd[$i] =~ tr /0-9//cd;
+}
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${fan1}:${fan2}:${temp1}:${temp2}:${hda}:${hdb}:${hdc}:${hdd}:${sda}:${sdb}:${sdc}:${sdd}"
+	     time() . ":${fan1}:${fan2}:${temp1}:${temp2}:$hd[0]:$hd[1]:$hd[2]:$hd[3]:$hd[4]:$hd[5]:$hd[6]:$hd[7]"
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
