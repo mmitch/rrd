@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.2 2003-04-05 14:22:20 mitch Exp $
+# $Id: memory.pl,v 1.3 2003-04-05 15:13:40 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -37,7 +37,7 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-# update database
+# get memory usage
 open PROC, "<", "/proc/meminfo" or die "can't open /proc/meminfo: $!\n";
 my (undef, $mem, $swap) = (<PROC>, <PROC>, <PROC>);
 close PROC or die "can't close /proc/meminfo: $!\n";
@@ -48,11 +48,37 @@ my (undef, undef, $used, $free, undef, $buffer, $cache) = split /\s+/, $mem;
 chomp $swap;
 my (undef, undef, $swap_used, $swap_free) = split /\s+/, $swap;
 
-print "mem: u$used f$free b$buffer c$cache\n";
-print "swp: u$swap_used f$swap_free\n";
+# update database
+RRDs::update($datafile,
+	     time() . ":${used}:${free}:${buffer}:${cache}:${swap_used}:${swap_free}"
+	     );
+$ERR=RRDs::error;
+die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
-#RRDs::update($datafile,
-#	     time() . ":"
-#	     );
-#$ERR=RRDs::error;
-#die "ERROR while updating $datafile: $ERR\n" if $ERR;
+# draw pictures
+foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
+    my ($time, $scale) = @{$_};
+    RRDs::graph($picbase . $scale . ".png",
+		"--start=-$time",
+		"--lazy",
+		"--title=Yggdrasil memory usage (last $scale)",
+		"--base=1024",
+		"DEF:used_x=${datafile}:used:AVERAGE",
+		"DEF:free=${datafile}:free:AVERAGE",
+		"DEF:buffer=${datafile}:buffer:AVERAGE",
+		"DEF:cache=${datafile}:cache:AVERAGE",
+		"DEF:swap_used=${datafile}:swap_used:AVERAGE",
+		"DEF:swap_free=${datafile}:swap_free:AVERAGE",
+		"CDEF:used=used_x,buffer,-,cache,-",
+		"CDEF:swap_total=0,swap_free,-,swap_used,-",
+		'AREA:swap_total',
+		'STACK:swap_used#7000E0:swap used',
+		'STACK:swap_free#60D050:swap free',
+		'STACK:free#90E000:mem free',
+		'STACK:cache#E0E000:mem cache',
+		'STACK:buffer#F0A000:mem buffer',
+		'STACK:used#E00070:mem used'
+		);
+    $ERR=RRDs::error;
+    die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
+}
