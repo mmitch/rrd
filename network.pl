@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.3 2003-04-06 10:25:05 mitch Exp $
+# $Id: network.pl,v 1.4 2003-04-06 10:30:42 mitch Exp $
 #
 # RRD script to display network
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -86,6 +86,7 @@ foreach ( @devices ) {
 	RRDs::graph($picbase . $scale . ".png",
 		    "--start=-${time}",
 		    '--lazy',
+		    '--imgformat=PNG',
 		    "--title=${hostname} ${device} network traffic (last $scale)",
 
 		    "DEF:input=${datafile}:input:AVERAGE",

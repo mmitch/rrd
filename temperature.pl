@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.4 2003-04-06 10:08:16 mitch Exp $
+# $Id: temperature.pl,v 1.5 2003-04-06 10:30:47 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -78,16 +78,18 @@ die "ERROR while updating $datafile: $ERR\n" if $ERR;
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
     RRDs::graph($picbase . $scale . ".png",
-		"--start=-$time",
-		"--lazy",
+		"--start=-${time}",
+		'--lazy',
+		'--imgformat=PNG',
 		"--title=${hostname} temperature (last $scale)",
+
 		"DEF:fan0x=${datafile}:fan0:AVERAGE",
-		"CDEF:fan0=fan0x,100,/",
 		"DEF:temp0=${datafile}:temp0:AVERAGE",
 		"DEF:temp1=${datafile}:temp1:AVERAGE",
 		"DEF:disk02=${datafile}:disk02:AVERAGE",
 		"DEF:disk03=${datafile}:disk03:AVERAGE",
 
+		'CDEF:fan0=fan0x,100,/',
 		'CDEF:temp0_low=temp0,0,33,LIMIT',
 		'CDEF:temp0_medium=temp0,33,37,LIMIT',
 		'CDEF:temp0_high=temp0,37,999,LIMIT',

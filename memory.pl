@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.5 2003-04-05 16:26:37 mitch Exp $
+# $Id: memory.pl,v 1.6 2003-04-06 10:30:40 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -62,18 +62,22 @@ die "ERROR while updating $datafile: $ERR\n" if $ERR;
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
     RRDs::graph($picbase . $scale . ".png",
-		"--start=-$time",
-		"--lazy",
+		"--start=-${time}",
+		'--lazy',
+		'--imgformat=PNG',
 		"--title=${hostname} memory usage (last $scale)",
-		"--base=1024",
+		'--base=1024',
+
 		"DEF:used_x=${datafile}:used:AVERAGE",
 		"DEF:free=${datafile}:free:AVERAGE",
 		"DEF:buffer=${datafile}:buffer:AVERAGE",
 		"DEF:cache=${datafile}:cache:AVERAGE",
 		"DEF:swap_used=${datafile}:swap_used:AVERAGE",
 		"DEF:swap_free=${datafile}:swap_free:AVERAGE",
+
 		"CDEF:used=used_x,buffer,-,cache,-",
 		"CDEF:swap_total=0,swap_free,-,swap_used,-",
+
 		'AREA:swap_total',
 		'STACK:swap_used#7000E0:swap used',
 		'STACK:swap_free#60D050:swap free',
