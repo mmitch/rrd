@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.6 2004-04-01 09:16:58 mitch Exp $
+# $Id: ups.pl,v 1.7 2005-03-25 08:45:22 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -71,7 +71,7 @@ $status{'ups.status'} = ($status{'ups.status'} =~ /^OL/) ? 1 : 0;
 
 # update database
 RRDs::update($datafile,
-	     time() . ":$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'input.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
+	     time() . ":$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'output.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
 	     );
 
 $ERR=RRDs::error;
@@ -102,14 +102,14 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'CDEF:online=status,100,*',
 		'CDEF:offline=100,online,-',
 
-		'AREA:online#D0FFD0:online [%]',
-		'STACK:offline#FFD0D0:offline [%]',
-		'AREA:batt#D0D0FF:battery charge [%]\n',
+		'AREA:online#D0FFD0:online [%]  ',
+		'STACK:offline#FFD0D0:offline [%] ',
 		'LINE2:volt_out#D0D0FF:output [V/2]',
-		'LINE1:volt_in#0000A0:input [V/2]',
-		'LINE2:volt_bat#00A000:battery [V]',
-		'LINE2:freq#F0C840:AC freq [Hz]',
-		'LINE2:load#F00000:load [%]',
+		'LINE1:volt_in#0000A0:input [V/2]\n',
+ 		'LINE2:freq#A0A0A0:AC freq [Hz]',
+		'LINE2:volt_bat#00C800:battery [V] ',
+		'LINE2:load#0000F0:load [%]    ',
+		'LINE2:batt#F00000:battery charge [%]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
