@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.4 2003-07-18 19:54:37 mitch Exp $
+# $Id: ups.pl,v 1.5 2003-09-09 20:30:57 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -42,22 +42,32 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
+# set empty values
+my %status = (
+    'battery.charge'  => 0,
+    'battery.voltage' => 0,
+    'input.frequency' => 0,
+    'input.voltage'   => 0,
+    'output.voltage'  => 0,
+    'ups.load'        => 0,
+    'ups.status'      => 0
+    );
+
+
 # get UPS status
 open UPS, "upsc mustek\@localhost|" or die "can't read from `upsc mustek\@localhost': $!\n";
-my @data = <UPS>;
+while (my $line = <UPS>) {
+    chomp $line;
+    my ($key, $value) = split /: /, $line, 2;
+    $status{$key} = $value;
+}
 close UPS or die "can't close `upsc mustek\@localhost|': $!\n";
 
-my $utility  =  (split / /, $data[3])[1] + 0;
-my $outvolt  =  (split / /, $data[4])[1] + 0;
-my $battpct  =  (split / /, $data[5])[1] + 0;
-my $battvolt =  (split / /, $data[6])[1] + 0;
-my $status   = ((split / /, $data[7])[1] =~ /^OL/) ? 1 : 0;
-my $acfreq   =  (split / /, $data[8])[1] + 0;
-my $loadpct  =  (split / /, $data[9])[1] + 0;
+$status{'ups.status'} = ($status{'ups.status'} =~ /^OL/) ? 1 : 0;
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${utility}:${outvolt}:${battpct}:${battvolt}:${acfreq}:${loadpct}:${status}"
+	     time() . ":$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'input.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
 	     );
 
 $ERR=RRDs::error;
