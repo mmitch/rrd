@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.1 2003-07-20 07:52:03 mitch Exp $
+# $Id: make_html.pl,v 1.2 2003-07-20 09:00:22 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
@@ -7,8 +7,8 @@ use strict;
 use warnings;
 
 my $path     = '/home/mitch/pub/rrd';
-my @rrd      = qw (load temperature ppp0 eth0 eth1 tr0 memory diskfree ups); 
-my @time     = qw(day hour week year);
+my @rrd      = qw (load cpu temperature ppp0 eth0 eth1 tr0 io memory diskfree ups); 
+my @time     = qw(hour day week year);
 
 
 sub insert_links($);
@@ -29,7 +29,7 @@ foreach my $time (@time) {
     insert_links($time);
 
     foreach my $rrd (@rrd) {
-	print HTML "<img src=\"$rrd-$time.png\" alt=\"$rrd ($time day)\">";
+	print HTML "<img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\">";
     }
 
     print HTML "<hr>";
