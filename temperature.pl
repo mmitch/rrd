@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.13 2004-01-19 22:44:26 mitch Exp $
+# $Id: temperature.pl,v 1.14 2004-02-09 10:30:59 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -31,16 +31,16 @@ if ( ! -e $datafile ) {
     RRDs::create($datafile,
 		 "DS:fan0:GAUGE:600:0:9000",
 		 "DS:fan1:GAUGE:600:0:9000",
-		 "DS:temp0:GAUGE:600:0:100",
-		 "DS:temp1:GAUGE:600:0:100",
-		 "DS:disk00:GAUGE:600:0:100",
-		 "DS:disk01:GAUGE:600:0:100",
-		 "DS:disk02:GAUGE:600:0:100",
-		 "DS:disk03:GAUGE:600:0:100",
-		 "DS:disk04:GAUGE:600:0:100",
-		 "DS:disk05:GAUGE:600:0:100",
-		 "DS:disk06:GAUGE:600:0:100",
-		 "DS:disk07:GAUGE:600:0:100",
+		 "DS:temp0:GAUGE:600:10:100",
+		 "DS:temp1:GAUGE:600:10:100",
+		 "DS:disk00:GAUGE:600:10:100",
+		 "DS:disk01:GAUGE:600:10:100",
+		 "DS:disk02:GAUGE:600:10:100",
+		 "DS:disk03:GAUGE:600:10:100",
+		 "DS:disk04:GAUGE:600:10:100",
+		 "DS:disk05:GAUGE:600:10:100",
+		 "DS:disk06:GAUGE:600:10:100",
+		 "DS:disk07:GAUGE:600:10:100",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
