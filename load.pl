@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.1 2003-04-05 16:37:08 mitch Exp $
+# $Id: load.pl,v 1.2 2003-04-05 18:41:16 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -46,7 +46,7 @@ if ( ! -e $datafile ) {
   }
 
 # data aquisition is done externally:
-# rrdtool update $datafile $( PROCS=`ls -d /proc/[0-9]*|wc -l|tr -d ' '`; read L1 L2 L3 DUMMY < /proc/loadavg ; echo $( date +\%s ):${L1}:${L2}:${L3}:${PROCS} )
+# rrdtool update $datafile $( PROCS=`echo /proc/[0-9]*|wc -w|tr -d ' '`; read L1 L2 L3 DUMMY < /proc/loadavg ; echo $( date +\%s ):${L1}:${L2}:${L3}:${PROCS} )
 
 # draw pictures
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
