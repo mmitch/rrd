@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.8 2004-07-10 18:38:41 mitch Exp $
+# $Id: dnscache.pl,v 1.9 2004-07-11 20:05:23 mitch Exp $
 #
 # RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -18,7 +18,7 @@ eval(`cat ~/.rrd-conf.pl`);
 # set variables
 my $datafile = "$conf{DBPATH}/dnscache.rrd";
 my $picbase  = "$conf{OUTPATH}/dnscache-";
-my $logfile  = $conf{DNSCACHE_LOG};
+my $logpath  = $conf{DNSCACHE_LOGPATH};
 
 # global error variable
 my $ERR;
@@ -48,8 +48,9 @@ if ( ! -e $datafile ) {
   }
 
 # get traffic data (only open NETDEV once)
-open CURRENT, '<', $logfile or die "can't open $logfile: $!";
-my ($hits, $misses);
+my ($hits, $misses) = ('U', 'U');
+my $logfile = $logpath.'/current';
+open CURRENT, '<', "$logfile" or die "can't open $logfile: $!";
 while (my $line = <CURRENT>) {
     chomp $line;
     my @line = split / /, $line;
@@ -57,16 +58,22 @@ while (my $line = <CURRENT>) {
 }
 close CURRENT or die "can't close $logfile: $!";
 
-# update database
-if ( defined $hits and defined $misses ) {
-    RRDs::update($datafile,
-		 "N:$hits:$misses"
-		 );
-  } else {
-      RRDs::update($datafile,
-		   'N:U:U'
-		   );
+# current log empty? get the last full log
+if ($hits eq 'U') {
+    $logfile = (sort glob $logpath.'/@*')[-1];
+    open LASTLOG, '<', "$logfile" or die "can't open $logfile: $!";
+    while (my $line = <LASTLOG>) {
+	chomp $line;
+	my @line = split / /, $line;
+	($hits, $misses) = ($line[6], $line[7]) if $line[1] eq 'stats';
     }
+    close LASTLOG or die "can't close $logfile: $!";
+}
+
+# update database
+RRDs::update($datafile,
+	     "N:$hits:$misses"
+	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
