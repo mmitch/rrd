@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.2 2003-04-05 16:26:24 mitch Exp $
+# $Id: temperature.pl,v 1.3 2003-04-06 09:31:07 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -85,31 +85,25 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:temp1=${datafile}:temp1:AVERAGE",
 		"DEF:disk02=${datafile}:disk02:AVERAGE",
 		"DEF:disk03=${datafile}:disk03:AVERAGE",
-		'AREA:temp1#E0E0E0:cpu [°C]',
-		'AREA:temp0#C8C8C8:case [°C]',
+
+		'CDEF:temp0_low=temp0,0,33,LIMIT',
+		'CDEF:temp0_medium=temp0,33,37,LIMIT',
+		'CDEF:temp0_high=temp0,37,999,LIMIT',
+		'CDEF:temp1_low=temp1,0,52,LIMIT',
+		'CDEF:temp1_medium=temp1,52,56,LIMIT',
+		'CDEF:temp1_high=temp1,56,999,LIMIT',
+
+		'AREA:temp1_high#F0A0A0',
+		'AREA:temp1_medium#F0C0C0',
+		'AREA:temp1_low#E0E0E0:cpu [°C]',
+		'AREA:temp0_high#F08888',
+		'AREA:temp0_medium#F0A8A8',
+		'AREA:temp0_low#C8C8C8:case [°C]',
 		'LINE1:temp1#000000',
 		'LINE1:temp0#000000',
 		'LINE2:fan0#8080FF:cpu fan [100r/m]',
-		'LINE3:disk02#EE00C0:hdc [°C]',
+		'LINE3:disk02#FF0000:hdc [°C]',
 		'LINE2:disk03#00FF00:hdd [°C]',
-		'COMMENT:\n',
-		'COMMENT:            MIN   MAX  CURR\n',
-		'COMMENT:---------------------------\n',
-		'GPRINT:fan0x:MIN:cpu  fan\:  %4.0lf',
-		'GPRINT:fan0x:MAX:%4.0lf',
-		'GPRINT:fan0x:AVERAGE:%4.0lf\n',
-		'GPRINT:temp0:MIN:cpu  temp\: %4.0lf',
-		'GPRINT:temp0:MAX:%4.0lf',
-		'GPRINT:temp0:AVERAGE:%4.0lf\n',
-		'GPRINT:temp1:MIN:case temp\: %4.0lf',
-		'GPRINT:temp1:MAX:%4.0lf',
-		'GPRINT:temp1:AVERAGE:%4.0lf\n',
-		'GPRINT:disk02:MIN:hdc  temp\: %4.0lf',
-		'GPRINT:disk02:MAX:%4.0lf',
-		'GPRINT:disk02:AVERAGE:%4.0lf\n',
-		'GPRINT:disk03:MIN:hdd  temp\: %4.0lf',
-		'GPRINT:disk03:MAX:%4.0lf',
-		'GPRINT:disk03:AVERAGE:%4.0lf'
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
