@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.6 2003-04-16 15:11:34 mitch Exp $
+# $Id: diskfree.pl,v 1.7 2003-04-17 08:03:29 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -13,7 +13,7 @@ use RRDs;
 
 # Configurable stuff here
 my $datafile = "/home/mitch/rrd/diskfree.rrd";
-my $picbase  = "/home/mitch/rrd/diskfree-";
+my $picbase  = "/home/mitch/pub/rrd/diskfree-";
 
 # watch these paths
 my @path = (

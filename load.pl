@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.8 2003-04-16 15:11:25 mitch Exp $
+# $Id: load.pl,v 1.9 2003-04-17 08:03:12 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -16,7 +16,7 @@ use RRDs;
 
 # Configurable stuff here
 my $datafile = "/home/mitch/rrd/load.rrd";
-my $picbase  = "/home/mitch/rrd/load-";
+my $picbase  = "/home/mitch/pub/rrd/load-";
 
 # global error variable
 my $ERR;

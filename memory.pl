@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.7 2003-04-16 15:10:51 mitch Exp $
+# $Id: memory.pl,v 1.8 2003-04-17 08:03:03 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -13,7 +13,7 @@ use RRDs;
 
 # Configurable stuff here
 my $datafile = "/home/mitch/rrd/memory.rrd";
-my $picbase  = "/home/mitch/rrd/memory-";
+my $picbase  = "/home/mitch/pub/rrd/memory-";
 
 # global error variable
 my $ERR;

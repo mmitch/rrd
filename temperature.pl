@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.7 2003-04-16 15:10:28 mitch Exp $
+# $Id: temperature.pl,v 1.8 2003-04-17 08:02:34 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -13,7 +13,7 @@ use RRDs;
 
 # Configurable stuff here
 my $datafile = "/home/mitch/rrd/temperature.rrd";
-my $picbase  = "/home/mitch/rrd/temperature-";
+my $picbase  = "/home/mitch/pub/rrd/temperature-";
 my $sensors  = "/usr/bin/sensors";
 my $hddtemp  = "/usr/bin/sudo /usr/local/bin/hddtemp.sh";
 
