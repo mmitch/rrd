@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.4 2004-07-09 17:26:15 mitch Exp $
+# $Id: dnscache.pl,v 1.5 2004-07-09 22:32:37 mitch Exp $
 #
 # RRD script to display network
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -48,7 +48,7 @@ if ( ! -e $datafile ) {
   }
 
 # get traffic data (only open NETDEV once)
-open CURRENT, "tail -n 500 $logfile |" or die "can't open $logfile: $!";
+open CURRENT, '<', $logfile or die "can't open $logfile: $!";
 my ($hits, $misses);
 while (my $line = <CURRENT>) {
     chomp $line;
