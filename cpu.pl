@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.1 2003-07-20 08:39:27 mitch Exp $
+# $Id: cpu.pl,v 1.2 2003-07-20 08:51:30 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -45,7 +45,7 @@ my $cpu;
 while ($cpu = <PROC>) {
     last if $cpu =~ /^cpu /;
 }
-close PROC or die "can't close /proc/meminfo: $!\n";
+close PROC or die "can't close /proc/stat: $!\n";
 
 chomp $cpu;
 my (undef, $user, $nice, $system, $idle) = split /\s+/, $cpu;
