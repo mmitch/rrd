@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.11 2004-10-31 21:11:50 mitch Exp $
+# $Id: dnscache.pl,v 1.12 2004-11-07 23:41:49 mitch Exp $
 #
 # RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -90,21 +90,23 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--lower-limit=-1",
 		
 		"DEF:hit=${datafile}:hit:AVERAGE",
-		"DEF:miss=${datafile}:miss:AVERAGE",
-		"DEF:hit_max=${datafile}:hit:MAX",
-		"DEF:miss_max=${datafile}:miss:MAX",
+		"DEF:miss_o=${datafile}:miss:AVERAGE",
+#		"DEF:hit_max=${datafile}:hit:MAX",
+#		"DEF:miss_o_max=${datafile}:miss:MAX",
+		"CDEF:miss=miss_o,hit,-",
+#		"CDEF:miss_max=miss_o_max,hit_max,-",
 		"CDEF:total=0,hit,-,miss,-",
+#		"CDEF:total_max=0,hit_max,-,miss_max,-",
 		"CDEF:ratio=hit,total,/",
+#		"CDEF:ratio_max=hit_max,total_max,/",
 		
-#		'AREA:miss',
-#		'STACK:miss_max#B0B0F0',
-#		'AREA:hit',
-#		'STACK:hit_max#B0F0B0',
-		'LINE1:miss#D00000:cache misses [1/sec]',
-		'LINE1:hit#0000D0:cache hits [1/sec]',
-		'AREA:ratio#00D000:cache hit ratio',
+#		'AREA:hit_max#B0B0F0:max cache hits [1/sec]',
+#		'STACK:miss_max#F0B0B0:max cache misses [1/sec]',
+#		'AREA:ratio_max#B0F0B0:max cache hit ratio',
 		'COMMENT:\n',
-		'COMMENT: ',
+		'AREA:hit#0000D0:avg cache hits [1/sec]',
+		'STACK:miss#D00000:avg cache misses [1/sec]',
+		'AREA:ratio#00D000:avg cache hit ratio',
 		'HRULE:0#000000',
 		'HRULE:-1#000000',
 		);
