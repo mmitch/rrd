@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.5 2003-09-09 20:30:57 mitch Exp $
+# $Id: ups.pl,v 1.6 2004-04-01 09:16:58 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -10,6 +10,10 @@
 use strict;
 use warnings;
 use RRDs;
+
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
 
 # Configurable stuff here
 my $datafile = "/home/mitch/rrd/ups.rrd";
@@ -82,6 +86,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--imgformat=PNG',
 		"--title=${hostname} ups status (last $scale)",
 		'--base=1000',
+		"--width=$conf{GRAPH_WIDTH}",
+		"--height=$conf{GRAPH_HEIGHT}",
 
 		"DEF:volt_i=${datafile}:utility:AVERAGE",
 		"DEF:volt_o=${datafile}:outvolt:AVERAGE",

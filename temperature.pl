@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.14 2004-02-09 10:30:59 mitch Exp $
+# $Id: temperature.pl,v 1.15 2004-04-01 09:16:47 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -10,6 +10,10 @@
 use strict;
 use warnings;
 use RRDs;
+
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
 
 # Configurable stuff here
 my $datafile = "/home/mitch/rrd/temperature.rrd";
@@ -86,6 +90,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--lazy',
 		'--imgformat=PNG',
 		"--title=${hostname} temperature (last $scale)",
+		"--width=$conf{GRAPH_WIDTH}",
+		"--height=$conf{GRAPH_HEIGHT}",
 
 		"DEF:fan0x=${datafile}:fan0:AVERAGE",
 		"DEF:temp0=${datafile}:temp0:AVERAGE",
