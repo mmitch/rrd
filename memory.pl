@@ -1,9 +1,11 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.6 2003-04-06 10:30:40 mitch Exp $
+# $Id: memory.pl,v 1.7 2003-04-16 15:10:51 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
+#
+# This script should be run every 5 minutes.
 #
 use strict;
 use warnings;

@@ -1,9 +1,11 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.5 2003-04-06 10:30:28 mitch Exp $
+# $Id: diskfree.pl,v 1.6 2003-04-16 15:11:34 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
+#
+# This script should be run every 5 minutes.
 #
 use strict;
 use warnings;

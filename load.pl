@@ -1,9 +1,14 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.7 2003-04-06 10:31:14 mitch Exp $
+# $Id: load.pl,v 1.8 2003-04-16 15:11:25 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
+#
+# This script should be run every 5 minutes.
+#
+# data aquisition is done externally every minute:
+# rrdtool update $datafile N:$( PROCS=`echo /proc/[0-9]*|wc -w|tr -d ' '`; read L1 L2 L3 DUMMY < /proc/loadavg ; echo ${L1}:${L2}:${L3}:${PROCS} )
 #
 use strict;
 use warnings;
@@ -50,7 +55,7 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
   }
 
-# data aquisition is done externallyevery minute:
+# data aquisition is done externally every minute:
 # rrdtool update $datafile N:$( PROCS=`echo /proc/[0-9]*|wc -w|tr -d ' '`; read L1 L2 L3 DUMMY < /proc/loadavg ; echo ${L1}:${L2}:${L3}:${PROCS} )
 
 # draw pictures

@@ -1,9 +1,11 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.4 2003-04-06 10:30:42 mitch Exp $
+# $Id: network.pl,v 1.5 2003-04-16 15:10:41 mitch Exp $
 #
 # RRD script to display network
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
+#
+# This script should be run every 5 minutes.
 #
 use strict;
 use warnings;

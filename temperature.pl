@@ -1,9 +1,11 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.6 2003-04-06 10:31:50 mitch Exp $
+# $Id: temperature.pl,v 1.7 2003-04-16 15:10:28 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
+#
+# This script should be run every 5 minutes.
 #
 use strict;
 use warnings;
