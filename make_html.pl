@@ -1,13 +1,18 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.3 2003-07-20 09:01:54 mitch Exp $
+# $Id: make_html.pl,v 1.4 2003-08-02 11:55:02 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
 use strict;
 use warnings;
 
-my $path     = '/home/mitch/pub/rrd';
-my @rrd      = qw (load cpu temperature ppp0 eth0 eth1 tr0 io memory diskfree ups); 
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
+
+# set variables
+my $path     = $conf{OUTPATH};
+my @rrd      = @{$conf{MAKEHTML_MODULES}};
 my @time     = qw(hour day week year);
 
 

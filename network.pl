@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.7 2003-05-16 21:44:21 mitch Exp $
+# $Id: network.pl,v 1.8 2003-08-02 11:52:20 mitch Exp $
 #
 # RRD script to display network
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -11,15 +11,14 @@ use strict;
 use warnings;
 use RRDs;
 
-# Configurable stuff here
-my $datafile_template = "/home/mitch/rrd/DEVICE.rrd";
-my $picbase_template  = "/home/mitch/pub/rrd/DEVICE-";
-my @devices  = ( # device    in_max,  out_max
-		 [ "eth0", 15000000, 15000000],
-		 [ "eth1", 15000000, 15000000],
-		 [ "tr0" ,  2500000,  2500000],
-		 [ "ppp0",   110000,    20000],
-		 );
+# parse configuration file
+my %conf;
+eval(`cat ~/.rrd-conf.pl`);
+
+# set variables
+my $datafile_template = "$conf{DBPATH}/DEVICE.rrd";
+my $picbase_template  = "$conf{OUTPATH}/DEVICE-";
+my @devices  = @{$conf{NETWORK_DEVICES}};
 
 # global error variable
 my $ERR;
