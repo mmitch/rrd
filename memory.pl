@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.9 2003-08-02 11:46:50 mitch Exp $
+# $Id: memory.pl,v 1.10 2004-01-19 22:52:59 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -48,14 +48,48 @@ if ( ! -e $datafile ) {
 
 # get memory usage
 open PROC, "<", "/proc/meminfo" or die "can't open /proc/meminfo: $!\n";
-my (undef, $mem, $swap) = (<PROC>, <PROC>, <PROC>);
+my $version = <PROC>;
+my ($used, $free, $buffer, $cache, $swap_used, $swap_free);
+if ($version =~ /^MemTotal/) {
+    # 2.6
+    $version =~ m/^([^:]+):\s+(\d+) kB$/;
+    my $total = $2;
+    my $swap_total;
+    while (my $line = <PROC>) {
+	if ($line =~ /^([^:]+):\s+(\d+) kB$/) {
+	    if ($1 eq "MemFree") {
+		$free = $2;
+	    } elsif ($1 eq "Buffers") {
+		$buffer = $2;
+	    } elsif ($1 eq "Cached") {
+		$cache = $2;
+	    } elsif ($1 eq "SwapTotal") {
+		$swap_total = $2;
+	    } elsif ($1 eq "SwapFree") {
+		$swap_free = $2;
+	    }
+	}
+    }
+    $total *= 1024;
+    $buffer *= 1024;
+    $free *= 1024;
+    $cache *= 1024;
+    $swap_total *= 1024;
+    $swap_free *= 1024;
+    $used = $total - $free;
+    $swap_used = $swap_total - $swap_free;
+
+} else {
+    # 2.4
+    my ($mem, $swap) = (<PROC>, <PROC>);
+
+    chomp $mem;
+    (undef, undef, $used, $free, undef, $buffer, $cache) = split /\s+/, $mem;
+
+    chomp $swap;
+    (undef, undef, $swap_used, $swap_free) = split /\s+/, $swap;
+}
 close PROC or die "can't close /proc/meminfo: $!\n";
-
-chomp $mem;
-my (undef, undef, $used, $free, undef, $buffer, $cache) = split /\s+/, $mem;
-
-chomp $swap;
-my (undef, undef, $swap_used, $swap_free) = split /\s+/, $swap;
 
 # update database
 RRDs::update($datafile,
