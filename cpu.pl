@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.5 2004-01-19 23:03:41 mitch Exp $
+# $Id: cpu.pl,v 1.6 2004-02-09 13:40:36 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -85,10 +85,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:hw_irq=${datafile}:hw_irq:AVERAGE",
 		"DEF:sw_irq=${datafile}:sw_irq:AVERAGE",
 
-		'AREA:hw_irq#FFFFFF:hw_irq',
-		'STACK:sw_irq#7000E0:sw_irq',
-		'STACK:iowait#00E070:iowait',
-		'STACK:system#E00070:system',
+		'AREA:hw_irq#000000:hw_irq',
+		'STACK:sw_irq#AAAAAA:sw_irq',
+		'STACK:iowait#E00070:iowait',
+		'STACK:system#2020F0:system',
 		'STACK:user#F0A000:user',
 		'STACK:nice#E0E000:nice',
 		'STACK:idle#60D050:idle'
