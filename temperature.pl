@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.5 2003-04-06 10:30:47 mitch Exp $
+# $Id: temperature.pl,v 1.6 2003-04-06 10:31:50 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -65,7 +65,7 @@ open HDDTEMP, "$hddtemp |", or die "can't open $hddtemp: $!\n";
 my ($hda, $hdb, $hdc, $hdd, $sda, $sdb, $sdc, $sdd)
     = (<HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>, <HDDTEMP>);
 close HDDTEMP, or die "can't close $hddtemp: $!\n";
-chomp ($hda, $hdb, $hdc, $hdd, $sda, $sdb, $sdc, $sdd)
+chomp ($hda, $hdb, $hdc, $hdd, $sda, $sdb, $sdc, $sdd);
 
 # update database
 RRDs::update($datafile,

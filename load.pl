@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.6 2003-04-06 10:30:34 mitch Exp $
+# $Id: load.pl,v 1.7 2003-04-06 10:31:14 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -58,7 +58,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
     my ($time, $scale) = @{$_};
     RRDs::graph($picbase . $scale . ".png",
 		"--start=-${time}",
-		'--lazy",
+		'--lazy',
 		'--imgformat=PNG',
 		"--title=${hostname} system load (last $scale)",
 
