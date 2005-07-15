@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.18 2005-06-11 20:35:53 mitch Exp $
+# $Id: temperature.pl,v 1.19 2005-07-15 12:51:43 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -92,7 +92,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--title=${hostname} temperature (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
-		"--alt-autoscale",
+		'--alt-autoscale',
+		'--lower-limit 0',
 
 		"DEF:fan0x=${datafile}:fan0:AVERAGE",
 		"DEF:temp0=${datafile}:temp0:AVERAGE",
@@ -103,12 +104,17 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:disk03=${datafile}:disk03:AVERAGE",
 
 		'CDEF:fan0=fan0x,100,/',
-		'CDEF:temp0_low=temp0,0,35.5,LIMIT',
-		'CDEF:temp0_medium=temp0,35.5,37,LIMIT',
-		'CDEF:temp0_high=temp0,37,999,LIMIT',
-		'CDEF:temp1_low=temp1,0,52,LIMIT',
-		'CDEF:temp1_medium=temp1,52,56,LIMIT',
-		'CDEF:temp1_high=temp1,56,999,LIMIT',
+# platten unter 40°C sind ok
+# fürs Board leider keine Werte gefunden...
+		'CDEF:temp0_low=temp0,0,40,LIMIT',
+		'CDEF:temp0_medium=temp0,40,45,LIMIT',
+		'CDEF:temp0_high=temp0,45,999,LIMIT',
+# laut http://www.cpu-world.com/info/id/AMD-K7-identification.html
+# kann der Athlon XP 1400+ entweder 85°C oder gar 90°C ab
+# laut lm_sensors liegt hysteria(?) bei 82°C
+		'CDEF:temp1_low=temp1,0,60,LIMIT',
+		'CDEF:temp1_medium=temp1,60,70,LIMIT',
+		'CDEF:temp1_high=temp1,70,999,LIMIT',
 
 		'AREA:temp1_high#F0A0A0',
 		'AREA:temp1_medium#F0C0C0',
