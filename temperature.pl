@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.20 2005-07-15 12:52:59 mitch Exp $
+# $Id: temperature.pl,v 1.21 2005-07-15 12:53:45 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -93,7 +93,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--alt-autoscale',
-		'--lower-limit=0',
 
 		"DEF:fan0x=${datafile}:fan0:AVERAGE",
 		"DEF:temp0=${datafile}:temp0:AVERAGE",
