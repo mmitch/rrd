@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: connects.pl,v 1.2 2004-11-27 22:12:30 mitch Exp $
+# $Id: connects.pl,v 1.3 2005-08-22 22:16:55 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -62,6 +62,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 
                 'AREA:disconnect_down#D00000:disconnects',
                 'AREA:connect#00D000:connects',
+		'COMMENT:\n',
+		'COMMENT:\n',
                 );
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
