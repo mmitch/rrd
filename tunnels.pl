@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: tunnels.pl,v 1.2 2005-10-22 17:42:09 mitch Exp $
+# $Id: tunnels.pl,v 1.3 2005-10-22 17:47:37 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -32,7 +32,7 @@ chomp $hostname;
 @devices = grep { @{$_}[0] =~ /^tun/ } @devices;
 
 # set up cache
-my (@def, @cdef, @line);
+my (@def, @cdef, @line1, @line2);
 
 # set up colorspace
 my $drawn = 0;
@@ -53,7 +53,6 @@ foreach my $tun ( @devices ) {
 	, 128 + (96 * sin ( 1 + $PI * ( $drawn/$count ) ) )
 	, 128 + (96 * sin (     $PI * ( $drawn/$count ) ) )
 	, 128 - (96 * sin ( 2 + $PI * ( $drawn/$count ) ) );
-    $drawn++;
     
     push @def, (
 		"DEF:input_${device}=${datafile}:input:AVERAGE",
@@ -64,10 +63,17 @@ foreach my $tun ( @devices ) {
 		 "CDEF:output_${device}=0,outputx_${device},-"
 		 );
 
-    push @line, (
-		 "LINE1:input_${device}#${color}:${device}",
-		 "LINE1:output_${device}#${color}:",
+    push @line1, (
+		  ($drawn ? 'STACK' : 'AREA')
+		  .":input_${device}#${color}:${device}",
 		 );
+
+    push @line2, (
+		  ($drawn ? 'STACK' : 'AREA')
+		  .":output_${device}#${color}:",
+		 );
+
+    $drawn++;
 }
 
 # draw pictures
@@ -86,7 +92,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		
 		@cdef,
 		
-		@line,
+		@line1,
+		@line2,
+
 		'COMMENT:\n',
 		'COMMENT:[octets/sec]'
 		
