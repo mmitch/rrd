@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.11 2004-12-12 13:42:27 mitch Exp $
+# $Id: network.pl,v 1.12 2005-10-22 17:32:12 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -81,6 +81,9 @@ foreach ( @devices ) {
       }
     $ERR=RRDs::error;
     die "ERROR while updating $datafile: $ERR\n" if $ERR;
+
+    ### skip drawing of tunnels
+    next if $device =~ /^tun/;
 
     # draw pictures
     foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
