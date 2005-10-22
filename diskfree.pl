@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.13 2004-04-12 22:11:02 mitch Exp $
+# $Id: diskfree.pl,v 1.14 2005-10-22 21:20:58 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -93,20 +93,38 @@ RRDs::update($datafile,
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
+# set up colorspace
+my $drawn = 0;
+my @colors = qw(
+		00F0F0
+		F0F040
+		F000F0
+		00F000
+		0000F0
+		000000
+		AAAAAA
+		F00000
+		F09000
+		C0C0C0
+		009000
+		FF0000
+		000090
+		900090
+		009090
+		909000
+		E00070
+		2020F0
+		FF00FF
+	       );
+
 # draw which values?
 my (@def, @line, @gprint);
-my $draw = 0;
-my $PI = 3.14159265356237;
-$paths-- if $paths > 1;
 for my $idx ( 0..19 ) {
     if ( $path[$idx] ne "" ) {
-	my $color = sprintf '%02X%02X%02X'
-	    ,128 + (127 * sin ( 1 + $PI * ( $draw/$paths ) ) )
-	    ,128 + (127 * sin (     $PI * ( $draw/$paths ) ) )
-	    ,128 - (127 * sin ( 2 + $PI * ( $draw/$paths ) ) );
+	my $color = $colors[$drawn];
 	push @def, sprintf 'DEF:disk%02d=%s:disk%02d:AVERAGE', $idx, $datafile, $idx;
 	push @line, sprintf 'LINE2:disk%02d#%s:%s', $idx, $color, $path[$idx];
-	$draw ++;
+	$drawn ++;
 	push @gprint, sprintf 'GPRINT:disk%02d:AVERAGE:%%3.0lf', $idx;
 	push @gprint, sprintf 'GPRINT:disk%02d:MIN:%%3.0lf', $idx;
 	push @gprint, sprintf 'GPRINT:disk%02d:MAX:%%3.0lf', $idx;

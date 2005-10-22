@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.6 2004-04-01 09:17:26 mitch Exp $
+# $Id: io.pl,v 1.7 2005-10-22 21:20:58 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -129,23 +129,44 @@ RRDs::update($datafile,
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
+# set up colorspace
+my $drawn = 0;
+my @colors = qw(
+		00F0B0
+		E00070
+		40D030
+		2020F0
+		E0E000
+		00FF00
+		0000FF
+		AAAAAA
+		FF00FF
+		00FFFF
+		000000
+		900000
+		C0C0C0
+		009000
+		000090
+		909000
+		900090
+		009090
+		FF0000
+		FFFF00
+	       );
+
+
 # draw which values?
 my (@def, @line);
-my $draw = 0;
-my $PI = 3.14159265356237;
 $devs -- if $devs > 1;
 for my $idx ( 0..7 ) {
     if ( $dev[$idx] ne "" ) {
-	my $color = sprintf '%02X%02X%02X'
-	    ,128 + (127 * sin ( 1 + $PI * ( $draw/$devs ) ) )
-	    ,128 + (127 * sin (     $PI * ( $draw/$devs ) ) )
-	    ,128 - (127 * sin ( 2 + $PI * ( $draw/$devs ) ) );
+	my $color = $colors[$drawn];
 	push @def, sprintf 'DEF:io%d_read=%s:io%d_read:AVERAGE', $idx, $datafile, $idx;
 	push @def, sprintf 'DEF:io%d_writ=%s:io%d_write:AVERAGE', $idx, $datafile, $idx;
 	push @def, sprintf 'CDEF:io%d_write=0,io%d_writ,-', $idx, $idx;
 	push @line, sprintf 'LINE1:io%d_read#%s:(%s) in', $idx, $color, $dev[$idx];
 	push @line, sprintf 'LINE1:io%d_write#%s:(%s) out', $idx, $color, $dev[$idx];
-	$draw ++;
+	$drawn ++;
     }
 }
 

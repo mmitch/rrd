@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: tunnels.pl,v 1.3 2005-10-22 17:47:37 mitch Exp $
+# $Id: tunnels.pl,v 1.4 2005-10-22 21:20:58 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -36,9 +36,38 @@ my (@def, @cdef, @line1, @line2);
 
 # set up colorspace
 my $drawn = 0;
-my $PI = 3.14159265356237;
-my $count = scalar @devices;
-$count-- if $count > 1;
+my @colors = qw(
+		000000
+		AAAAAA
+		F0A000
+		60D050
+		E00070
+		2020F0
+		E0E000
+		FFFF00
+		FF00FF
+		00FF00
+		0000FF
+		00FFFF
+		900000
+		C0C0C0
+		009000
+		000090
+		909000
+		900090
+		009090
+		FF0000
+		000000
+		000000
+		000000
+		000000
+		000000
+		000000
+		000000
+		000000
+		000000
+		000000
+	       );
 
 # iterate over all given devices
 foreach my $tun ( @devices ) {
@@ -49,10 +78,7 @@ foreach my $tun ( @devices ) {
 
     $datafile =~ s/DEVICE/$device/;
 
-    my $color = sprintf '%02X%02X%02X'
-	, 128 + (96 * sin ( 1 + $PI * ( $drawn/$count ) ) )
-	, 128 + (96 * sin (     $PI * ( $drawn/$count ) ) )
-	, 128 - (96 * sin ( 2 + $PI * ( $drawn/$count ) ) );
+    my $color = $colors[$drawn];
     
     push @def, (
 		"DEF:input_${device}=${datafile}:input:AVERAGE",
