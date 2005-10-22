@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: tunnels.pl,v 1.1 2005-10-22 17:32:24 mitch Exp $
+# $Id: tunnels.pl,v 1.2 2005-10-22 17:42:09 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -65,9 +65,8 @@ foreach my $tun ( @devices ) {
 		 );
 
     push @line, (
-		 "LINE1:input_${device}#${color}:input ${device} [octets/sec]",
-		 "LINE1:output_${device}#${color}:output ${device} [octets/sec]",
-		 'COMMENT:\n'
+		 "LINE1:input_${device}#${color}:${device}",
+		 "LINE1:output_${device}#${color}:",
 		 );
 }
 
@@ -87,7 +86,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		
 		@cdef,
 		
-		@line
+		@line,
+		'COMMENT:\n',
+		'COMMENT:[octets/sec]'
 		
 		);
     $ERR=RRDs::error;
