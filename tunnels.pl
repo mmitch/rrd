@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: tunnels.pl,v 1.4 2005-10-22 21:20:58 mitch Exp $
+# $Id: tunnels.pl,v 1.5 2005-10-25 11:21:12 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -73,8 +73,10 @@ my @colors = qw(
 foreach my $tun ( @devices ) {
 
     # get current variables
-    my ($device, $input_max, $output_max) = @{$tun};
+    my ($device, $input_max, $output_max, $name) = @{$tun};
     my $datafile = $datafile_template;
+
+    $name = $device unless defined $name;
 
     $datafile =~ s/DEVICE/$device/;
 
@@ -91,7 +93,7 @@ foreach my $tun ( @devices ) {
 
     push @line1, (
 		  ($drawn ? 'STACK' : 'AREA')
-		  .":input_${device}#${color}:${device}",
+		  .":input_${device}#${color}:${name}",
 		 );
 
     push @line2, (
