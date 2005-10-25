@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: firewall.pl,v 1.1 2004-07-10 18:15:49 mitch Exp $
+# $Id: firewall.pl,v 1.2 2005-10-25 18:50:41 mitch Exp $
 #
 # RRD script to display firewall statistics
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -92,11 +92,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'CDEF:out_pkt=0,out_pktX,-',
 		'CDEF:out_byte=out_byteX,-1024,/',
 
-		'AREA:in_byte#B0F0B0:incoming [Kbytes] ',
-		'AREA:out_byte#B0B0F0:outgoing [Kbytes] ',
-		'COMMENT:\n',
-		'LINE1:in_pkt#00D000:incoming [packets]',
-		'LINE1:out_pkt#0000D0:outgoing [packets]',
+		'AREA:in_byte#B0F0B0:in [Kbytes] ',
+		'AREA:out_byte#B0B0F0:out [Kbytes] ',
+		'LINE1:in_pkt#00D000:in [packets]',
+		'LINE1:out_pkt#0000D0:out [packets]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

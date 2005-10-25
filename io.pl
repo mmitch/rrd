@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.7 2005-10-22 21:20:58 mitch Exp $
+# $Id: io.pl,v 1.8 2005-10-25 18:51:42 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -164,8 +164,8 @@ for my $idx ( 0..7 ) {
 	push @def, sprintf 'DEF:io%d_read=%s:io%d_read:AVERAGE', $idx, $datafile, $idx;
 	push @def, sprintf 'DEF:io%d_writ=%s:io%d_write:AVERAGE', $idx, $datafile, $idx;
 	push @def, sprintf 'CDEF:io%d_write=0,io%d_writ,-', $idx, $idx;
-	push @line, sprintf 'LINE1:io%d_read#%s:(%s) in', $idx, $color, $dev[$idx];
-	push @line, sprintf 'LINE1:io%d_write#%s:(%s) out', $idx, $color, $dev[$idx];
+	push @line, sprintf 'LINE1:io%d_read#%s:%s', $idx, $color, $dev[$idx];
+	push @line, sprintf 'LINE1:io%d_write#%s:', $idx, $color;
 	$drawn ++;
     }
 }
