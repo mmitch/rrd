@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.6 2005-11-13 15:39:55 mitch Exp $
+# $Id: make_html.pl,v 1.7 2005-11-13 15:44:45 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
@@ -16,7 +16,7 @@ my @rrd      = @{$conf{MAKEHTML_MODULES}};
 my @time     = qw(hour day week year);
 
 # other files to include
-my @MORE     = qw(make_html.pl Makefile sample.conf);
+my @MORE     = qw(make_html.gz Makefile.gz sample.conf.gz);
 
 sub insert_links($);
 
