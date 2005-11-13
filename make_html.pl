@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.5 2003-08-22 10:25:51 mitch Exp $
+# $Id: make_html.pl,v 1.6 2005-11-13 15:39:55 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
@@ -15,6 +15,8 @@ my $path     = $conf{OUTPATH};
 my @rrd      = @{$conf{MAKEHTML_MODULES}};
 my @time     = qw(hour day week year);
 
+# other files to include
+my @MORE     = qw(make_html.pl Makefile sample.conf);
 
 sub insert_links($);
 
@@ -44,7 +46,7 @@ foreach my $time (@time) {
     print HTML "<p><small>Get the scripts here:";
 
     opendir SCRIPTS, $path or die "can't opendir `$path': $!";
-    foreach my $script (sort grep /\.gz$/, readdir SCRIPTS) {
+    foreach my $script ((sort grep /\.gz$/, readdir SCRIPTS), @MORE) {
 	    print HTML " <a href=\"$script\">$script</a>";
     }
     closedir SCRIPTS or die "can't closedir `$path': $!";

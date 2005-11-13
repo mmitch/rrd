@@ -1,9 +1,12 @@
-# $Id: Makefile,v 1.1 2003-07-30 22:24:05 mitch Exp $
+# $Id: Makefile,v 1.2 2005-11-13 15:44:28 mitch Exp $
+
+TARGET = /home/mitch/pub/rrd
+STATICFILES = Makefile sample.conf make_html.pl
 
 all:
-	rm -f /home/mitch/pub/rrd/*.gz
-	for I in *.pl; do \
+	rm -f $(TARGET)/*.gz
+	for I in *.pl $(STATICFILES); do \
 		J=`echo $$I|sed s/.pl$$//`; \
-		gzip < $$I > /home/mitch/pub/rrd/$$J.gz; \
+		gzip < $$I > $(TARGET)/$$J.gz; \
 	done
 	./make_html.pl
