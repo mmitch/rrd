@@ -1,5 +1,5 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.7 2005-11-13 15:44:45 mitch Exp $
+# $Id: make_html.pl,v 1.8 2006-02-04 17:49:02 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #
@@ -46,7 +46,8 @@ foreach my $time (@time) {
     print HTML "<p><small>Get the scripts here:";
 
     opendir SCRIPTS, $path or die "can't opendir `$path': $!";
-    foreach my $script ((sort grep /\.gz$/, readdir SCRIPTS), @MORE) {
+    my %scripts_no_dups = map { $_ => 1 } ((sort grep /\.gz$/, readdir SCRIPTS), @MORE);
+    foreach my $script ( sort keys %scripts_no_dups ) {
 	    print HTML " <a href=\"$script\">$script</a>";
     }
     closedir SCRIPTS or die "can't closedir `$path': $!";
