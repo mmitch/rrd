@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.15 2006-05-12 11:07:13 mitch Exp $
+# $Id: diskfree.pl,v 1.16 2006-05-13 11:13:04 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -78,7 +78,7 @@ open DF, "df -P -l|" or die "can't open df: $!";
 while ( my $line = <DF> ) {
     chomp $line;
     if ($line =~ /\s(\d{1,3})% (\/.*)$/) {
-	$size[ $path{ $2 } ] = 0 + $1 if ( exists $path{ $2 } );
+	$size[ $path{ $2 } ] = $1 if ( exists $path{ $2 } );
     }
 }
 close DF or die "can't close df: $!";
