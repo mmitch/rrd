@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: netstat.pl,v 1.3 2004-04-01 09:17:17 mitch Exp $
+# $Id: netstat.pl,v 1.4 2006-06-11 15:50:38 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -100,6 +100,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
                 '--base=1024',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		'--slope-mode',
 
                 "DEF:active=${datafile}:active:AVERAGE",
                 "DEF:passive=${datafile}:passive:AVERAGE",

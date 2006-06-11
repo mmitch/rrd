@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.11 2004-04-01 09:17:21 mitch Exp $
+# $Id: load.pl,v 1.12 2006-06-11 15:50:46 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -72,6 +72,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--title=${hostname} system load (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		'--slope-mode',
 
 		"DEF:load1=${datafile}:load1:AVERAGE",
 		"DEF:load2=${datafile}:load2:AVERAGE",

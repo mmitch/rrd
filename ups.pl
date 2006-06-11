@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.8 2005-07-15 12:53:37 mitch Exp $
+# $Id: ups.pl,v 1.9 2006-06-11 15:50:15 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -89,6 +89,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--lower-limit=0',
+		'--slope-mode',
 
 		"DEF:volt_i=${datafile}:utility:AVERAGE",
 		"DEF:volt_o=${datafile}:outvolt:AVERAGE",
@@ -105,7 +106,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 
 		'AREA:online#D0FFD0:online [%]  ',
 		'STACK:offline#FFD0D0:offline [%] ',
-		'LINE2:volt_out#D0D0FF:output [V/2]',
+		'LINE3:volt_out#D0D0FF:output [V/2]',
 		'LINE1:volt_in#0000A0:input [V/2]\n',
  		'LINE2:freq#A0A0A0:AC freq [Hz]',
 		'LINE2:volt_bat#00C800:battery [V] ',

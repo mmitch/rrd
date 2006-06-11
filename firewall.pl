@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: firewall.pl,v 1.2 2005-10-25 18:50:41 mitch Exp $
+# $Id: firewall.pl,v 1.3 2006-06-11 15:51:11 mitch Exp $
 #
 # RRD script to display firewall statistics
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -82,6 +82,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--base=1024',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		'--slope-mode',
 
 		"DEF:in_pkt=${datafile}:in_pkt:AVERAGE",
 		"DEF:in_byteX=${datafile}:in_byte:AVERAGE",
@@ -94,6 +95,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 
 		'AREA:in_byte#B0F0B0:in [Kbytes] ',
 		'AREA:out_byte#B0B0F0:out [Kbytes] ',
+		'COMMENT:\n',
 		'LINE1:in_pkt#00D000:in [packets]',
 		'LINE1:out_pkt#0000D0:out [packets]',
 		);
