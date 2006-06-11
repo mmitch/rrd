@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.9 2006-06-11 15:50:54 mitch Exp $
+# $Id: io.pl,v 1.10 2006-06-11 19:32:49 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -21,10 +21,10 @@ my $picbase  = "$conf{OUTPATH}/io-";
 
 # watch these paths
 my @dev = (
-	   "hda",
-	   "hdb",
-	   "hdc",
-	   "hdd",
+	   "sda",
+	   "sdb",
+	   "sdc",
+	   "sdd",
 	   "",
 	   "",
 	   "",
