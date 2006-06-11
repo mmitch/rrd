@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.14 2004-10-31 20:58:05 mitch Exp $
+# $Id: memory.pl,v 1.15 2006-06-11 15:49:35 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -28,14 +28,14 @@ chomp $hostname;
 
 # generate database if absent
 if ( ! -e $datafile ) {
-    # max <2GB for each value
+    # max <2/5GB for each value
     RRDs::create($datafile,
 		 "DS:used:GAUGE:600:0:2000000000",
 		 "DS:free:GAUGE:600:0:2000000000",
 		 "DS:buffer:GAUGE:600:0:2000000000",
 		 "DS:cache:GAUGE:600:0:2000000000",
-		 "DS:swap_used:GAUGE:600:0:2000000000",
-		 "DS:swap_free:GAUGE:600:0:2000000000",
+		 "DS:swap_used:GAUGE:600:0:5000000000",
+		 "DS:swap_free:GAUGE:600:0:5000000000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
