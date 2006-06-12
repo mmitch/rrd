@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.15 2006-06-11 15:49:35 mitch Exp $
+# $Id: memory.pl,v 1.16 2006-06-12 19:52:23 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -34,8 +34,8 @@ if ( ! -e $datafile ) {
 		 "DS:free:GAUGE:600:0:2000000000",
 		 "DS:buffer:GAUGE:600:0:2000000000",
 		 "DS:cache:GAUGE:600:0:2000000000",
-		 "DS:swap_used:GAUGE:600:0:5000000000",
-		 "DS:swap_free:GAUGE:600:0:5000000000",
+		 "DS:swap_used:GAUGE:600:0:8000000000",
+		 "DS:swap_free:GAUGE:600:0:8000000000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
