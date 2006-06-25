@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.23 2006-06-11 15:50:28 mitch Exp $
+# $Id: temperature.pl,v 1.24 2006-06-25 17:42:49 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -127,10 +127,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'LINE1:temp0#000000',
 		'LINE2:fan0#8080FF:cpu fan [100r/m]',
 		'COMMENT:\n',
-		'LINE2:disk00#0000FF:hda [°C]',
-		'LINE2:disk01#FFFF00:hdb [°C]',
-		'LINE2:disk02#FF0000:hdc [°C] ',
-		'LINE2:disk03#00FF00:hdd [°C]',
+		'LINE2:disk00#0000FF:sda [°C]',
+		'LINE2:disk01#FFFF00:sdb [°C]',
+		'LINE2:disk02#FF0000:sdc [°C] ',
+		'LINE2:disk03#00FF00:sdd [°C]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
