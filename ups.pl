@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.9 2006-06-11 15:50:15 mitch Exp $
+# $Id: ups.pl,v 1.10 2006-12-10 11:57:20 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -46,28 +46,25 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-# set empty values
-my %status = (
-    'battery.charge'  => 0,
-    'battery.voltage' => 0,
-    'input.frequency' => 0,
-    'input.voltage'   => 0,
-    'output.voltage'  => 0,
-    'ups.load'        => 0,
-    'ups.status'      => 0
-    );
-
-
 # get UPS status
-open UPS, "upsc mustek\@localhost|" or die "can't read from `upsc mustek\@localhost': $!\n";
-while (my $line = <UPS>) {
-    chomp $line;
-    my ($key, $value) = split /: /, $line, 2;
-    $status{$key} = $value;
-}
-close UPS or die "can't close `upsc mustek\@localhost|': $!\n";
+my $infile = '/etc/belkin/belkin.q1';
+open UPS, '<', $infile or die "can't read from `$infile': $!\n";
+my $line = <UPS>;
+$line =~ tr/0-9 .//dc;
+my @field = split /\s+/, $line;
+close UPS or die "can't close `$infile': $!\n";
 
-$status{'ups.status'} = ($status{'ups.status'} =~ /^OL/) ? 1 : 0;
+# set values
+my %status = (
+	      'battery.charge'  => $field[6],
+	      'battery.voltage' => $field[5],
+	      'input.frequency' => $field[4],
+	      'input.voltage'   => $field[0],
+	      'output.voltage'  => $field[1],
+	      'output.frequency'=> 0,
+	      'ups.load'        => $field[3],
+	      'ups.status'      => $field[7] eq '00001000' ? 1 : 0
+	      );
 
 # update database
 RRDs::update($datafile,
