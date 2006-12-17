@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.10 2006-12-10 11:57:20 mitch Exp $
+# $Id: ups.pl,v 1.11 2006-12-17 20:44:17 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -16,8 +16,8 @@ my %conf;
 eval(`cat ~/.rrd-conf.pl`);
 
 # Configurable stuff here
-my $datafile = "/home/mitch/rrd/ups.rrd";
-my $picbase  = "/home/mitch/pub/rrd/ups-";
+my $datafile = "$conf{DBPATH}/ups.rrd";
+my $picbase  = "$conf{OUTPATH}/ups-";
 
 # global error variable
 my $ERR;
@@ -56,7 +56,7 @@ close UPS or die "can't close `$infile': $!\n";
 
 # set values
 my %status = (
-	      'battery.charge'  => $field[6],
+	      'battery.charge'  => $field[6]*100/32,
 	      'battery.voltage' => $field[5],
 	      'input.frequency' => $field[4],
 	      'input.voltage'   => $field[0],
