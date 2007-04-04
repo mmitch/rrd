@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.16 2006-05-13 11:13:04 mitch Exp $
+# $Id: diskfree.pl,v 1.17 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -84,7 +84,7 @@ while ( my $line = <DF> ) {
 close DF or die "can't close df: $!";
 
 # update database
-my $string=time();
+my $string='N';
 for my $idx ( 0..19 ) {
     $string .= ":" . ( $size[$idx] );
 }

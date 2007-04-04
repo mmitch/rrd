@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.11 2006-12-17 20:44:17 mitch Exp $
+# $Id: ups.pl,v 1.12 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -68,7 +68,7 @@ my %status = (
 
 # update database
 RRDs::update($datafile,
-	     time() . ":$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'output.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
+	     "N:$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'output.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
 	     );
 
 $ERR=RRDs::error;

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.10 2004-10-31 21:11:09 mitch Exp $
+# $Id: cpu.pl,v 1.11 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -62,7 +62,7 @@ $sw_irq = 0 unless defined $sw_irq;
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${user}:${nice}:${system}:${idle}:${iowait}:${hw_irq}:${sw_irq}"
+	     "N:${user}:${nice}:${system}:${idle}:${iowait}:${hw_irq}:${sw_irq}"
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;

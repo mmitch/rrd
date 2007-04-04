@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: netstat.pl,v 1.4 2006-06-11 15:50:38 mitch Exp $
+# $Id: netstat.pl,v 1.5 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -48,7 +48,7 @@ if ( ! -e $datafile ) {
 
 # get netstats
 open NETSTAT, "netstat -s|" or die "can't open `netstat -s|': $!\n";
-my $string=time();
+my $string='N';
 while (my $line = <NETSTAT>) {
     if ($line =~ /(\d+) active connection/) {
 	$string.=":$1";

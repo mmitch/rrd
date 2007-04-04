@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.10 2006-06-11 19:32:49 mitch Exp $
+# $Id: io.pl,v 1.11 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -119,9 +119,9 @@ close PROC or die "can't close /proc/diskstats: $!\n";
 #}
 
 # update database
-my $string=time();
+my $string='N';
 for my $idx ( 0..7 ) {
-    $string .= ":" . ( $read[$idx] ) . ":" . ( $write[$idx] );
+    $string .= ':' . ( $read[$idx] ) . ':' . ( $write[$idx] );
 }
 RRDs::update($datafile,
 	     $string

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.25 2006-12-17 20:44:17 mitch Exp $
+# $Id: temperature.pl,v 1.26 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -78,7 +78,7 @@ foreach my $i (0..7) {
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${fan1}:${fan2}:${temp1}:${temp2}:$hd[0]:$hd[1]:$hd[2]:$hd[3]:$hd[4]:$hd[5]:$hd[6]:$hd[7]"
+	     "N:${fan1}:${fan2}:${temp1}:${temp2}:$hd[0]:$hd[1]:$hd[2]:$hd[3]:$hd[4]:$hd[5]:$hd[6]:$hd[7]"
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;

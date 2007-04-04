@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.16 2006-06-12 19:52:23 mitch Exp $
+# $Id: memory.pl,v 1.17 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -93,7 +93,7 @@ close PROC or die "can't close /proc/meminfo: $!\n";
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${used}:${free}:${buffer}:${cache}:${swap_used}:${swap_free}"
+	     "N:${used}:${free}:${buffer}:${cache}:${swap_used}:${swap_free}"
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;

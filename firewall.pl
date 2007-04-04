@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: firewall.pl,v 1.3 2006-06-11 15:51:11 mitch Exp $
+# $Id: firewall.pl,v 1.4 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display firewall statistics
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -66,7 +66,7 @@ close REJECTS or die "can't close $ipt_script: $!\n";
 
 # update database
 RRDs::update($datafile,
-	     time() . ":${in_pkt}:${in_byte}:${out_pkt}:${out_byte}"
+	     "N:${in_pkt}:${in_byte}:${out_pkt}:${out_byte}"
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
