@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: runall.sh,v 1.1 2007-04-02 19:52:30 mitch Exp $
+# $Id: runall.sh,v 1.2 2007-04-04 21:56:12 mitch Exp $
 WAIT=20
 
 /bin/sleep $WAIT
@@ -26,3 +26,5 @@ WAIT=20
 /home/mitch/rrd/dnscache.pl
 /bin/sleep $WAIT
 /home/mitch/rrd/firewall.pl
+/bin/skeep $WAIT
+/home/mitch/rrd/connecttime.pl
