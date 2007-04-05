@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: connecttime.pl,v 1.1 2007-04-04 21:58:59 mitch Exp $
+# $Id: connecttime.pl,v 1.2 2007-04-05 17:02:19 mitch Exp $
 #
 # RRD script to display io stats
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -31,7 +31,7 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 100% for each value
     RRDs::create($datafile,
-		 "DS:connecttime:COUNTER:600:0:100000",
+		 "DS:connecttime:GAUGE:600:0:100000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
