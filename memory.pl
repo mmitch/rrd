@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.17 2007-04-04 22:02:20 mitch Exp $
+# $Id: memory.pl,v 1.18 2007-04-05 17:15:35 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -117,8 +117,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:swap_used=${datafile}:swap_used:AVERAGE",
 		"DEF:swap_free=${datafile}:swap_free:AVERAGE",
 
-		"CDEF:used=used_x,buffer,-,cache,-",
-		"CDEF:swap_total=0,swap_free,-,swap_used,-",
+		'CDEF:used=used_x,buffer,-,cache,-',
+		'CDEF:swap_total=0,swap_free,-,swap_used,-',
 
 		'AREA:swap_total',
 		'STACK:swap_used#7000E0:swap used',
