@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: connecttime.pl,v 1.3 2007-04-05 17:02:43 mitch Exp $
+# $Id: connecttime.pl,v 1.4 2007-04-05 17:19:24 mitch Exp $
 #
 # RRD script to display io stats
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -66,9 +66,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 
-                "DEF:connecttime=${datafile}:connecttime:AVERAGE",
+                "DEF:seconds=${datafile}:connecttime:AVERAGE",
+		'CDEF:hours=seconds,3600,/',
 
-                'AREA:connecttime#00D000:connection time [s]',
+                'AREA:hours#00D000:connection time [h]',
 		'COMMENT:\n',
 		'COMMENT:\n',
                 );
