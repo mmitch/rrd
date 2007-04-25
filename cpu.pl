@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.11 2007-04-04 22:02:20 mitch Exp $
+# $Id: cpu.pl,v 1.12 2007-04-25 11:13:22 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -29,13 +29,13 @@ chomp $hostname;
 # generate database if absent
 if ( ! -e $datafile ) {
     RRDs::create($datafile,
-		 "DS:user:COUNTER:600:0:60000",
-		 "DS:nice:COUNTER:600:0:60000",
-		 "DS:system:COUNTER:600:0:60000",
-		 "DS:idle:COUNTER:600:0:60000",
-		 "DS:iowait:COUNTER:600:0:60000",
-		 "DS:hw_irq:COUNTER:600:0:60000",
-		 "DS:sw_irq:COUNTER:600:0:60000",
+		 "DS:user:COUNTER:600:0:101",
+		 "DS:nice:COUNTER:600:0:101",
+		 "DS:system:COUNTER:600:0:101",
+		 "DS:idle:COUNTER:600:0:101",
+		 "DS:iowait:COUNTER:600:0:101",
+		 "DS:hw_irq:COUNTER:600:0:101",
+		 "DS:sw_irq:COUNTER:600:0:101",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
