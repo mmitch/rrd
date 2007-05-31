@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: bogofilter.pl,v 1.3 2007-05-31 20:41:58 mitch Exp $
+# $Id: bogofilter.pl,v 1.4 2007-05-31 21:41:53 mitch Exp $
 #
 # RRD script to display system load
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -39,9 +39,9 @@ if ( ! -e $datafile ) {
     # max 70000 for all values
     RRDs::create($datafile,
 		 "--step=60",
-		 "DS:ham:ABSOLUTE:120:0:U",
-		 "DS:unsure:ABSOLUTE:120:0:U",
-		 "DS:spam:ABSOLUTE:120:0:U",
+		 "DS:ham:ABSOLUTE:600:0:U",
+		 "DS:unsure:ABSOLUTE:600:0:U",
+		 "DS:spam:ABSOLUTE:600:0:U",
 	         "RRA:AVERAGE:0.5:1:120",
 		 "RRA:AVERAGE:0.5:5:600",
 		 "RRA:AVERAGE:0.5:30:700",
@@ -53,7 +53,11 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
   }
 
-# data aquisition is done externally by procmail, see above
+# data aquisition is done externally, see above
+# but we need a value every 5 minutes or we only get NaN in aggretations
+RRDs::update($datafile,
+             'N:0:0:0'
+             );
 
 # draw pictures
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
