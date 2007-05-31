@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: bogofilter.pl,v 1.2 2007-05-31 20:30:01 mitch Exp $
+# $Id: bogofilter.pl,v 1.3 2007-05-31 20:41:58 mitch Exp $
 #
 # RRD script to display system load
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -71,10 +71,11 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:unsure=${datafile}:unsure:AVERAGE",
 		"DEF:spam=${datafile}:spam:AVERAGE",
 
-		'AREA:ham#00F000:ham [messages]',
-		'STACK:unsure#F0F000:unsure [messages]',
-		'STACK:spam#F00000:spam [messages]',
+		'AREA:ham#00F000:ham',
+		'STACK:unsure#F0F000:unsure',
+		'STACK:spam#F00000:spam',
 		'COMMENT:\n',
+		'COMMENT:[messages/min]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
