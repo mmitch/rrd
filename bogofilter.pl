@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: bogofilter.pl,v 1.1 2007-05-31 20:27:54 mitch Exp $
+# $Id: bogofilter.pl,v 1.2 2007-05-31 20:30:01 mitch Exp $
 #
 # RRD script to display system load
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -62,7 +62,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--start=-${time}",
 		'--lazy',
 		'--imgformat=PNG',
-		"--title=${hostname} system load (last $scale)",
+		"--title=${hostname} spam statistics (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--slope-mode',
