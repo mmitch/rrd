@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: tunnels.pl,v 1.5 2005-10-25 11:21:12 mitch Exp $
+# $Id: tunnels.pl,v 1.6 2007-05-31 20:27:41 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -42,8 +42,8 @@ my @colors = qw(
 		F0A000
 		60D050
 		E00070
-		2020F0
 		E0E000
+		2020F0
 		FFFF00
 		FF00FF
 		00FF00
