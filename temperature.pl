@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.26 2007-04-04 22:02:20 mitch Exp $
+# $Id: temperature.pl,v 1.27 2007-07-11 22:08:09 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -58,15 +58,21 @@ if ( ! -e $datafile ) {
 
 # get cpu data
 open SENSORS, "$sensors -A $chip |", or die "can't open $sensors: $!\n";
-my ( undef, undef, undef, undef, undef, undef, undef, undef, undef, $fan1, $fan2, $temp1, $temp2 )
-    = (<SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>, <SENSORS>);
+my %val;
+while (my $line = <SENSORS>) {
+    chomp $line;
+    # celcius sign is garbaged, so pre-treat string 
+    $line =~ y/-.:a-zA-Z0-9 / /c;
+    if ($line =~ /^([^:]+):\s+[+-]?(\d+(\.\d+)?) /) {
+	$val{$1} = $2;
+    }
+}
 close SENSORS, or die "can't close $sensors: $!\n";
 
-$fan1  = 0 + substr $fan1,  10, 4;
-#$fan2  = 0 + substr $fan2,  10, 4;
-$fan2  = "U";
-$temp1 = 0 + substr $temp1, 10, 6;
-$temp2 = 0 + substr $temp2, 10, 6;
+my $fan1  = exists $val{fan1}  ? $val{fan1}  : 'U';
+my $fan2  = exists $val{fan2}  ? $val{fan2}  : 'U';
+my $temp1 = exists $val{temp1} ? $val{temp1} : 'U';
+my $temp2 = exists $val{temp2} ? $val{temp2} : 'U';
 
 # get disk data
 open HDDTEMP, "$hddtemp |", or die "can't open $hddtemp: $!\n";
