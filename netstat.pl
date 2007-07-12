@@ -1,8 +1,8 @@
 #!/usr/bin/perl
-# $Id: netstat.pl,v 1.5 2007-04-04 22:02:20 mitch Exp $
+# $Id: netstat.pl,v 1.6 2007-07-12 17:59:05 mitch Exp $
 #
 # RRD script to display io stats
-# 2003 (c) by Christian Garbs <mitch@cgarbs.de>
+# 2003-2007 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -79,7 +79,7 @@ while (my $line = <NETSTAT>) {
 	last;
     }
 }
-close NETSTAT or die "can't close `netstat -s|': $!\n";
+close NETSTAT; ## ignore errors on kernel>2.6.18 ## or die "can't close `netstat -s|': $!\n";
 
 
 # update database
