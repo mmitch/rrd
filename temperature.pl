@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.29 2007-07-13 18:19:14 mitch Exp $
+# $Id: temperature.pl,v 1.30 2007-07-13 18:19:51 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -86,12 +86,12 @@ while (my $line = <SENSORS>) {
     $line =~ y/-.:a-zA-Z0-9 / /c;
 
     if ($multiline and $line !~ /:/) {
-	if ($line =~ /^\s+[+-]?(\d+(\.\d+)?) /) {
+	if ($line =~ /^\s+\+?(-?\d+(\.\d+)?) /) {
 	    $val{$multiline} = $1;
 	}
 	$multiline = 0;
     } else {
-	if ($line =~ /^([^:]+):(\s+[+-]?(\d+(\.\d+)?) )?/) {
+	if ($line =~ /^([^:]+):(\s+\+?(-?\d+(\.\d+)?) )?/) {
 	    if (defined $2) {
 		$val{$1} = $3;
 	    } else {
