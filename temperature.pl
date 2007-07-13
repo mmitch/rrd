@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.28 2007-07-13 18:14:14 mitch Exp $
+# $Id: temperature.pl,v 1.29 2007-07-13 18:19:14 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -79,12 +79,25 @@ close HDDTEMP, or die "can't close $hddtemp: $!\n";
 
 # get cpu data
 open SENSORS, "$sensors -A |", or die "can't open $sensors: $!\n";
+my $multiline = 0;
 while (my $line = <SENSORS>) {
     chomp $line;
     # celcius sign is garbaged, so pre-treat string 
     $line =~ y/-.:a-zA-Z0-9 / /c;
-    if ($line =~ /^([^:]+):\s+[+-]?(\d+(\.\d+)?) /) {
-	$val{$1} = $2;
+
+    if ($multiline and $line !~ /:/) {
+	if ($line =~ /^\s+[+-]?(\d+(\.\d+)?) /) {
+	    $val{$multiline} = $1;
+	}
+	$multiline = 0;
+    } else {
+	if ($line =~ /^([^:]+):(\s+[+-]?(\d+(\.\d+)?) )?/) {
+	    if (defined $2) {
+		$val{$1} = $3;
+	    } else {
+		$multiline = $1;
+	    }
+	}
     }
 }
 close SENSORS, or die "can't close $sensors: $!\n";
