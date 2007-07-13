@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.30 2007-07-13 18:19:51 mitch Exp $
+# $Id: temperature.pl,v 1.31 2007-07-13 18:32:28 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -151,35 +151,44 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--slope-mode',
 
 		"DEF:fan0x=${datafile}:fan0:AVERAGE",
+		"DEF:fan1x=${datafile}:fan1:AVERAGE",
+		"DEF:fan2x=${datafile}:fan2:AVERAGE",
+		"DEF:fan3x=${datafile}:fan3:AVERAGE",
 		"DEF:temp0=${datafile}:temp0:AVERAGE",
 		"DEF:temp1=${datafile}:temp1:AVERAGE",
+		"DEF:temp2=${datafile}:temp2:AVERAGE",
+		"DEF:temp3=${datafile}:temp3:AVERAGE",
+		"DEF:cpu0=${datafile}:cpu0:AVERAGE",
+		"DEF:cpu1=${datafile}:cpu1:AVERAGE",
+		"DEF:cpu2=${datafile}:cpu2:AVERAGE",
+		"DEF:cpu3=${datafile}:cpu3:AVERAGE",
 		"DEF:disk00=${datafile}:disk00:AVERAGE",
 		"DEF:disk01=${datafile}:disk01:AVERAGE",
 		"DEF:disk02=${datafile}:disk02:AVERAGE",
 		"DEF:disk03=${datafile}:disk03:AVERAGE",
+		"DEF:disk04=${datafile}:disk04:AVERAGE",
+		"DEF:disk05=${datafile}:disk05:AVERAGE",
+		"DEF:disk06=${datafile}:disk06:AVERAGE",
+		"DEF:disk07=${datafile}:disk07:AVERAGE",
 
-		'CDEF:fan0=fan0x,100,/',
-# platten unter 40°C sind ok
-# fürs Board leider keine Werte gefunden...
-		'CDEF:temp0_low=temp0,0,40,LIMIT',
-		'CDEF:temp0_medium=temp0,40,45,LIMIT',
-		'CDEF:temp0_high=temp0,45,999,LIMIT',
-# laut http://www.cpu-world.com/info/id/AMD-K7-identification.html
-# kann der Athlon XP 1400+ entweder 85°C oder gar 90°C ab
-# laut lm_sensors liegt hysteria(?) bei 82°C
-		'CDEF:temp1_low=temp1,0,60,LIMIT',
-		'CDEF:temp1_medium=temp1,60,70,LIMIT',
-		'CDEF:temp1_high=temp1,70,999,LIMIT',
+		'CDEF:fan0=fan0x,33,/',
+		'CDEF:fan1=fan1x,33,/',
+		'CDEF:fan2=fan2x,33,/',
+		'CDEF:fan3=fan3x,33,/',
 
-		'AREA:temp1_high#F0A0A0',
-		'AREA:temp1_medium#F0C0C0',
-		'AREA:temp1_low#E0E0E0:cpu [°C]',
-		'AREA:temp0_high#F08888',
-		'AREA:temp0_medium#F0A8A8',
-		'AREA:temp0_low#C8C8C8:case [°C]',
-		'LINE1:temp1#000000',
-		'LINE1:temp0#000000',
-#		'LINE2:fan0#8080FF:cpu fan [100r/m]',
+		'CDEF:fan1s=fan0,fan1,-',
+		'CDEF:cpu1s=cpu0,cpu1,-',
+		'CDEF:temp1s=temp0,temp1,-',
+
+		'AREA:fan0#8888FF00',
+		'STACK:fan1s#8888FF:fan [33r/m]',
+
+		'AREA:cpu0#FF888800',
+		'STACK:cpu1s#FF8888:cpu core [°C]',
+
+		'AREA:temp0#44444400',
+		'STACK:temp1s#444444:board [°C]',
+
 		'COMMENT:\n',
 		'LINE2:disk00#0000FF:sda [°C]',
 		'LINE2:disk01#FFFF00:sdb [°C]',
