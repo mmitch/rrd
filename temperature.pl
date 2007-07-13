@@ -1,8 +1,8 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.27 2007-07-11 22:08:09 mitch Exp $
+# $Id: temperature.pl,v 1.28 2007-07-13 18:14:14 mitch Exp $
 #
 # RRD script to display hardware temperature
-# 2003 (c) by Christian Garbs <mitch@cgarbs.de>
+# 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -21,7 +21,9 @@ my $picbase  = "$conf{OUTPATH}/temperature-";
 
 my $sensors  = $conf{SENSORS_BINARY};
 my $hddtemp  = $conf{HDDTEMP_BINARY};
-my $chip     = $conf{SENSORS_CHIPTYPE};
+my $cpus     = $conf{SENSOR_MAPPING_CPU};
+my $fans     = $conf{SENSOR_MAPPING_FAN};
+my $temps    = $conf{SENSOR_MAPPING_TEMP};
 
 # global error variable
 my $ERR;
@@ -36,8 +38,16 @@ if ( ! -e $datafile ) {
     RRDs::create($datafile,
 		 "DS:fan0:GAUGE:600:0:9000",
 		 "DS:fan1:GAUGE:600:0:9000",
+		 "DS:fan2:GAUGE:600:0:9000",
+		 "DS:fan3:GAUGE:600:0:9000",
 		 "DS:temp0:GAUGE:600:10:100",
 		 "DS:temp1:GAUGE:600:10:100",
+		 "DS:temp2:GAUGE:600:10:100",
+		 "DS:temp3:GAUGE:600:10:100",
+		 "DS:cpu0:GAUGE:600:10:100",
+		 "DS:cpu1:GAUGE:600:10:100",
+		 "DS:cpu2:GAUGE:600:10:100",
+		 "DS:cpu3:GAUGE:600:10:100",
 		 "DS:disk00:GAUGE:600:10:100",
 		 "DS:disk01:GAUGE:600:10:100",
 		 "DS:disk02:GAUGE:600:10:100",
@@ -56,9 +66,19 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-# get cpu data
-open SENSORS, "$sensors -A $chip |", or die "can't open $sensors: $!\n";
+# get disk data
 my %val;
+open HDDTEMP, "$hddtemp |", or die "can't open $hddtemp: $!\n";
+while (my $hd = <HDDTEMP>) {
+    $hd =~ tr /0-9//cd;
+    if (length $hd) {
+	$val{'HDD_TEMP_' . ($. - 1)} = $hd;
+    }
+}
+close HDDTEMP, or die "can't close $hddtemp: $!\n";
+
+# get cpu data
+open SENSORS, "$sensors -A |", or die "can't open $sensors: $!\n";
 while (my $line = <SENSORS>) {
     chomp $line;
     # celcius sign is garbaged, so pre-treat string 
@@ -69,22 +89,37 @@ while (my $line = <SENSORS>) {
 }
 close SENSORS, or die "can't close $sensors: $!\n";
 
-my $fan1  = exists $val{fan1}  ? $val{fan1}  : 'U';
-my $fan2  = exists $val{fan2}  ? $val{fan2}  : 'U';
-my $temp1 = exists $val{temp1} ? $val{temp1} : 'U';
-my $temp2 = exists $val{temp2} ? $val{temp2} : 'U';
 
-# get disk data
-open HDDTEMP, "$hddtemp |", or die "can't open $hddtemp: $!\n";
-my @hd = <HDDTEMP>;
-close HDDTEMP, or die "can't close $hddtemp: $!\n";
+# prepare values
+sub getval($)
+{
+    my $key = shift;
+    return 'U' unless defined $key;
+    return 'U' unless exists $val{$key};
+    return $val{$key};
+}
+
+my $rrdstring = 'N';
+foreach my $i (0..3) {
+    $rrdstring .= ':' . getval($fans->[$i]);
+}
+
+foreach my $i (0..3) {
+    $rrdstring .= ':' . getval($temps->[$i]);
+}
+
+foreach my $i (0..3) {
+    $rrdstring .= ':' . getval($cpus->[$i]);
+}
+
 foreach my $i (0..7) {
-    $hd[$i] =~ tr /0-9//cd;
+    $rrdstring .= ':' . getval("HDD_TEMP_$i");
 }
 
 # update database
+print "$rrdstring\n";
 RRDs::update($datafile,
-	     "N:${fan1}:${fan2}:${temp1}:${temp2}:$hd[0]:$hd[1]:$hd[2]:$hd[3]:$hd[4]:$hd[5]:$hd[6]:$hd[7]"
+	     $rrdstring
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
@@ -131,7 +166,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'AREA:temp0_low#C8C8C8:case [°C]',
 		'LINE1:temp1#000000',
 		'LINE1:temp0#000000',
-		'LINE2:fan0#8080FF:cpu fan [100r/m]',
+#		'LINE2:fan0#8080FF:cpu fan [100r/m]',
 		'COMMENT:\n',
 		'LINE2:disk00#0000FF:sda [°C]',
 		'LINE2:disk01#FFFF00:sdb [°C]',
