@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.18 2007-08-05 13:24:36 mitch Exp $
+# $Id: diskfree.pl,v 1.19 2007-08-05 13:31:35 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -140,7 +140,6 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		'--lazy',
 		'--imgformat=PNG',
 		"--title=${hostname} disk usage (last $scale)",
-		'--upper-limit=100',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
                 '--lower-limit=0',
