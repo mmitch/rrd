@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: roundtrip.pl,v 1.1 2007-08-05 13:34:46 mitch Exp $
+# $Id: roundtrip.pl,v 1.2 2007-08-05 13:59:58 mitch Exp $
 #
 # RRD script to display disk usage
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -74,7 +74,7 @@ for my $idx ( 0..19 ) {
 }
 
 # parse roundtrip
-open DF, 'roundtrip.pl|' or die "can't open roundtrip.pl: $!";
+open DF, "$conf{ROUNDTRIP_BIN}|" or die "can't open $conf{ROUNDTRIP_BIN}: $!";
 while ( my $line = <DF> ) {
     chomp $line;
     my ($host, $time) = (substr ($line, 0, 20), substr ($line, 20));
@@ -82,7 +82,7 @@ while ( my $line = <DF> ) {
     $time = 'U' if $time eq '-1';
     $time[ $host{ $host } ] = $time if ( exists $host{ $host } );
 }
-close DF or die "can't close roundtrip.pl: $!";
+close DF or die "can't close $conf{ROUNDTRIP_BIN}: $!";
 
 # update database
 my $string='N';
