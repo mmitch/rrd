@@ -1,8 +1,8 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.17 2007-04-04 22:02:20 mitch Exp $
+# $Id: diskfree.pl,v 1.18 2007-08-05 13:24:36 mitch Exp $
 #
 # RRD script to display disk usage
-# 2003 (c) by Christian Garbs <mitch@cgarbs.de>
+# 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -21,7 +21,6 @@ my $picbase  = "$conf{OUTPATH}/diskfree-";
 
 # watch these paths
 my @path = @{$conf{'DISKFREE_PATHS'}};
-my $paths = grep { $_ ne "" } @path;
 my @size;
 
 # global error variable
@@ -35,30 +34,30 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 100% for each value
     RRDs::create($datafile,
-		 "DS:disk00:GAUGE:600:0:100",
-		 "DS:disk01:GAUGE:600:0:100",
-		 "DS:disk02:GAUGE:600:0:100",
-		 "DS:disk03:GAUGE:600:0:100",
-		 "DS:disk04:GAUGE:600:0:100",
-		 "DS:disk05:GAUGE:600:0:100",
-		 "DS:disk06:GAUGE:600:0:100",
-		 "DS:disk07:GAUGE:600:0:100",
-		 "DS:disk08:GAUGE:600:0:100",
-		 "DS:disk09:GAUGE:600:0:100",
-		 "DS:disk10:GAUGE:600:0:100",
-		 "DS:disk11:GAUGE:600:0:100",
-		 "DS:disk12:GAUGE:600:0:100",
-		 "DS:disk13:GAUGE:600:0:100",
-		 "DS:disk14:GAUGE:600:0:100",
-		 "DS:disk15:GAUGE:600:0:100",
-		 "DS:disk16:GAUGE:600:0:100",
-		 "DS:disk17:GAUGE:600:0:100",
-		 "DS:disk18:GAUGE:600:0:100",
-		 "DS:disk19:GAUGE:600:0:100",
-		 "RRA:AVERAGE:0.5:1:600",
-		 "RRA:AVERAGE:0.5:6:700",
-		 "RRA:AVERAGE:0.5:24:775",
-		 "RRA:AVERAGE:0.5:288:797"
+		 'DS:disk00:GAUGE:600:0:100',
+		 'DS:disk01:GAUGE:600:0:100',
+		 'DS:disk02:GAUGE:600:0:100',
+		 'DS:disk03:GAUGE:600:0:100',
+		 'DS:disk04:GAUGE:600:0:100',
+		 'DS:disk05:GAUGE:600:0:100',
+		 'DS:disk06:GAUGE:600:0:100',
+		 'DS:disk07:GAUGE:600:0:100',
+		 'DS:disk08:GAUGE:600:0:100',
+		 'DS:disk09:GAUGE:600:0:100',
+		 'DS:disk10:GAUGE:600:0:100',
+		 'DS:disk11:GAUGE:600:0:100',
+		 'DS:disk12:GAUGE:600:0:100',
+		 'DS:disk13:GAUGE:600:0:100',
+		 'DS:disk14:GAUGE:600:0:100',
+		 'DS:disk15:GAUGE:600:0:100',
+		 'DS:disk16:GAUGE:600:0:100',
+		 'DS:disk17:GAUGE:600:0:100',
+		 'DS:disk18:GAUGE:600:0:100',
+		 'DS:disk19:GAUGE:600:0:100',
+		 'RRA:AVERAGE:0.5:1:600',
+		 'RRA:AVERAGE:0.5:6:700',
+		 'RRA:AVERAGE:0.5:24:775',
+		 'RRA:AVERAGE:0.5:288:797'
 		 );
 
       $ERR=RRDs::error;
@@ -70,11 +69,11 @@ if ( ! -e $datafile ) {
 my %path;
 for my $idx ( 0..19 ) {
     $path{ $path[$idx] } = $idx;
-    $size[ $idx ] = "U";
+    $size[ $idx ] = 'U';
 }
 
 # parse df
-open DF, "df -P -l|" or die "can't open df: $!";
+open DF, 'df -P -l|' or die "can't open df: $!";
 while ( my $line = <DF> ) {
     chomp $line;
     if ($line =~ /\s(\d{1,3})% (\/.*)$/) {
@@ -86,7 +85,7 @@ close DF or die "can't close df: $!";
 # update database
 my $string='N';
 for my $idx ( 0..19 ) {
-    $string .= ":" . ( $size[$idx] );
+    $string .= ':' . ( $size[$idx] );
 }
 RRDs::update($datafile,
 	     $string
@@ -121,7 +120,7 @@ my @colors = qw(
 # draw which values?
 my (@def, @line, @gprint);
 for my $idx ( 0..19 ) {
-    if ( $path[$idx] ne "" ) {
+    if ( $path[$idx] ne '' ) {
 	my $color = $colors[$drawn];
 	push @def, sprintf 'DEF:disk%02d=%s:disk%02d:AVERAGE', $idx, $datafile, $idx;
 	push @line, sprintf 'LINE2:disk%02d#%s:%s', $idx, $color, $path[$idx];
@@ -134,9 +133,9 @@ for my $idx ( 0..19 ) {
 }
 
 # draw pictures
-foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
+foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] ) {
     my ($time, $scale) = @{$_};
-    RRDs::graph($picbase . $scale . ".png",
+    RRDs::graph($picbase . $scale . '.png',
 		"--start=-$time",
 		'--lazy',
 		'--imgformat=PNG',
