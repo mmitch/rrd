@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: runall.sh,v 1.4 2007-05-31 20:27:54 mitch Exp $
+# $Id: runall.sh,v 1.5 2007-08-05 13:35:26 mitch Exp $
 WAIT=17
 
 /bin/sleep $WAIT
@@ -34,3 +34,8 @@ WAIT=17
 /home/mitch/rrd/connecttime.pl
 /bin/sleep $WAIT
 /home/mitch/rrd/bogofilter.pl
+/bin/sleep $WAIT
+/home/mitch/rrd/cpufreq.pl
+
+/bin/sleep $WAIT
+/home/mitch/rrd/roundtrip.pl
