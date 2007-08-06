@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: roundtrip.pl,v 1.4 2007-08-05 16:10:18 mitch Exp $
+# $Id: roundtrip.pl,v 1.5 2007-08-06 18:51:43 mitch Exp $
 #
 # RRD script to display disk usage
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -121,15 +121,21 @@ my @colors = qw(
 
 # draw which values?
 my (@def, @line, @gprint);
+my $first = 1;
 for my $idx ( 0..19 ) {
     if ( $hosts[$idx] ne '' ) {
 	my $color = $colors[$drawn];
 	push @def, sprintf 'DEF:rtt%02d=%s:rtt%02d:AVERAGE', $idx, $datafile, $idx;
-	push @line, sprintf 'LINE2:rtt%02d#%s:%s', $idx, $color, $hosts[$idx];
+	push @def, sprintf 'CDEF:slow%02d=rtt%02d,0.4,GE,1,rtt%02d,UN,-,*', $idx, $idx, $idx;
+	push @def, sprintf 'CDEF:on%02d=rtt%02d,0.4,LT,1,rtt%02d,UN,-,*', $idx, $idx, $idx;
+	push @def, sprintf 'CDEF:off%02d=rtt%02d,UN', $idx, $idx;
+	push @line, sprintf '%s:on%02d#%sff:%s', $first ? ($first=0, 'AREA')[1] : 'STACK', $idx, $color, $hosts[$idx];
+	push @line, sprintf 'STACK:slow%02d#%s80', $idx, $color;
+	push @line, sprintf 'STACK:off%02d#%s12', $idx, $color;
 	$drawn ++;
-	push @gprint, sprintf 'GPRINT:rtt%02d:AVERAGE:%%3.0lf', $idx;
-	push @gprint, sprintf 'GPRINT:rtt%02d:MIN:%%3.0lf', $idx;
-	push @gprint, sprintf 'GPRINT:rtt%02d:MAX:%%3.0lf', $idx;
+	push @gprint, sprintf 'GPRINT:rtt%02d:AVERAGE:%%5.3lf', $idx;
+	push @gprint, sprintf 'GPRINT:rtt%02d:MIN:%%5.3lf', $idx;
+	push @gprint, sprintf 'GPRINT:rtt%02d:MAX:%%5.3lf', $idx;
 	push @gprint, sprintf 'COMMENT:%s\n', $hosts[$idx];
     }
 }
@@ -145,6 +151,7 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
                 '--lower-limit=0',
+		'--alt-autoscale',
 
 		@def,
 
@@ -152,7 +159,7 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 
 		'COMMENT:\n',
 		'COMMENT:\n',
-		'COMMENT:AVG  MIN  MAX  mount\n',
+		'COMMENT: AVG    MIN    MAX     host\n',
 		@gprint
 		);
     $ERR=RRDs::error;
