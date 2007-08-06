@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: cpufreq.pl,v 1.1 2007-07-11 21:43:00 mitch Exp $
+# $Id: cpufreq.pl,v 1.2 2007-08-06 18:08:39 mitch Exp $
 #
 # RRD script to display cpufreq statistics
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -78,7 +78,7 @@ RRDs::update($datafile,
 	     );
 
 # draw pictures
-foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
+foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] ) {
     my ($time, $scale) = @{$_};
 
     my (@def, @area);
@@ -88,14 +88,14 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 	push @area, ($i ? 'STACK' : 'AREA') . ":state${i}#${colors[$i]}:${name[$i]}";
     }
 
-    RRDs::graph($picbase . $scale . ".png",
+    RRDs::graph($picbase . $scale . '.png',
 		"--start=-${time}",
 		'--lazy',
 		'--imgformat=PNG',
 		"--title=${hostname} cpu frequencies (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
-		"--alt-autoscale",
+		'--alt-autoscale',
 		
 		@def,
 		@area
