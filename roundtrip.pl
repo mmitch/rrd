@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# $Id: roundtrip.pl,v 1.5 2007-08-06 18:51:43 mitch Exp $
+# $Id: roundtrip.pl,v 1.6 2007-10-14 22:40:22 mitch Exp $
 #
 # RRD script to display disk usage
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>
@@ -117,6 +117,7 @@ my @colors = qw(
 		E00070
 		2020F0
 		FF00FF
+		20FF20
 	       );
 
 # draw which values?
