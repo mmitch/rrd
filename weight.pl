@@ -97,9 +97,10 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 #                '--upper-limit=100',
 
 		"DEF:weight=$datafile:weight:AVERAGE",
-		'LINE2:weight#0000D0:weight[kg]',
+		'LINE2:weight#0000D0:weight [kg]',
 
 		'COMMENT:\n',
+		'COMMENT: ',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
