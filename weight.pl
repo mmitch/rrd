@@ -19,8 +19,8 @@ my $ERR;
 my $hostname = `/bin/hostname`;
 chomp $hostname;
 
-# half a day's seconds
-my $STEP = 60 * 60 * 12;
+my $STEP   = 60 * 60 * 12; # half a day's seconds
+my $FACTOR = 100000;       # don't let $quot become too small
 
 # generate database if absent
 if ( ! -e $datafile ) {
@@ -43,6 +43,7 @@ if ( ! -e $datafile ) {
 sub put($$)
 {
     my ($time, $val) = (@_);
+    $val /= $FACTOR;
     RRDs::update($datafile, "$time:$val");
     $ERR=RRDs::error;
     die "ERROR while updating $datafile: $ERR\n" if $ERR;
@@ -55,7 +56,9 @@ my $lastval = undef;
 
 while (my $line = <>) {
     chomp $line;
+    next if $line =~ /^\s*$/;
     my ($date, $val) = split /\s+/, $line;
+    $val *= $FACTOR;
     my $time = timelocal(0, 0, 6 + 12 * ((lc substr( $date, 8, 1 )) eq 'b'), substr($date, 6, 2), substr($date, 4, 2)-1, substr($date, 0, 4));
     
     if (defined $lasttime) {
