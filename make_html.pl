@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id: make_html.pl,v 1.8 2006-02-04 17:49:02 mitch Exp $
 #
 # Generate HTML pages for rrd stats
 #

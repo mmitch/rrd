@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: connecttime.pl,v 1.4 2007-04-05 17:19:24 mitch Exp $
 #
 # RRD script to display io stats
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>

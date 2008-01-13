@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: load.pl,v 1.15 2007-10-20 17:45:27 mitch Exp $
 #
 # RRD script to display system load
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>

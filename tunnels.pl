@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: tunnels.pl,v 1.6 2007-05-31 20:27:41 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>

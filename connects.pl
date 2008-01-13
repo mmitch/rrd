@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: connects.pl,v 1.3 2005-08-22 22:16:55 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>

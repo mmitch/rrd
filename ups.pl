@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: ups.pl,v 1.12 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display ups values
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>

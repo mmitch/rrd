@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: cpu.pl,v 1.13 2007-07-11 17:14:06 mitch Exp $
 #
 # RRD script to display cpu usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>

@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: io.pl,v 1.11 2007-04-04 22:02:20 mitch Exp $
 #
 # RRD script to display io stats
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>

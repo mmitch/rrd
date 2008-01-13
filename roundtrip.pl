@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: roundtrip.pl,v 1.6 2007-10-14 22:40:22 mitch Exp $
 #
 # RRD script to display disk usage
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>

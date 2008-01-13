@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: memory.pl,v 1.19 2007-07-11 17:14:53 mitch Exp $
 #
 # RRD script to display memory usage
 # 2003 (c) by Christian Garbs <mitch@cgarbs.de>

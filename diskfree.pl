@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: diskfree.pl,v 1.20 2007-12-12 17:43:28 mitch Exp $
 #
 # RRD script to display disk usage
 # 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>

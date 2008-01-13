@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: network.pl,v 1.12 2005-10-22 17:32:12 mitch Exp $
 #
 # RRD script to display network statistics
 # 2003-2004 (c) by Christian Garbs <mitch@cgarbs.de>

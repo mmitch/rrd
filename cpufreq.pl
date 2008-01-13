@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: cpufreq.pl,v 1.2 2007-08-06 18:08:39 mitch Exp $
 #
 # RRD script to display cpufreq statistics
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>

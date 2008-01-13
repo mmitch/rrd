@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: bogofilter.pl,v 1.4 2007-05-31 21:41:53 mitch Exp $
 #
 # RRD script to display system load
 # 2007 (c) by Christian Garbs <mitch@cgarbs.de>

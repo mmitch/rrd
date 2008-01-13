@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: dnscache.pl,v 1.12 2004-11-07 23:41:49 mitch Exp $
 #
 # RRD script to display dnscache statistics
 # 2004 (c) by Christian Garbs <mitch@cgarbs.de>

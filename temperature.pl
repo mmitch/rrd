@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: temperature.pl,v 1.32 2007-07-13 18:35:34 mitch Exp $
 #
 # RRD script to display hardware temperature
 # 2003,2007 (c) by Christian Garbs <mitch@cgarbs.de>

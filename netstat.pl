@@ -1,5 +1,4 @@
 #!/usr/bin/perl
-# $Id: netstat.pl,v 1.6 2007-07-12 17:59:05 mitch Exp $
 #
 # RRD script to display io stats
 # 2003-2007 (c) by Christian Garbs <mitch@cgarbs.de>

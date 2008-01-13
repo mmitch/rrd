@@ -1,5 +1,4 @@
 #!/bin/sh
-# $Id: runall.sh,v 1.5 2007-08-05 13:35:26 mitch Exp $
 WAIT=17
 
 /bin/sleep $WAIT
