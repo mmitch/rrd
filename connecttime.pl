@@ -30,7 +30,7 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 100% for each value
     RRDs::create($datafile,
-		 "DS:connecttime:GAUGE:600:0:700000",
+		 "DS:connecttime:GAUGE:600:0:100000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
@@ -52,6 +52,8 @@ if ( -e $onlinefile ) {
 RRDs::update($datafile,
              "N:$connecttime"
              );
+
+die "ERROR while adding $datafile $connecttime: $ERR\n" if $ERR;
 
 # draw pictures
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
