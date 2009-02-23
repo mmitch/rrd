@@ -182,16 +182,16 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'STACK:fan1s#8888FF:fan [33r/m]',
 
 		'AREA:cpu0#FF888800',
-		'STACK:cpu1s#FF8888:cpu core [캜]',
+		'STACK:cpu1s#FF8888:cpu core [째C]',
 
 		'AREA:temp0#44444400',
-		'STACK:temp1s#444444:board [캜]',
+		'STACK:temp1s#444444:board [째C]',
 
 		'COMMENT:\n',
-		'LINE2:disk00#0000FF:sda [캜]',
-		'LINE2:disk01#FFFF00:sdb [캜]',
-		'LINE2:disk02#FF0000:sdc [캜] ',
-		'LINE2:disk03#00FF00:sdd [캜]',
+		'LINE2:disk00#0000FF:sda [째C]',
+		'LINE2:disk01#FFFF00:sdb [째C]',
+		'LINE2:disk02#FF0000:sdc [째C] ',
+		'LINE2:disk03#00FF00:sdd [째C]',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
