@@ -23,7 +23,7 @@ my @dev = (
 	   "sda",
 	   "sdb",
 	   "sdc",
-	   "sdd",
+	   "",
 	   "",
 	   "",
 	   "",
@@ -53,22 +53,22 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 100% for each value
     RRDs::create($datafile,
-		 "DS:io0_read:COUNTER:600:0:100000",
-		 "DS:io0_write:COUNTER:600:0:100000",
-		 "DS:io1_read:COUNTER:600:0:100000",
-		 "DS:io1_write:COUNTER:600:0:100000",
-		 "DS:io2_read:COUNTER:600:0:100000",
-		 "DS:io2_write:COUNTER:600:0:100000",
-		 "DS:io3_read:COUNTER:600:0:100000",
-		 "DS:io3_write:COUNTER:600:0:100000",
-		 "DS:io4_read:COUNTER:600:0:100000",
-		 "DS:io4_write:COUNTER:600:0:100000",
-		 "DS:io5_read:COUNTER:600:0:100000",
-		 "DS:io5_write:COUNTER:600:0:100000",
-		 "DS:io6_read:COUNTER:600:0:100000",
-		 "DS:io6_write:COUNTER:600:0:100000",
-		 "DS:io7_read:COUNTER:600:0:100000",
-		 "DS:io7_write:COUNTER:600:0:100000",
+		 "DS:io0_read:COUNTER:600:0:250000",
+		 "DS:io0_write:COUNTER:600:0:250000",
+		 "DS:io1_read:COUNTER:600:0:250000",
+		 "DS:io1_write:COUNTER:600:0:250000",
+		 "DS:io2_read:COUNTER:600:0:250000",
+		 "DS:io2_write:COUNTER:600:0:250000",
+		 "DS:io3_read:COUNTER:600:0:250000",
+		 "DS:io3_write:COUNTER:600:0:250000",
+		 "DS:io4_read:COUNTER:600:0:250000",
+		 "DS:io4_write:COUNTER:600:0:250000",
+		 "DS:io5_read:COUNTER:600:0:250000",
+		 "DS:io5_write:COUNTER:600:0:250000",
+		 "DS:io6_read:COUNTER:600:0:250000",
+		 "DS:io6_write:COUNTER:600:0:250000",
+		 "DS:io7_read:COUNTER:600:0:250000",
+		 "DS:io7_write:COUNTER:600:0:250000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
@@ -183,7 +183,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 
 		@def,
 
-		@line
+		@line,
+
+		'COMMENT:\n',
+
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
