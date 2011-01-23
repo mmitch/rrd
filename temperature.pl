@@ -174,7 +174,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'CDEF:fan2=fan2x,33,/',
 		'CDEF:fan3=fan3x,33,/',
 
-		'CDEF:fan1s=fan0,fan1,-',
+		'CDEF:fan1s=fan0,fan1,-,0,300,LIMIT',
 		'CDEF:cpu1s=cpu0,cpu1,-',
 		'CDEF:temp1s=temp0,temp1,-',
 
