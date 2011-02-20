@@ -6,6 +6,9 @@
 #
 # This script should be run every 5 minutes.
 #
+
+exit 0;
+
 use strict;
 use warnings;
 use RRDs;

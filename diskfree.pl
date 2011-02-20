@@ -149,9 +149,10 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		@line,
 
 		'COMMENT:\n',
-		'COMMENT:\n',
+		'COMMENT: \n',
 		'COMMENT:AVG  MIN  MAX  mount\n',
-		@gprint
+		@gprint,
+		'COMMENT: \n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

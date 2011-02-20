@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 DATAFILE=/home/mitch/rrd/bogofilter.rrd
 LINE=$(grep ^X-Bogosity: | head -n 1)
 [ "$LINE" ] || exit

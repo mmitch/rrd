@@ -108,7 +108,8 @@ foreach ( @devices ) {
 		    'AREA:output_max#B0B0F0:max output [octets/sec]',
 		    'COMMENT:\n',
 		    'AREA:input#00D000:avg input [octets/sec]',
-		    'AREA:output#0000D0:avg output [octets/sec]'
+		    'AREA:output#0000D0:avg output [octets/sec]',
+		    'COMMENT:\n',
 		    );
 	$ERR=RRDs::error;
 	die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

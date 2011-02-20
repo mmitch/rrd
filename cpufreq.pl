@@ -97,7 +97,9 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		'--alt-autoscale',
 		
 		@def,
-		@area
+		@area,
+		
+                'COMMENT:\n',
 
 		);
     $ERR=RRDs::error;

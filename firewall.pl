@@ -97,6 +97,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'COMMENT:\n',
 		'LINE1:in_pkt#00D000:in [packets]',
 		'LINE1:out_pkt#0000D0:out [packets]',
+		'COMMENT:\n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
