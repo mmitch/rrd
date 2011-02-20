@@ -142,7 +142,8 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
                 '--lower-limit=0',
-                '--upper-limit=103',
+                '--upper-limit=100',
+                '--rigid',
 
 		@def,
 

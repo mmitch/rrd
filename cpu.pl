@@ -81,8 +81,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--base=1024',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
-                '--lower-limit=-103',
-                '--upper-limit=103',
+                '--lower-limit=-100',
+                '--upper-limit=100',
 		'--rigid',
 
 		"DEF:user0=${datafile[0]}:user:AVERAGE",

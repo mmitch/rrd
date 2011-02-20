@@ -94,7 +94,9 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"--title=${hostname} cpu frequencies (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
-		'--alt-autoscale',
+		'--upper-limit=100',
+		'--lower-limit=0',
+                '--rigid',
 		
 		@def,
 		@area,

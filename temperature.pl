@@ -169,17 +169,17 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 #		"DEF:disk06=${datafile}:disk06:AVERAGE",
 #		"DEF:disk07=${datafile}:disk07:AVERAGE",
 
-		'CDEF:fan0=fan0x,33,/',
-		'CDEF:fan1=fan1x,33,/',
-		'CDEF:fan2=fan2x,33,/',
-#		'CDEF:fan3=fan3x,33,/',
+		'CDEF:fan0=fan0x,50,/',
+		'CDEF:fan1=fan1x,50,/',
+		'CDEF:fan2=fan2x,50,/',
+#		'CDEF:fan3=fan3x,50,/',
 
 #		'CDEF:fan1s=fan0,fan1,-,0,300,LIMIT',
 #		'CDEF:cpu1s=cpu0,cpu1,-',
 #		'CDEF:temp1s=temp0,temp1,-',
 
 #		'AREA:fan0#8888FF00',
-#		'STACK:fan1s#8888FF:fan [33r/m]',
+#		'STACK:fan1s#8888FF:fan [50r/m]',
 
 		'LINE1:cpu0#FF8888:cpu cores[°C]',
 		'LINE1:cpu1#FF8888',
@@ -192,7 +192,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 #		'AREA:temp0#44444400',
 #		'STACK:temp1s#444444:board [°C]',
 
-		'LINE1:fan0#8888FF:fans [33rpm]',
+		'LINE1:fan0#8888FF:fans [50rpm]',
 		'LINE1:fan1#8888FF',
 		'LINE1:fan2#8888FF',
 
