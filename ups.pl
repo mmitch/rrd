@@ -67,7 +67,7 @@ my %status = (
 
 # update database
 RRDs::update($datafile,
-	     "N:$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'output.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
+	     "N:$status{'input.voltage'}:$status{'output.voltage'}:$status{'battery.charge'}:$status{'battery.voltage'}:$status{'input.frequency'}:$status{'ups.load'}:$status{'ups.status'}"
 	     );
 
 $ERR=RRDs::error;
