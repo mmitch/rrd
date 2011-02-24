@@ -201,6 +201,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'LINE2:disk01#FFFF00:sdb [°C]',
 		'LINE2:disk02#FF0000:sdc [°C] ',
 #		'LINE2:disk03#00FF00:sdd [°C]',
+
+		'COMMENT:\n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
