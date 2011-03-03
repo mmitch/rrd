@@ -26,7 +26,7 @@ LANG=C
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/netstat.pl 2>&1 | fgrep -v 'error parsing /proc/net/snmp: Success'
 /bin/sleep $RRD_WAIT
-/home/mitch/rrd/dnscache.pl
+/home/mitch/rrd/unbound.pl
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/firewall.pl
 
