@@ -4,7 +4,7 @@
 # 2011 Copyright (C)  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
-# This script should be once a day..
+# This script should be run once a day.
 #
 
 use strict;
@@ -40,20 +40,22 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     RRDs::create($datafile,
 		 "--step=86400",
-		 "DS:submitted:ABSOLUTE:150000:0:U",
-		 "DS:site0:ABSOLUTE:150000:0:1000",
-		 "DS:site1:ABSOLUTE:150000:0:1000",
-		 "DS:site2:ABSOLUTE:150000:0:1000",
-		 "DS:site3:ABSOLUTE:150000:0:1000",
-		 "DS:site4:ABSOLUTE:150000:0:1000",
-		 "DS:site5:ABSOLUTE:150000:0:1000",
-		 "DS:site6:ABSOLUTE:150000:0:1000",
-		 "DS:site7:ABSOLUTE:150000:0:1000",
-		 "DS:site8:ABSOLUTE:150000:0:1000",
-		 "DS:site9:ABSOLUTE:150000:0:1000",
+		 "--start=1302345000",
+		 "DS:submitted:COUNTER:160000:0:U",
+		 "DS:site0:GAUGE:160000:0:1000",
+		 "DS:site1:GAUGE:160000:0:1000",
+		 "DS:site2:GAUGE:160000:0:1000",
+		 "DS:site3:GAUGE:160000:0:1000",
+		 "DS:site4:GAUGE:160000:0:1000",
+		 "DS:site5:GAUGE:160000:0:1000",
+		 "DS:site6:GAUGE:160000:0:1000",
+		 "DS:site7:GAUGE:160000:0:1000",
+		 "DS:site8:GAUGE:160000:0:1000",
+		 "DS:site9:GAUGE:160000:0:1000",
 		 'RRA:AVERAGE:0.5:1:370',
-		 'RRA:AVERAGE:0.5:7:370',
-		 'RRA:MIN:0.5:288:797'
+		 'RRA:AVERAGE:0.5:7:288',
+		 'RRA:MIN:0.5:1:370',
+		 'RRA:MIN:0.5:7:288',
 		 );
       $ERR=RRDs::error;
       die "ERROR while creating $datafile: $ERR\n" if $ERR;
@@ -87,6 +89,42 @@ RRDs::update($datafile,
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
 
+# set up colorspace
+my $drawn = 0;
+my @colors = qw(
+		00F0F0
+		F0F040
+		F000F0
+		00F000
+		0000F0
+		000000
+		AAAAAA
+		F00000
+		F09000
+		C0C0C0
+		009000
+		FF0000
+		000090
+		900090
+		009090
+		909000
+		E00070
+		2020F0
+		FF00FF
+	       );
+
+# draw which values?
+my (@def, @line);
+foreach my $site (@sites) {
+    if (defined $site) {
+	my $color = $colors[$drawn];
+	push @def, sprintf 'DEF:site%d_=%s:site%d:AVERAGE', $drawn, $datafile, $drawn;
+	push @def, sprintf 'CDEF:site%d=0,site%d_,-', $drawn, $drawn;
+	push @line, sprintf 'LINE2:site%d#%s:%s', $drawn, $color, $site;
+	$drawn ++;
+    }
+}
+
 # draw pictures
 foreach ( [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
@@ -94,15 +132,24 @@ foreach ( [604800, "week"], [31536000, "year"] ) {
 		"--start=-${time}",
 		'--lazy',
 		'--imgformat=PNG',
+		'--upper-limit=0',
+		'--lower-limit=-1000',
 		"--title=${hostname} usenet top1000 stats (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		
-		"DEF:submit_avg=${datafile}:submitted:AVERAGE",
-		"DEF:submit_min=${datafile}:submitted:MIN",
+#		"DEF:submit_avg_=${datafile}:submitted:AVERAGE",
+#		"DEF:submit_min_=${datafile}:submitted:MIN",
+#		'CDEF:submit_avg=submit_avg_,10,/',
+#		'CDEF:submit_min=submit_min_,10,/',
 
-		'LINE2:submit_min#FFD0D0:min submit',
-		'LINE1:submit_avg#D0FFD0:avg submit',
+		@def,
+
+#		'LINE2:submit_min#FFD0D0:min submit',
+#		'LINE1:submit_avg#D0FFD0:avg submit',
+
+		@line,
+
 		'COMMENT:\n',
 		);
     $ERR=RRDs::error;
