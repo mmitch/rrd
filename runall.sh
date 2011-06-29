@@ -16,8 +16,8 @@ LANG=C
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/diskfree.pl 2> /dev/null
 
-/bin/sleep $RRD_WAIT
-/home/mitch/rrd/ups.pl
+#/bin/sleep $RRD_WAIT
+#/home/mitch/rrd/ups.pl
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/cpu.pl
 /bin/sleep $RRD_WAIT
