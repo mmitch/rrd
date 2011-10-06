@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # RRD script to display firewall statistics
-# 2003 (c) by Christian Garbs <mitch@cgarbs.de>
+# 2003,2011 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -13,6 +13,7 @@ use RRDs;
 # parse configuration file
 my %conf;
 eval(`cat ~/.rrd-conf.pl`);
+die $@ if $@;
 
 # set variables
 my $datafile   = "$conf{DBPATH}/firewall.rrd";
