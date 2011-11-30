@@ -8,6 +8,7 @@ use warnings;
 # parse configuration file
 my %conf;
 eval(`cat ~/.rrd-conf.pl`);
+die $@ if $@;
 
 # set variables
 my $path     = $conf{OUTPATH};

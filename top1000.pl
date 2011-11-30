@@ -15,6 +15,7 @@ use LWP::Simple;
 # parse configuration file
 my %conf;
 eval(`cat ~/.rrd-conf.pl`);
+die $@ if $@;
 
 # set variables
 my $datafile = "$conf{DBPATH}/top1000.rrd";

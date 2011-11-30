@@ -14,6 +14,7 @@ use RRDs;
 # parse configuration file
 my %conf;
 eval(`cat ~/.rrd-conf.pl`);
+die $@ if $@;
 
 # set variables
 my $datafile = "$conf{DBPATH}/unbound.rrd";
