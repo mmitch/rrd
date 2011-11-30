@@ -26,8 +26,8 @@ if (@sites < 10) {
     $sites[9] = undef;
 }
 
-my $url_participants = 'http://www.top1000.org/participants.current.txt';
-my $url_top1000 =      'http://www.top1000.org/top1000.current.txt';
+my $url_participants = 'http://top1000.anthologeek.net/participants.current.txt';
+my $url_top1000 =      'http://top1000.anthologeek.net/top1000.current.txt';
 
 # global error variable
 my $ERR;
