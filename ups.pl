@@ -46,25 +46,55 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-# get UPS status
-my $infile = '/etc/belkin/belkin.q1';
-open UPS, '<', $infile or die "can't read from `$infile': $!\n";
-my $line = <UPS>;
-$line =~ tr/0-9 .//dc;
-my @field = split /\s+/, $line;
-close UPS or die "can't close `$infile': $!\n";
 
+## old and annoying BELKIN tool
+# get UPS status
+#my $infile = '/etc/belkin/belkin.q1';
+#open UPS, '<', $infile or die "can't read from `$infile': $!\n";
+#my $line = <UPS>;
+#$line =~ tr/0-9 .//dc;
+#my @field = split /\s+/, $line;
+#close UPS or die "can't close `$infile': $!\n";
+#
 # set values
+#my %status = (
+#	      'battery.charge'  => $field[6]*100/32,
+#	      'battery.voltage' => $field[5],
+#	      'input.frequency' => $field[4],
+#	      'input.voltage'   => $field[0],
+#	      'output.voltage'  => $field[1],
+#	      'output.frequency'=> 0,
+#	      'ups.load'        => $field[3],
+#	      'ups.status'      => $field[7] eq '00001000' ? 1 : 0
+#	      );
+
+
+
+## all hail nut!
+# set empty values
 my %status = (
-	      'battery.charge'  => $field[6]*100/32,
-	      'battery.voltage' => $field[5],
-	      'input.frequency' => $field[4],
-	      'input.voltage'   => $field[0],
-	      'output.voltage'  => $field[1],
-	      'output.frequency'=> 0,
-	      'ups.load'        => $field[3],
-	      'ups.status'      => $field[7] eq '00001000' ? 1 : 0
-	      );
+    'battery.charge'   => 0,
+    'battery.voltage'  => 0,
+    'input.frequency'  => 0,
+    'input.voltage'    => 0,
+    'output.voltage'   => 0,
+    'output.frequency' => 0,
+    'ups.load'         => 0,
+    'ups.status'       => 0
+    );
+
+
+# get UPS status
+open UPS, 'upsc eaton@localhost|' or die "can't read from `upsc eaton\@localhost': $!\n";
+while (my $line = <UPS>) {
+    chomp $line;
+    my ($key, $value) = split /: /, $line, 2;
+    $status{$key} = $value;
+}
+close UPS or die "can't close `upsc mustek\@localhost|': $!\n";
+
+$status{'ups.status'} = ($status{'ups.status'} =~ /^OL/) ? 1 : 0;
+
 
 # update database
 RRDs::update($datafile,
