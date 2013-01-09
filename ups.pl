@@ -29,11 +29,11 @@ chomp $hostname;
 # generate database if absent
 if ( ! -e $datafile ) {
     RRDs::create($datafile,
-		 "DS:utility:GAUGE:600:0:500",
-		 "DS:outvolt:GAUGE:600:0:500",
+		 "DS:utility:GAUGE:600:1:500",
+		 "DS:outvolt:GAUGE:600:1:500",
 		 "DS:battpct:GAUGE:600:0:110",
-		 "DS:battvolt:GAUGE:600:0:500",
-		 "DS:acfreq:GAUGE:600:0:100",
+		 "DS:battvolt:GAUGE:600:1:500",
+		 "DS:acfreq:GAUGE:600:1:100",
 		 "DS:loadpct:GAUGE:600:0:500",
 		 "DS:online:GAUGE:600:0:1",
 		 "RRA:AVERAGE:0.5:1:600",
