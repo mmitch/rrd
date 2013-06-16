@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # RRD script to display io stats
-# 2003,2011 (c) by Christian Garbs <mitch@cgarbs.de>
+# 2003,2011,2013 (c) by Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -54,22 +54,22 @@ chomp $hostname;
 if ( ! -e $datafile ) {
     # max 100% for each value
     RRDs::create($datafile,
-		 "DS:io0_read:COUNTER:600:0:250000",
-		 "DS:io0_write:COUNTER:600:0:250000",
-		 "DS:io1_read:COUNTER:600:0:250000",
-		 "DS:io1_write:COUNTER:600:0:250000",
-		 "DS:io2_read:COUNTER:600:0:250000",
-		 "DS:io2_write:COUNTER:600:0:250000",
-		 "DS:io3_read:COUNTER:600:0:250000",
-		 "DS:io3_write:COUNTER:600:0:250000",
-		 "DS:io4_read:COUNTER:600:0:250000",
-		 "DS:io4_write:COUNTER:600:0:250000",
-		 "DS:io5_read:COUNTER:600:0:250000",
-		 "DS:io5_write:COUNTER:600:0:250000",
-		 "DS:io6_read:COUNTER:600:0:250000",
-		 "DS:io6_write:COUNTER:600:0:250000",
-		 "DS:io7_read:COUNTER:600:0:250000",
-		 "DS:io7_write:COUNTER:600:0:250000",
+		 "DS:io0_read:COUNTER:600:0:2500000",
+		 "DS:io0_write:COUNTER:600:0:2500000",
+		 "DS:io1_read:COUNTER:600:0:2500000",
+		 "DS:io1_write:COUNTER:600:0:2500000",
+		 "DS:io2_read:COUNTER:600:0:2500000",
+		 "DS:io2_write:COUNTER:600:0:2500000",
+		 "DS:io3_read:COUNTER:600:0:2500000",
+		 "DS:io3_write:COUNTER:600:0:2500000",
+		 "DS:io4_read:COUNTER:600:0:2500000",
+		 "DS:io4_write:COUNTER:600:0:2500000",
+		 "DS:io5_read:COUNTER:600:0:2500000",
+		 "DS:io5_write:COUNTER:600:0:2500000",
+		 "DS:io6_read:COUNTER:600:0:2500000",
+		 "DS:io6_write:COUNTER:600:0:2500000",
+		 "DS:io7_read:COUNTER:600:0:2500000",
+		 "DS:io7_write:COUNTER:600:0:2500000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
