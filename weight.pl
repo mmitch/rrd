@@ -41,13 +41,13 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-sub put($$)
+sub put($$$)
 {
-    my ($time, $val) = (@_);
+    my ($time, $val, $lastline) = (@_);
     $val /= $FACTOR;
     RRDs::update($datafile, "$time:$val");
     $ERR=RRDs::error;
-    die "ERROR while updating $datafile: $ERR\n" if $ERR;
+    die "ERROR while updating `$datafile' with `$time:$val' from `$lastline' in line $.: `$ERR'\n" if $ERR;
     
 }
 
@@ -63,13 +63,15 @@ while (my $line = <>) {
     my $time = timelocal(0, 0, 6 + 12 * ((lc substr( $date, 8, 1 )) eq 'b'), substr($date, 6, 2), substr($date, 4, 2)-1, substr($date, 0, 4));
     
     if (defined $lasttime) {
+
+	die "ERROR: duplicate time encountered in `$line' line $.\n" if ($time == $lasttime);
 	
 	my $quot = ($val - $lastval) / ($time - $lasttime);
 	
 	my $t = $lasttime + $STEP;
 	while ($t <= $time) {
 	    my $v = $lastval + $quot * ($t - $lasttime);
-	    put($t, $v);
+	    put($t, $v, $line);
 	    $t += $STEP;
 	}
 	
@@ -77,7 +79,7 @@ while (my $line = <>) {
 	if ($time <= $lastupdate) {
 	    next;
 	}
-	put($time, $val);
+	put($time, $val, $line);
     }
     
     $lasttime = $time;
