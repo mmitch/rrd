@@ -22,7 +22,7 @@ lockfile -r 0 -l 3600 $LOCKFILE || exit
 /home/mitch/rrd/diskfree.pl 2> /dev/null
 
 /bin/sleep $RRD_WAIT
-/home/mitch/rrd/ups.pl
+/home/mitch/rrd/ups.pl 2>&1 | fgrep -v 'Init SSL without certificate database'
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/cpu.pl
 /bin/sleep $RRD_WAIT
