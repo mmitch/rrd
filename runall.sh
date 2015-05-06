@@ -1,6 +1,11 @@
 #!/bin/sh
 RRD_WAIT=${RRD_WAIT:-17}
 LANG=C
+export LANG
+
+# lockfile handling - ensure only one parallel run
+LOCKFILE=/var/tmp/rrd_runall.lock
+lockfile -r 0 -l 3600 $LOCKFILE || exit
 
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/network.pl
@@ -39,3 +44,6 @@ LANG=C
 
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/roundtrip.pl
+
+# remove lockfile
+rm -f $LOCKFILE
