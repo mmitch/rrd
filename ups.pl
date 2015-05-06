@@ -85,13 +85,14 @@ my %status = (
 
 
 # get UPS status
-open UPS, 'upsc eaton@localhost|' or die "can't read from `upsc eaton\@localhost': $!\n";
+my $cmd = 'upsc eaton@localhost';
+open UPS, '-|', $cmd or die "can't read from `$cmd': $!\n";
 while (my $line = <UPS>) {
     chomp $line;
     my ($key, $value) = split /: /, $line, 2;
     $status{$key} = $value;
 }
-close UPS or die "can't close `upsc mustek\@localhost|': $!\n";
+close UPS or die "can't close `$cmd': $!\n";
 
 $status{'ups.status'} = ($status{'ups.status'} =~ /^OL/) ? 1 : 0;
 
