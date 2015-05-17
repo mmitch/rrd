@@ -38,6 +38,9 @@ for my $cpu ( qw(0 1) ) {
 		     "DS:iowait:COUNTER:600:0:101",
 		     "DS:hw_irq:COUNTER:600:0:101",
 		     "DS:sw_irq:COUNTER:600:0:101",
+		     "DS:steal:COUNTER:600:0:101",
+		     "DS:guest:COUNTER:600:0:101",
+		     "DS:guest_nice:COUNTER:600:0:101",
 		     "RRA:AVERAGE:0.5:1:600",
 		     "RRA:AVERAGE:0.5:6:700",
 		     "RRA:AVERAGE:0.5:24:775",
@@ -57,14 +60,17 @@ for my $cpu ( qw(0 1) ) {
     close PROC or die "can't close /proc/stat: $!\n";
 
     chomp $cpuline;
-    my (undef, $user, $nice, $system, $idle, $iowait, $hw_irq, $sw_irq) = split /\s+/, $cpuline;
-    $iowait = 0 unless defined $iowait;
-    $hw_irq = 0 unless defined $hw_irq;
-    $sw_irq = 0 unless defined $sw_irq;
+    my (undef, $user, $nice, $system, $idle, $iowait, $hw_irq, $sw_irq, $steal, $guest, $guest_nice) = split /\s+/, $cpuline;
+    $iowait     = 0 unless defined $iowait;
+    $hw_irq     = 0 unless defined $hw_irq;
+    $sw_irq     = 0 unless defined $sw_irq;
+    $steal      = 0 unless defined $steal;
+    $guest      = 0 unless defined $guest;
+    $guest_nice = 0 unless defined $guest_nice;
     
     # update database
     RRDs::update($datafile[$cpu],
-		 "N:${user}:${nice}:${system}:${idle}:${iowait}:${hw_irq}:${sw_irq}"
+		 "N:${user}:${nice}:${system}:${idle}:${iowait}:${hw_irq}:${sw_irq}:${steal}:${guest}:${guest_nice}"
 		 );
     $ERR=RRDs::error;
     die "ERROR while updating $datafile[$cpu]: $ERR\n" if $ERR;
@@ -93,6 +99,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:iowait0=${datafile[0]}:iowait:AVERAGE",
 		"DEF:hw_irq0=${datafile[0]}:hw_irq:AVERAGE",
 		"DEF:sw_irq0=${datafile[0]}:sw_irq:AVERAGE",
+		"DEF:steal0=${datafile[0]}:steal:AVERAGE",
+		"DEF:guest0=${datafile[0]}:guest:AVERAGE",
+		"DEF:guest_nice0=${datafile[0]}:guest_nice:AVERAGE",
 
 		"DEF:user1a=${datafile[1]}:user:AVERAGE",
 		"DEF:nice1a=${datafile[1]}:nice:AVERAGE",
@@ -101,6 +110,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"DEF:iowait1a=${datafile[1]}:iowait:AVERAGE",
 		"DEF:hw_irq1a=${datafile[1]}:hw_irq:AVERAGE",
 		"DEF:sw_irq1a=${datafile[1]}:sw_irq:AVERAGE",
+		"DEF:steal1a=${datafile[1]}:steal:AVERAGE",
+		"DEF:guest1a=${datafile[1]}:guest:AVERAGE",
+		"DEF:guest_nice1a=${datafile[1]}:guest_nice:AVERAGE",
 
 		'CDEF:user1=0,user1a,-',
 		'CDEF:nice1=0,nice1a,-',
@@ -109,15 +121,24 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'CDEF:iowait1=0,iowait1a,-',
 		'CDEF:hw_irq1=0,hw_irq1a,-',
 		'CDEF:sw_irq1=0,sw_irq1a,-',
+		'CDEF:steal1=0,steal1a,-',
+		'CDEF:guest1=0,guest1a,-',
+		'CDEF:guest_nice1=0,guest_nice1a,-',
 
-		'AREA:hw_irq0#000000:hw_irq',
+		'AREA:steal0#FF00FF:steal',
+		'STACK:guest0#2020F0:guest',
+		'STACK:guest_nice0#009090:guest_nice',
+		'STACK:hw_irq0#000000:hw_irq',
 		'STACK:sw_irq0#AAAAAA:sw_irq',
 		'STACK:iowait0#E00070:iowait',
 		'STACK:system0#2020F0:system',
 		'STACK:user0#F0A000:user',
 		'STACK:nice0#E0E000:nice',
 		'STACK:idle0#60D050:idle',
-		'AREA:hw_irq1#000000',
+		'AREA:steal1#FF00FF',
+		'STACK:guest1#2020F0',
+		'STACK:guest_nice1#009090',
+		'STACK:hw_irq1#000000',
 		'STACK:sw_irq1#AAAAAA',
 		'STACK:iowait1#E00070',
 		'STACK:system1#2020F0',
