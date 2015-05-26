@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
-# RRD script to display system load
-# 2007,2011 (c) by Christian Garbs <mitch@cgarbs.de>
+# RRD script to display bogofilter spam statistics
+# Copyright (C) 2007,2011,2015  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -36,7 +36,6 @@ chomp $hostname;
 
 # generate database if absent
 if ( ! -e $datafile ) {
-    # max 70000 for all values
     RRDs::create($datafile,
 		 "--step=60",
 		 "DS:ham:ABSOLUTE:600:0:U",
