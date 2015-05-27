@@ -177,6 +177,13 @@ sub write_to_file($$) {
 # global error variable
 my $ERR;
 
+# get graph minimum time ($DETAIL_TIME in rrd_runall.sh)
+my $MINTIME = 1;
+if (defined $ARGV[0])
+{
+    $MINTIME = shift @ARGV;
+}
+
 # whoami?
 my $hostname = `/bin/hostname`;
 chomp $hostname;
@@ -229,6 +236,7 @@ die "ERROR while adding $datafile $connecttime: $ERR\n" if $ERR;
 # draw pictures (connecttime)
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
+    next if $time < $MINTIME;
     RRDs::graph($picbase . $scale . ".png",
                 "--start=-${time}",
                 '--lazy',
@@ -257,6 +265,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 # draw pictures (I/O)
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
+    next if $time < $MINTIME;
     RRDs::graph($picbase2 . $scale . ".png",
 		"--start=-${time}",
 		'--lazy',

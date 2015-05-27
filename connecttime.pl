@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
 # RRD script to display io stats
-# 2007,2011 (c) by Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2007, 2011, 2015  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL.
 #
 # This script should be run every 5 minutes.
@@ -22,6 +22,13 @@ my $onlinefile = "/var/lock/online";
 
 # global error variable
 my $ERR;
+
+# get graph minimum time ($DETAIL_TIME in rrd_runall.sh)
+my $MINTIME = 1;
+if (defined $ARGV[0])
+{
+    $MINTIME = shift @ARGV;
+}
 
 # whoami?
 my $hostname = `/bin/hostname`;
@@ -59,6 +66,7 @@ die "ERROR while adding $datafile $connecttime: $ERR\n" if $ERR;
 # draw pictures
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
+    next if $time < $MINTIME;
     RRDs::graph($picbase . $scale . ".png",
                 "--start=-${time}",
                 '--lazy',

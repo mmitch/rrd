@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #
 # RRD script to display unbound statistics
-# 2011 Copyright (C)  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2011, 2015  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This script should be run every 5 minutes.
@@ -22,6 +22,13 @@ my $picbase  = "$conf{OUTPATH}/unbound-";
 
 # global error variable
 my $ERR;
+
+# get graph minimum time ($DETAIL_TIME in rrd_runall.sh)
+my $MINTIME = 1;
+if (defined $ARGV[0])
+{
+    $MINTIME = shift @ARGV;
+}
 
 # whoami?
 my $hostname = `/bin/hostname`;
@@ -74,6 +81,7 @@ die "ERROR while updating $datafile: $ERR\n" if $ERR;
 # draw pictures
 foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] ) {
     my ($time, $scale) = @{$_};
+    next if $time < $MINTIME;
     RRDs::graph($picbase . $scale . ".png",
 		"--start=-${time}",
 		'--lazy',

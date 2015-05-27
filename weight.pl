@@ -1,4 +1,12 @@
 #!/usr/bin/perl -w
+#
+# RRD script to display operator weight
+# Copyright (C) 2015  Christian Garbs <mitch@cgarbs.de>
+# Licensed under GNU GPL.
+#
+# This is super special and not like the others.
+# It's totally nuts and thus not part of runall.sh
+#
 use strict;
 use Time::Local;
 
@@ -15,6 +23,13 @@ my $picbase  = "$conf{OUTPATH}/weight-";
 
 # global error variable
 my $ERR;
+
+# get graph minimum time ($DETAIL_TIME in rrd_runall.sh)
+my $MINTIME = 1;
+if (defined $ARGV[0])
+{
+    $MINTIME = shift @ARGV;
+}
 
 # whoami?
 my $hostname = `/bin/hostname`;
@@ -98,6 +113,7 @@ while (my $line = <>) {
 # draw pictures
 foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] ) {
     my ($time, $scale) = @{$_};
+    next if $time < $MINTIME;
     RRDs::graph($picbase . $scale . '.png',
 		"--start=-$time",
 		'--lazy',
