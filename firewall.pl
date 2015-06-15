@@ -50,7 +50,7 @@ if ( ! -e $datafile ) {
 
 # get data
 open REJECTS, "$ipt_script |" or die "can't open $ipt_script: $!\n";
-my ($in_pkt, $in_byte, $out_pkt, $out_byte);
+my ($in_pkt, $in_byte, $out_pkt, $out_byte) = (0, 0, 0, 0);
 while (my $line = <REJECTS>) {
     chomp $line;
     my @line = split /\s+/, $line, 4;
