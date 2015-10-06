@@ -63,7 +63,7 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
                 "--start=-${time}",
                 '--lazy',
                 '--imgformat=PNG',
-                "--title=${hostname} ppp status (last $scale)",
+                "--title=${hostname} time since last connect/IP change (last $scale)",
                 '--base=1024',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
