@@ -20,16 +20,7 @@ my $datafile = "$conf{DBPATH}/io.rrd";
 my $picbase  = "$conf{OUTPATH}/io-";
 
 # watch these paths
-my @dev = (
-	   "sda",
-	   "sdb",
-	   "sdc",
-	   "",
-	   "",
-	   "",
-	   "",
-	   "",
-	   );
+my @dev = @{$conf{'IO_DEVICES'}};
 # 2.4: my @dev = (
 #	   "8,0",
 #	   "",
