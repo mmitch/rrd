@@ -115,6 +115,7 @@ my @colors = qw(
 		E00070
 		2020F0
 		FF00FF
+		00FFFF
 	       );
 
 # draw which values?
