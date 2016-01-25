@@ -73,7 +73,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--slope-mode',
-		'--alt-autoscale',
 
 		"DEF:load1=${datafile}:load1:AVERAGE",
 		"DEF:load2=${datafile}:load2:AVERAGE",
