@@ -29,7 +29,7 @@ if ( ! -e $datafile ) {
     RRDs::create($datafile,
 		 '-b 1188662000',
 		 '-s ' . $STEP,
-		 'DS:weight:GAUGE:'.($STEP*2).':0:200',
+		 'DS:weight:GAUGE:'.($STEP*2).':80:120',
 		 'RRA:AVERAGE:0.5:1:750',   # roughly more than a year on half-a-day-base
 		 'RRA:AVERAGE:0.5:2:1500',  # roughly four years on a daily base
 		 'RRA:AVERAGE:0.5:14:550',  # roughly ten years on a weekly base
@@ -99,8 +99,8 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--alt-autoscale',
 		'--slope-mode',
-#                '--lower-limit=0',
-#                '--upper-limit=100',
+#		'--lower-limit=80',
+#                '--upper-limit=120',
 
 		"DEF:weight=$datafile:weight:AVERAGE",
 		'LINE2:weight#0000D0:mass [kg]',
