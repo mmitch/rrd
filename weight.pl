@@ -113,10 +113,14 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"DEF:weight=$datafile:weight:AVERAGE",
 		"DEF:w_min=$datafile:weight:MIN",
 		"DEF:w_max=$datafile:weight:MAX",
+		"DEF:oldweight=$datafile:weight:AVERAGE:end=now-${time}s:start=end-${time}s",
+		"SHIFT:oldweight:$time",
 		'CDEF:w_stack=w_max,w_min,-',
+
+		'LINE1:oldweight#BBBBBB',
 		'AREA:w_min#00000000',
 		'STACK:w_stack#FF88FF',
-		'LINE1:weight#0000D0:mass [kg]',
+		'LINE2:weight#0000D0:mass [kg]',
 
 		'COMMENT:\n',
 		'COMMENT: ',
