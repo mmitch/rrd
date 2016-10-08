@@ -34,6 +34,14 @@ if ( ! -e $datafile ) {
 		 'RRA:AVERAGE:0.5:2:1500',  # roughly four years on a daily base
 		 'RRA:AVERAGE:0.5:14:550',  # roughly ten years on a weekly base
 		 'RRA:AVERAGE:0.5:56:1300', # roughly 100 years on a monthly base
+		 'RRA:MIN:0.5:1:750',   # roughly more than a year on half-a-day-base
+		 'RRA:MIN:0.5:2:1500',  # roughly four years on a daily base
+		 'RRA:MIN:0.5:14:550',  # roughly ten years on a weekly base
+		 'RRA:MIN:0.5:56:1300', # roughly 100 years on a monthly base
+		 'RRA:MAX:0.5:1:750',   # roughly more than a year on half-a-day-base
+		 'RRA:MAX:0.5:2:1500',  # roughly four years on a daily base
+		 'RRA:MAX:0.5:14:550',  # roughly ten years on a weekly base
+		 'RRA:MAX:0.5:56:1300', # roughly 100 years on a monthly base
 		 );
 
       $ERR=RRDs::error;
@@ -100,10 +108,15 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		'--alt-autoscale',
 		'--slope-mode',
 #		'--lower-limit=80',
-#                '--upper-limit=120',
+#               '--upper-limit=120',
 
 		"DEF:weight=$datafile:weight:AVERAGE",
-		'LINE2:weight#0000D0:mass [kg]',
+		"DEF:w_min=$datafile:weight:MIN",
+		"DEF:w_max=$datafile:weight:MAX",
+		'CDEF:w_stack=w_max,w_min,-',
+		'AREA:w_min#00000000',
+		'STACK:w_stack#FF88FF',
+		'LINE1:weight#0000D0:mass [kg]',
 
 		'COMMENT:\n',
 		'COMMENT: ',
