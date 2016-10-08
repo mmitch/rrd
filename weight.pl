@@ -115,11 +115,13 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"DEF:w_max=$datafile:weight:MAX",
 		"DEF:oldweight=$datafile:weight:AVERAGE:end=now-${time}s:start=end-${time}s",
 		"SHIFT:oldweight:$time",
+#		'CDEF:smoothed=weight,'.($time/20).',TREND',
 		'CDEF:w_stack=w_max,w_min,-',
 
 		'LINE1:oldweight#BBBBBB',
 		'AREA:w_min#00000000',
 		'STACK:w_stack#FF88FF',
+#		'LINE1:smoothed#008800',
 		'LINE2:weight#0000D0:mass [kg]',
 
 		'COMMENT:\n',
