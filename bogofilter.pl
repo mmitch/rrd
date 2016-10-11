@@ -69,6 +69,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--slope-mode',
+		'--logarithmic',
+		'--units=si',
 
 		"DEF:ham=${datafile}:ham:AVERAGE",
 		"DEF:unsure=${datafile}:unsure:AVERAGE",
