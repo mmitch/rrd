@@ -91,6 +91,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
 		"--lower-limit=-1",
+#		'--logarithmic',
+#		'--units=si',
 		
 		"DEF:hit=${datafile}:hit:AVERAGE",
 		"DEF:miss_o=${datafile}:miss:AVERAGE",

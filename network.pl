@@ -95,7 +95,9 @@ foreach ( @devices ) {
 		    "--title=${hostname} ${device} network traffic (last $scale)",
 		    "--width=$conf{GRAPH_WIDTH}",
 		    "--height=$conf{GRAPH_HEIGHT}",
-		    "--alt-autoscale",
+		    '--alt-autoscale',
+#		    '--logarithmic',
+#		    '--units=si',
 
 		    "DEF:input=${datafile}:input:AVERAGE",
 		    "DEF:outputx=${datafile}:output:AVERAGE",
