@@ -107,6 +107,7 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 		"--height=$conf{GRAPH_HEIGHT}",
 		'--alt-autoscale',
 		'--slope-mode',
+		'--alt-y-grid',
 #		'--lower-limit=80',
 #               '--upper-limit=120',
 
