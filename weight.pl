@@ -111,10 +111,18 @@ while (my $line = <>) {
 }
 
 # draw pictures
-foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] ) {
-    my ($time, $scale) = @{$_};
+my $years_back = 5;
+
+my @VLINES;
+my $current_year = (localtime(time))[5];
+for (my $i = 0; $i < $years_back; $i++) {
+    push @VLINES, 'VRULE:' . timelocal(0, 0, 0, 1, 0, $current_year - $i) . '#000000';
+}
+
+foreach ( [86400, 'hour', 'day'], [604800, 'day', 'week'], [31536000, 'week', 'year'], [$years_back * 31536000, 'year', $years_back . ' years'] ) {
+    my ($time, $filescale, $scale) = @{$_};
     next if $time < $MINTIME;
-    RRDs::graph($picbase . $scale . '.png',
+    RRDs::graph($picbase . $filescale . '.png',
 		"--start=-$time",
 		'--lazy',
 		'--imgformat=PNG',
@@ -135,11 +143,13 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 #		'CDEF:smoothed=weight,'.($time/20).',TREND',
 		'CDEF:w_stack=w_max,w_min,-',
 
-		'LINE1:oldweight#BBBBBB',
+		'LINE1:oldweight#BBBBBB:mass [kg] previous era',
 		'AREA:w_min#00000000',
 		'STACK:w_stack#FF88FF',
 #		'LINE1:smoothed#008800',
-		'LINE2:weight#0000D0:mass [kg]',
+		'LINE1:weight#0000D0:mass [kg]',
+
+		@VLINES,
 
 		'COMMENT:\n',
 		'COMMENT: ',
