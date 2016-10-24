@@ -69,9 +69,14 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--height=$conf{GRAPH_HEIGHT}",
 
                 "DEF:seconds=${datafile}:connecttime:AVERAGE",
+		"DEF:oldseconds=${datafile}:connecttime:AVERAGE:end=now-${time}s:start=end-${time}s",
+
+		"SHIFT:oldseconds:$time",
 		'CDEF:hours=seconds,3600,/',
+		'CDEF:oldhours=oldseconds,3600,/',
 
                 'AREA:hours#00D000:connection time [h]',
+                "LINE:oldhours#D0D0D0:connection time [h] previous $scale",
 		'COMMENT:\n',
 		'COMMENT:\n',
                 );
