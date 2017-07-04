@@ -36,7 +36,8 @@ lockfile -r 0 -l 3600 $LOCKFILE || exit
 /home/mitch/rrd/firewall.pl
 
 /bin/sleep $RRD_WAIT
-/home/mitch/rrd/connecttime.pl
+# /home/mitch/rrd/connecttime.pl -- superseded by fritz.pl
+/home/mitch/rrd/fritz.pl
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/bogofilter.pl
 /bin/sleep $RRD_WAIT
