@@ -23,6 +23,12 @@ my $picbase  = "$conf{OUTPATH}/connecttime-"; # supersedes old 'connecttime.pl' 
 my $picbase2 = "$conf{OUTPATH}/fritz-";
 my $ipfile   = "$conf{FRITZ_IP_FILE}";
 
+# global error variable
+my $ERR;
+
+# global Net::Fritz::Device instance
+my $fritz;
+
 ############################### subroutines ###############################
 
 sub fritz_connect() {
@@ -58,9 +64,7 @@ sub fritz_connect() {
     return $device;
 }
 
-sub get_link_type($) {
-    my ($fritz) = @_;
-
+sub get_link_type() {
     my $dsl_link_info = $fritz->call(':WANDSLLinkConfig:', 'GetDSLLinkInfo');
     
     return 0 if $dsl_link_info->error;
@@ -69,10 +73,8 @@ sub get_link_type($) {
     return $dsl_link_info->data->{'NewLinkType'};
 }
 
-sub get_wan_type($) {
-    my ($fritz) = @_;
-
-    my $link_type = get_link_type($fritz);
+sub get_wan_type() {
+    my $link_type = get_link_type();
     return 0 unless $link_type;
 
     my $service_name = {
@@ -85,8 +87,8 @@ sub get_wan_type($) {
     return $service_name;
 }
 
-sub get_external_ip($$) {
-    my ($fritz, $wan_type) = @_;
+sub get_external_ip($) {
+    my ($wan_type) = @_;
 
     my $external_ip = $fritz->call($wan_type, 'GetExternalIPAddress');
 
@@ -95,8 +97,8 @@ sub get_external_ip($$) {
     return $external_ip->data->{'NewExternalIPAddress'};
 }
 
-sub get_uptime($$) {
-    my ($fritz, $wan_type) = @_;
+sub get_uptime($) {
+    my ($wan_type) = @_;
 
     my $uptime = $fritz->call($wan_type, 'GetStatusInfo');
 
@@ -105,9 +107,7 @@ sub get_uptime($$) {
     return $uptime->data->{'NewUptime'};
 }
 
-sub get_bytes_in($) {
-    my ($fritz) = @_;
-
+sub get_bytes_in() {
     my $response = $fritz->call(':WANCommonInterfaceConfig:', 'GetTotalBytesReceived');
 
     return 0 if $response->error;
@@ -115,9 +115,7 @@ sub get_bytes_in($) {
     return $response->data->{'NewTotalBytesReceived'};
 }
 
-sub get_bytes_out($) {
-    my ($fritz) = @_;
-
+sub get_bytes_out() {
     my $response = $fritz->call(':WANCommonInterfaceConfig:', 'GetTotalBytesSent');
 
     return 0 if $response->error;
@@ -134,9 +132,6 @@ sub write_to_file($$) {
 }
 
 ############################### subroutines ###############################
-
-# global error variable
-my $ERR;
 
 # get graph minimum time ($DETAIL_TIME in rrd_runall.sh)
 my $MINTIME = 1;
@@ -173,16 +168,16 @@ if (! -e $datafile ) {
 # gather data
 my ($connecttime, $input, $output) = (0, 0, 0);
 
-my $fritz = fritz_connect();
+$fritz = fritz_connect();
 
-my $wan_type = get_wan_type($fritz);
+my $wan_type = get_wan_type();
 if ($wan_type) {
-    write_to_file($ipfile, get_external_ip($fritz, $wan_type));
-    $connecttime = get_uptime($fritz, $wan_type);
+    write_to_file($ipfile, get_external_ip($wan_type));
+    $connecttime = get_uptime($wan_type);
 }
 
-$input = get_bytes_in($fritz);
-$output = get_bytes_out($fritz);
+$input = get_bytes_in();
+$output = get_bytes_out();
 
 # update database
 RRDs::update($datafile,
