@@ -10,7 +10,7 @@ use strict;
 use warnings;
 use RRDs;
 
-use Net::Fritz::Box;
+use Net::Fritz::Box 0.0.8;
 
 # parse configuration file
 my %conf;
@@ -58,51 +58,18 @@ sub fritz_connect() {
     return $device;
 }
 
-sub get_service($$) {
-    my ($fritz, $service_name) = @_;
-
-    my $service = $fritz->find_service($service_name);
-    if ($service->error) {
-	warn "service $service_name not found: " . $service->error;
-	return 0;
-    }
-
-    return $service;
-}
-
-sub call($$) {
-    my ($service, $action) = @_;
-    
-    my $response = $service->call($action);
-    if ($response->error) {
-	warn "call $action on service " . $service->serviceId . " with error: " . $response->error;
-	return 0;
-    }
-
-    return $response->data;
-}
-    
-sub call_wrapped($$$) {
-    my ($fritz, $service_name, $action) = @_;
-
-    my $service = get_service($fritz, $service_name);
-    return 0 unless $service;
-
-    return call($service, $action);
-}
-
 sub get_link_type($) {
     my ($fritz) = @_;
 
-    my $dsl_link_info = call_wrapped($fritz, ':WANDSLLinkConfig:', 'GetDSLLinkInfo');
+    my $dsl_link_info = $fritz->call(':WANDSLLinkConfig:', 'GetDSLLinkInfo');
     
-    return 0 unless $dsl_link_info;
-    return 0 unless $dsl_link_info->{'NewLinkStatus'} eq 'Up';
+    return 0 if $dsl_link_info->error;
+    return 0 unless $dsl_link_info->data->{'NewLinkStatus'} eq 'Up';
 
-    return $dsl_link_info->{'NewLinkType'};
+    return $dsl_link_info->data->{'NewLinkType'};
 }
 
-sub get_wan_connection($) {
+sub get_wan_type($) {
     my ($fritz) = @_;
 
     my $link_type = get_link_type($fritz);
@@ -115,53 +82,47 @@ sub get_wan_connection($) {
 
     return 0 unless defined $service_name;
 
-    return get_service($fritz, $service_name);
+    return $service_name;
 }
 
-sub get_external_ip($) {
-    my ($wan_connection_service) = @_;
+sub get_external_ip($$) {
+    my ($fritz, $wan_type) = @_;
 
-    my $external_ip = call($wan_connection_service, 'GetExternalIPAddress');
+    my $external_ip = $fritz->call($wan_type, 'GetExternalIPAddress');
 
-    return '' unless $external_ip;
+    return '' if $external_ip->error;
     
-    return $external_ip->{'NewExternalIPAddress'};
+    return $external_ip->data->{'NewExternalIPAddress'};
 }
 
-sub get_uptime($) {
-    my ($wan_connection_service) = @_;
+sub get_uptime($$) {
+    my ($fritz, $wan_type) = @_;
 
-    my $uptime = call($wan_connection_service, 'GetStatusInfo');
+    my $uptime = $fritz->call($wan_type, 'GetStatusInfo');
 
-    return 0 unless $uptime;
+    return 0 if $uptime->error;
     
-    return $uptime->{'NewUptime'};
-}
-
-sub get_wan_common_if($) {
-    my ($fritz) = @_;
-
-    return get_service($fritz, ':WANCommonInterfaceConfig:');
+    return $uptime->data->{'NewUptime'};
 }
 
 sub get_bytes_in($) {
-    my ($wan_common_if) = @_;
+    my ($fritz) = @_;
 
-    my $response = call($wan_common_if, 'GetTotalBytesReceived');
+    my $response = $fritz->call(':WANCommonInterfaceConfig:', 'GetTotalBytesReceived');
 
-    return 0 unless $response;
+    return 0 if $response->error;
 
-    return $response->{'NewTotalBytesReceived'};
+    return $response->data->{'NewTotalBytesReceived'};
 }
 
 sub get_bytes_out($) {
-    my ($wan_common_if) = @_;
+    my ($fritz) = @_;
 
-    my $response = call($wan_common_if, 'GetTotalBytesSent');
+    my $response = $fritz->call(':WANCommonInterfaceConfig:', 'GetTotalBytesSent');
 
-    return 0 unless $response;
+    return 0 if $response->error;
 
-    return $response->{'NewTotalBytesSent'};
+    return $response->data->{'NewTotalBytesSent'};
 }
 
 sub write_to_file($$) {
@@ -214,17 +175,14 @@ my ($connecttime, $input, $output) = (0, 0, 0);
 
 my $fritz = fritz_connect();
 
-my $wan = get_wan_connection($fritz);
-if ($wan) {
-    write_to_file($ipfile, get_external_ip($wan));
-    $connecttime = get_uptime($wan);
+my $wan_type = get_wan_type($fritz);
+if ($wan_type) {
+    write_to_file($ipfile, get_external_ip($fritz, $wan_type));
+    $connecttime = get_uptime($fritz, $wan_type);
 }
 
-my $common = get_wan_common_if($fritz);
-if ($common) {
-    $input = get_bytes_in($common);
-    $output = get_bytes_out($common);
-}
+$input = get_bytes_in($fritz);
+$output = get_bytes_out($fritz);
 
 # update database
 RRDs::update($datafile,
