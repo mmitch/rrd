@@ -185,8 +185,8 @@ chomp $hostname;
 if (! -e $datafile ) {
     RRDs::create($datafile,
 		 'DS:connecttime:GAUGE:600:0:31536000', # 1 year
-		 'DS:input:COUNTER:600:0:15000000',     # about 100MBit
-		 'DS:output:COUNTER:600:0:15000000',    # about 100MBit (symmetric)
+		 'DS:input:GAUGE:600:0:15000000',     # about 100MBit
+		 'DS:output:GAUGE:600:0:15000000',    # about 100MBit (symmetric)
 		 'RRA:AVERAGE:0.5:1:600',
 		 'RRA:AVERAGE:0.5:6:700',
 		 'RRA:AVERAGE:0.5:24:775',
