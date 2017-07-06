@@ -29,21 +29,29 @@ foreach my $time (@time) {
     my $time2 = $time . "ly";
     $time2 =~ s/yly$/ily/;
 
-    print HTML "<html><head><title>$time2 statistics</title>";
-    print HTML "<meta http-equiv=\"refresh\" content=\"150; URL=$time.html\">";
-    print HTML "</head><body>";
+    print HTML <<"EOF";
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$time2 statistics</title>
+    <meta http-equiv="refresh" content="150; URL=$time.html">
+    <meta charset="utf-8">
+  </head>
+  <body>
+EOF
+    ;
 
     insert_links($time);
 
     foreach my $rrd (@rrd) {
-	print HTML "<img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\" align=\"top\">";
+	print HTML "    <img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\" align=\"top\">\n";
     }
 
-    print HTML "<hr>";
+    print HTML "    <hr>";
 
     insert_links($time);
 
-    print HTML "<p><small>Get the scripts here:";
+    print HTML "    <p><small>Get the scripts here:";
 
     opendir SCRIPTS, $path or die "can't opendir `$path': $!";
     my %scripts_no_dups = map { $_ => 1 } ((sort grep /\.gz$/, readdir SCRIPTS), @MORE);
@@ -52,7 +60,12 @@ foreach my $time (@time) {
     }
     closedir SCRIPTS or die "can't closedir `$path': $!";
 
-    print HTML "</p></body></html>";
+    print HTML <<"EOF";
+    </small></p>
+  </body>
+</html>
+EOF
+    ;
 
     close HTML or  die "can't close `$file': $!";
 }
@@ -63,7 +76,7 @@ sub insert_links($)
 {
     my $time = shift;
     my $bar = 0;
-    print HTML "<p>[";
+    print HTML "    <p>[";
     foreach my $linktime (@time) {
 	if ($bar) {
 	    print HTML "|";
@@ -76,5 +89,5 @@ sub insert_links($)
 	    print HTML " <a href=\"$linktime.html\">$linktime</a> ";
 	}
     }
-    print HTML "]</p><hr>";
+    print HTML "]</p>\n    <hr>\n";
 }
