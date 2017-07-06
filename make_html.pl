@@ -20,7 +20,6 @@ my @MORE     = qw(make_html.gz Makefile.gz sample.conf.gz);
 
 sub insert_links($);
 
-
 foreach my $time (@time) {
     my $file = "$path/$time.html";
     print "generating `$file'\n";
@@ -36,6 +35,10 @@ foreach my $time (@time) {
     <title>$time2 statistics</title>
     <meta http-equiv="refresh" content="150; URL=$time.html">
     <meta charset="utf-8">
+    <style>
+       div.timespans { background-color: lightgray; padding: 0.5em; }
+       body { margin: 0; }
+    </style>
   </head>
   <body>
 EOF
@@ -43,11 +46,11 @@ EOF
 
     insert_links($time);
 
+    print HTML "    <div id=\"charts\">\n";
     foreach my $rrd (@rrd) {
-	print HTML "    <img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\" align=\"top\">\n";
+	print HTML "      <img src=\"$rrd-$time.png\" alt=\"$rrd (last $time)\" align=\"top\">\n";
     }
-
-    print HTML "    <hr>";
+    print HTML "    </div>\n";
 
     insert_links($time);
 
@@ -76,7 +79,7 @@ sub insert_links($)
 {
     my $time = shift;
     my $bar = 0;
-    print HTML "    <p>[";
+    print HTML "    <div class=\"timespans\">[";
     foreach my $linktime (@time) {
 	if ($bar) {
 	    print HTML "|";
@@ -89,5 +92,5 @@ sub insert_links($)
 	    print HTML " <a href=\"$linktime.html\">$linktime</a> ";
 	}
     }
-    print HTML "]</p>\n    <hr>\n";
+    print HTML "]</div>\n";
 }
