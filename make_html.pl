@@ -38,6 +38,7 @@ foreach my $time (@time) {
     <style>
        div.timespans { background-color: lightgray; padding: 0.5em; }
        body { margin: 0; }
+       footer { text-align: right; background-color: lightgray; padding: 0.5em; font-style: italic; }
     </style>
   </head>
   <body>
@@ -54,17 +55,10 @@ EOF
 
     insert_links($time);
 
-    print HTML "    <p><small>Get the scripts here:";
-
-    opendir SCRIPTS, $path or die "can't opendir `$path': $!";
-    my %scripts_no_dups = map { $_ => 1 } ((sort grep /\.gz$/, readdir SCRIPTS), @MORE);
-    foreach my $script ( sort keys %scripts_no_dups ) {
-	    print HTML " <a href=\"$script\">$script</a>";
-    }
-    closedir SCRIPTS or die "can't closedir `$path': $!";
-
     print HTML <<"EOF";
-    </small></p>
+    <footer>
+      powered by <a href="https://github.com/mmitch/rrd">mitch’s rrd scripts</a>
+    </footer>
   </body>
 </html>
 EOF
