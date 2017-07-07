@@ -58,10 +58,7 @@ sub fritz_connect() {
 	);
     $box->errorcheck;
     
-    my $device = $box->discover;
-    $device->errorcheck;
-
-    return $device;
+    return $box;
 }
 
 sub get_link_type() {
