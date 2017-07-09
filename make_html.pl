@@ -36,9 +36,10 @@ foreach my $time (@time) {
     <meta http-equiv="refresh" content="150; URL=$time.html">
     <meta charset="utf-8">
     <style>
-       div.timespans { background-color: lightgray; padding: 0.5em; }
-       body { margin: 0; background-color: #f3f3f3; }
+       div.timespans { background-color: lightgray; padding: 0.5em; font-family: sans-serif; font-size: 80%; }
+       body { margin: 0; background-color: #f3f3f3; font-family: serif; }
        footer { text-align: right; background-color: lightgray; padding: 0.5em; font-style: italic; }
+       img { margin: 3px; }
     </style>
   </head>
   <body>
