@@ -154,6 +154,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"--title=${hostname} temperature (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		'--color=BACK#f3f3f3f3',
+		'--color=SHADEA#f3f3f3f3',
+		'--color=SHADEB#f3f3f3f3',
 		'--alt-autoscale',
 		'--slope-mode',
 

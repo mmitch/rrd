@@ -90,6 +90,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--base=1024',
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		'--color=BACK#f3f3f3f3',
+		'--color=SHADEA#f3f3f3f3',
+		'--color=SHADEB#f3f3f3f3',
 		'--slope-mode',
 
 		"DEF:in_pkt=${datafile}:in_pkt:AVERAGE",

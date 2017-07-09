@@ -146,6 +146,9 @@ foreach ( [604800, "week"], [31536000, "year"] ) {
 		"--title=${hostname} usenet top1000 stats (last $scale)",
 		"--width=$conf{GRAPH_WIDTH}",
 		"--height=$conf{GRAPH_HEIGHT}",
+		'--color=BACK#f3f3f3f3',
+		'--color=SHADEA#f3f3f3f3',
+		'--color=SHADEB#f3f3f3f3',
 		
 #		"DEF:submit_avg_=${datafile}:submitted:AVERAGE",
 #		"DEF:submit_min_=${datafile}:submitted:MIN",

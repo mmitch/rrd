@@ -37,7 +37,7 @@ foreach my $time (@time) {
     <meta charset="utf-8">
     <style>
        div.timespans { background-color: lightgray; padding: 0.5em; }
-       body { margin: 0; }
+       body { margin: 0; background-color: #f3f3f3; }
        footer { text-align: right; background-color: lightgray; padding: 0.5em; font-style: italic; }
     </style>
   </head>
