@@ -112,7 +112,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'AREA:miss#F00000:avg miss',
 		'LINE1:time_median#0000F0:median time [s]',
 		'LINE1:time_avg#0000F0:avg time [-s]',
-		'COMMENT:\n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

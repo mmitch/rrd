@@ -156,8 +156,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'STACK:user1#F0A000',
 		'STACK:nice1#E0E000',
 		'STACK:idle1#60D050',
-		'COMMENT:\n',
-		'COMMENT: ',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile[0]/$datafile[1] $time: $ERR\n" if $ERR;

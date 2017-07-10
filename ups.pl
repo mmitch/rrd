@@ -152,7 +152,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 #		'LINE2:volt_bat#00C800:battery [V*2] ',
 		'LINE2:load#0000F0:load [%]    ',
 		'LINE2:batt#F00000:battery charge [%]',
-                'COMMENT:\n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

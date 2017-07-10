@@ -162,7 +162,6 @@ foreach ( [604800, "week"], [31536000, "year"] ) {
 
 		@line,
 
-		'COMMENT:\n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

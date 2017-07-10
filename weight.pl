@@ -154,8 +154,6 @@ foreach ( [86400, 'hour', 'day'], [604800, 'day', 'week'], [31536000, 'week', 'y
 
 		@VLINES,
 
-		'COMMENT:\n',
-		'COMMENT: ',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

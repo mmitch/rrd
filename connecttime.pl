@@ -88,8 +88,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 
                 'AREA:hours#00D000:connection time [h]',
                 "LINE:oldhours#D0D0D0:connection time [h] previous $scale",
-		'COMMENT:\n',
-		'COMMENT:\n',
                 );
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;

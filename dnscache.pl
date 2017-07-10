@@ -111,7 +111,6 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		"CDEF:total=0,hit,-,miss,-",
 		"CDEF:ratio=hit,total,/",
 		
-		'COMMENT:\n',
 		'AREA:hit#0000D0:avg cache hits [1/sec]',
 		'STACK:miss#D00000:avg cache misses [1/sec]',
 		'AREA:ratio#00D000:avg cache hit ratio',
