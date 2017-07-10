@@ -107,18 +107,10 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		
 		"DEF:hit=${datafile}:hit:AVERAGE",
 		"DEF:miss_o=${datafile}:miss:AVERAGE",
-#		"DEF:hit_max=${datafile}:hit:MAX",
-#		"DEF:miss_o_max=${datafile}:miss:MAX",
 		"CDEF:miss=miss_o,hit,-",
-#		"CDEF:miss_max=miss_o_max,hit_max,-",
 		"CDEF:total=0,hit,-,miss,-",
-#		"CDEF:total_max=0,hit_max,-,miss_max,-",
 		"CDEF:ratio=hit,total,/",
-#		"CDEF:ratio_max=hit_max,total_max,/",
 		
-#		'AREA:hit_max#B0B0F0:max cache hits [1/sec]',
-#		'STACK:miss_max#F0B0B0:max cache misses [1/sec]',
-#		'AREA:ratio_max#B0F0B0:max cache hit ratio',
 		'COMMENT:\n',
 		'AREA:hit#0000D0:avg cache hits [1/sec]',
 		'STACK:miss#D00000:avg cache misses [1/sec]',
