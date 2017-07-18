@@ -1,2 +1,3 @@
 *.rrd
 *~
+*.dump.xml
