@@ -84,6 +84,9 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--color=SHADEA#f3f3f3f3',
 		'--color=SHADEB#f3f3f3f3',
 		'--slope-mode',
+		'--logarithmic',
+		'--units=si',
+
 
 		"DEF:load1=${datafile}:load1:AVERAGE",
 		"DEF:load2=${datafile}:load2:AVERAGE",
@@ -97,12 +100,18 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'CDEF:procrange=procmaxx,procminx,-,100,/',
 
 		'AREA:procmin',
-		'STACK:procrange#E0E0E0',
+		'STACK:procrange#B0F0B0',
 		'AREA:load3#000099:loadavg3',
 		'LINE2:load2#0000FF:loadavg2',
 		'LINE1:load1#9999FF:loadavg1',
 		'COMMENT:\n',
-		'LINE1:procs#000000:processes/100',
+		'LINE2:procs#00D000:processes/100',
+		'GPRINT:procminx:MIN:[%.0lf',
+		'COMMENT:≤',
+		'GPRINT:procsx:AVERAGE:%.0lf',
+		'COMMENT:≤',
+		'GPRINT:procmaxx:MAX:%.0lf]',
+		'COMMENT:\n',
 		);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
