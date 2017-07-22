@@ -230,22 +230,15 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--color=SHADEA#f3f3f3f3',
 		'--color=SHADEB#f3f3f3f3',
 		'--alt-autoscale',
-#		'--logarithmic',
-#		'--units=si',
+		'--logarithmic',
+		'--units=si',
 		
 		"DEF:input=${datafile}:input:AVERAGE",
-		"DEF:outputx=${datafile}:output:AVERAGE",
-		"DEF:input_max=${datafile}:input:MAX",
-		"DEF:output_maxx=${datafile}:output:MAX",
+		"DEF:output=${datafile}:output:AVERAGE",
 		
-		'CDEF:output=0,outputx,-',
-		'CDEF:output_max=0,output_maxx,-',
-		
-		'AREA:input_max#B0F0B0:max input [bytes/sec]',
-		'AREA:output_max#B0B0F0:max output [bytes/sec]',
-		'COMMENT:\n',
-		'AREA:input#00D000:avg input [bytes/sec]',
-		'AREA:output#0000D0:avg output [bytes/sec]',
+		'AREA:input#00D000:input [bytes/sec]',
+		'AREA:output#0000D0:output [bytes/sec]',
+		'LINE1:input#00D000:',
 		'COMMENT:\n',
 	);
     $ERR=RRDs::error;

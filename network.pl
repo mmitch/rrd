@@ -107,22 +107,15 @@ foreach ( @devices ) {
 		    '--color=SHADEA#f3f3f3f3',
 		    '--color=SHADEB#f3f3f3f3',
 		    '--alt-autoscale',
-#		    '--logarithmic',
-#		    '--units=si',
+		    '--logarithmic',
+		    '--units=si',
 
 		    "DEF:input=${datafile}:input:AVERAGE",
-		    "DEF:outputx=${datafile}:output:AVERAGE",
-		    "DEF:input_max=${datafile}:input:MAX",
-		    "DEF:output_maxx=${datafile}:output:MAX",
+		    "DEF:output=${datafile}:output:AVERAGE",
 
-		    'CDEF:output=0,outputx,-',
-		    'CDEF:output_max=0,output_maxx,-',
-
-		    'AREA:input_max#B0F0B0:max input [octets/sec]',
-		    'AREA:output_max#B0B0F0:max output [octets/sec]',
-		    'COMMENT:\n',
-		    'AREA:input#00D000:avg input [octets/sec]',
-		    'AREA:output#0000D0:avg output [octets/sec]',
+		    'AREA:input#00D000:input [octets/sec]',
+		    'AREA:output#0000D0:output [octets/sec]',
+		    'LINE1:input#00D000:',
 		    'COMMENT:\n',
 		    );
 	$ERR=RRDs::error;
