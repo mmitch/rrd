@@ -112,6 +112,8 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 		'--color=SHADEA#f3f3f3f3',
 		'--color=SHADEB#f3f3f3f3',
 		'--slope-mode',
+		'--logarithmic',
+		'--units=si',
 
                 "DEF:active=${datafile}:active:AVERAGE",
                 "DEF:passive=${datafile}:passive:AVERAGE",
