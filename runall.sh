@@ -4,7 +4,7 @@
 #
 # set sleep time in seconds between calls
 # total script runtime should not exceed 5 minutes!
-RRD_WAIT=${RRD_WAIT:-17}
+RRD_WAIT=${RRD_WAIT:-16}
 
 #
 # how many graphs should be rendered?
@@ -90,6 +90,8 @@ esac
 
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/roundtrip.pl $DRAW_DETAILS
+/bin/sleep $RRD_WAIT
+/home/mitch/rrd/ntpd.pl $DRAW_DETAILS
 
 # remove lockfile
 rm -f $LOCKFILE
