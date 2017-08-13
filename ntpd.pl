@@ -173,15 +173,15 @@ foreach ( [3600, "hour"], [86400, "day"], [604800, "week"], [31536000, "year"] )
 
 		'HRULE:0#80808080',
 		'LINE:sys_offset_min',
-		'AREA:sys_offset_stack#F08080::STACK',
+		'AREA:sys_offset_stack#F0808080::STACK',
 
-#		'LINE1:sel_delay#F0F040:sel_delay',
-		'LINE1:sel_offset#00F0F0:sel_offset',
-		'LINE1:sel_jitter#F000F0:sel_jitter',
-		'LINE1:sys_jitter#0000F0:sys_jitter',
-		'LINE1:clk_jitter#000000:clk_jitter',
-		'LINE1:clk_wander#AAAAAA:clk_wander',
-		'LINE2:sys_offset#F00000:sys_offset',
+#		'LINE1:sel_delay#F0F040:sel_delay [ms]',
+		'LINE1:sel_offset#00F0F0:sel_offset [ms]',
+		'LINE1:sel_jitter#F000F0:sel_jitter [ms]',
+		'LINE1:sys_jitter#0000F0:sys_jitter [ms]',
+		'LINE1:clk_jitter#000000:clk_jitter [ms]',
+		'LINE1:clk_wander#AAAAAA:clk_wander [ms]',
+		'LINE2:sys_offset#F00000:sys_offset [ms]',
 		'COMMENT:\n',
 	);
     $ERR=RRDs::error;
