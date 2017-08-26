@@ -14,7 +14,9 @@ dependencies
 
 For starters, you will need the `rrdtool` package, `bash` (any
 `sh`-style shell might work, but currently it says `#!/usr/bin/bash`),
-the `lockfile` program, `Perl` and the `RRDs` Perl module.
+the `lockfile` program, `Perl` and the `RRDs` Perl module (not
+available separately on CPAN, comes with the `rrdtool` package;
+available as `librrds-perl` on Debian/Ubuntu).
 
 Some modules will need other things as well.  You'll see it when
 something breaks :-)
