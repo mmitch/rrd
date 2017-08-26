@@ -1,6 +1,8 @@
 my rrd statistic scripts
 ========================
 
+[![Build Status](https://travis-ci.org/mmitch/rrd.svg?branch=master)](https://travis-ci.org/mmitch/rrd)
+
 This is a collection of scripts that draw some nice graphs with
 information about your system: cpu load, network load, free disk space
 and so on.
