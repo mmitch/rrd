@@ -2,6 +2,7 @@ my rrd statistic scripts
 ========================
 
 [![Build Status](https://travis-ci.org/mmitch/rrd.svg?branch=master)](https://travis-ci.org/mmitch/rrd)
+[![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
 This is a collection of scripts that draw some nice graphs with
 information about your system: cpu load, network load, free disk space
@@ -66,3 +67,22 @@ rrdtool update PATH/TO/YOUR/load.rrd N:$( PROCS=`echo /proc/[0-9]*|wc -w|tr -d '
 
 Now wait for some time until some data has been gathered, then open
 the generated HTML pages and enjoy your graphs.
+
+license
+-------
+
+Copyright (C) 2003-2009, 2011, 2013, 2015-2017  Christian Garbs <mitch@cgarbs.de>  
+Licensed under GNU GPL v3 or later.
+
+nomd is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+nomd is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with nomd.  If not, see <http://www.gnu.org/licenses/>.
