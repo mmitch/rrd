@@ -12,6 +12,13 @@ Various scripts are included.  Most will be useful for everyone, but
 some are very special for my personal needs.  You probably won't find
 them useful.
 
+The scripts are not designed to be deployed on a server farm with
+hundreds of systems nor do they provide alerts if something goes
+wrong - they are completely passive.  There are various other tools
+for these kind of scenarios (but if you do look for a small and simple
+solution for some local nomitoring and alerting, have a look at
+https://github.com/mmitch/nomd).
+
 dependencies
 ------------
 
