@@ -101,6 +101,7 @@ while (my $line = <>) {
     chomp $line;
     next if $line =~ /^\s*$/;
     my ($date, $val) = split /\s+/, $line;
+    next unless defined $val and $val;
     $val *= $FACTOR;
     my $time = timelocal(0, 0, 6 + 12 * ((lc substr( $date, 8, 1 )) eq 'b'), substr($date, 6, 2), substr($date, 4, 2)-1, substr($date, 0, 4));
     
