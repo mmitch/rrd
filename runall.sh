@@ -40,8 +40,13 @@ export LANG
 
 #
 # lockfile handling - ensure only one parallel run
+SECONDS=0
+
 LOCKFILE=/var/tmp/rrd_runall.lock
 lockfile -r 0 -l 900 $LOCKFILE || exit
+
+LOCKFILE_AQUISITION=$SECONDS
+SECONDS=0
 
 #
 # dynamic graph details depending on time
@@ -115,3 +120,17 @@ esac
 
 # remove lockfile
 rm -f $LOCKFILE
+
+LOCKFILE_HELD=$SECONDS
+
+if [ $LOCKFILE_HELD -ge 300 ]; then
+
+    echo This run took more than 5 minutes and will probably delay future runs.
+    echo Consider reducing \$RRD_WAIT
+    echo
+    echo details:
+    echo LOCKFILE_AQUISITION: $LOCKFILE_AQUISITION seconds
+    echo LOCKFILE_HELD: $LOCKFILE_HELD seconds
+    echo RRD_WAIT: $RRD_WAIT seconds
+
+fi
