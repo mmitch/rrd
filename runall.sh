@@ -117,6 +117,8 @@ esac
 /home/mitch/rrd/roundtrip.pl $DRAW_DETAILS
 /bin/sleep $RRD_WAIT
 /home/mitch/rrd/ntpd.pl $DRAW_DETAILS
+/bin/sleep $RRD_WAIT
+/home/mitch/rrd/entropy.pl $DRAW_DETAILS
 
 # remove lockfile
 rm -f $LOCKFILE
