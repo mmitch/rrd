@@ -90,22 +90,25 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-# build reverse lookup hash and initialize array
-my %path;
+# run df for all paths
 for my $idx ( 0..19 ) {
-    $path{ $path[$idx] } = $idx;
-    $size[ $idx ] = 'U';
-}
+    my $size = 'U';
 
-# parse df
-open DF, 'df -P -l|' or die "can't open df: $!";
-while ( my $line = <DF> ) {
-    chomp $line;
-    if ($line =~ /\s(\d{1,3})% (\/.*)$/) {
-	$size[ $path{ $2 } ] = $1 if ( exists $path{ $2 } );
+    my $path = $path[$idx];
+
+    if (defined $path and $path) {
+
+	open my $df, '-|', "df -P \"$path\"" or die "can't open df for `$path': $!";
+	while ( my $line = <$df> ) {
+	    chomp $line;
+	    if ($line =~ /\s(\d{1,3})% (\/.*)$/) {
+		$size = $1 if $2 eq $path;
+	    }
+	}
+	close $df or die "can't close df for `$path': $!";
     }
+    $size[ $idx ] = $size;
 }
-close DF or die "can't close df: $!";
 
 # update database
 my $string='N';
