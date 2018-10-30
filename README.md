@@ -78,7 +78,7 @@ the generated HTML pages and enjoy your graphs.
 license
 -------
 
-Copyright (C) 2003-2009, 2011, 2013, 2015-2017  Christian Garbs <mitch@cgarbs.de>  
+Copyright (C) 2003-2009, 2011, 2013, 2015-2018  Christian Garbs <mitch@cgarbs.de>  
 Licensed under GNU GPL v3 or later.
 
 This program is free software: you can redistribute it and/or modify
