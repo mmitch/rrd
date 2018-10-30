@@ -52,7 +52,7 @@ SECONDS=0
 # dynamic graph details depending on time
 if [ $DRAW_DETAILS -eq 0 ] ; then
     printf -v MINUTE '%(%M)T' -1
-    MINUTE=$(( $MINUTE % 30 ))
+    MINUTE=$(( MINUTE % 30 ))
     if [ $MINUTE -lt 5 ] ; then
 	DRAW_DETAILS=1
     else
@@ -62,7 +62,7 @@ fi
 
 #
 # translate graph details to seconds for easier implementation in the scripts
-case DRAW_DETAILS in
+case $DRAW_DETAILS in
     1) DRAW_DETAILS=3600      # hour
        ;;
     2) DRAW_DETAILS=86400     # day
@@ -77,47 +77,47 @@ esac
 
 #
 # call the scripts and wait between calls to spread the load
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/network.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/tunnels.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/temperature.pl $DRAW_DETAILS 2> /dev/null
 
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/memory.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/load.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/diskfree.pl $DRAW_DETAILS 2> /dev/null
 
-/bin/sleep $RRD_WAIT
-#/home/mitch/rrd/ups.pl $DRAW_DETAILS 2>&1 | fgrep -v 'Init SSL without certificate database'
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
+#/home/mitch/rrd/ups.pl $DRAW_DETAILS 2>&1 | grep -F -v 'Init SSL without certificate database'
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/cpu.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 
 /home/mitch/rrd/io.pl $DRAW_DETAILS 2> /dev/null
-/bin/sleep $RRD_WAIT
-/home/mitch/rrd/netstat.pl $DRAW_DETAILS 2>&1 | fgrep -v 'error parsing /proc/net/snmp: Success'
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
+/home/mitch/rrd/netstat.pl $DRAW_DETAILS 2>&1 | grep -F -v 'error parsing /proc/net/snmp: Success'
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/unbound.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/firewall.pl $DRAW_DETAILS
 
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 # /home/mitch/rrd/connecttime.pl $DRAW_DETAILS -- superseded by fritz.pl
 /home/mitch/rrd/fritz.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/bogofilter.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/cpufreq.pl $DRAW_DETAILS
 
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/roundtrip.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/ntpd.pl $DRAW_DETAILS
-/bin/sleep $RRD_WAIT
+/bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/entropy.pl $DRAW_DETAILS
 
 # remove lockfile
@@ -133,6 +133,6 @@ if [ $LOCKFILE_HELD -ge 300 ]; then
     echo details:
     echo LOCKFILE_AQUISITION: $LOCKFILE_AQUISITION seconds
     echo LOCKFILE_HELD: $LOCKFILE_HELD seconds
-    echo RRD_WAIT: $RRD_WAIT seconds
+    echo RRD_WAIT: "$RRD_WAIT" seconds
 
 fi
