@@ -24,3 +24,8 @@ test-perl:
 
 test-bash:
 	@for FILE in $(BASH_SOURCES); do bash -n "$$FILE" && echo "$$FILE syntax OK" || exit 1; done
+	@if shellcheck -V >/dev/null 2>&1; then \
+		for FILE in $(BASH_SOURCES); do shellcheck "$$FILE" && echo "$$FILE no shellcheck warnings" || exit 1; done; \
+	else \
+		echo no further tests run, shellcheck binary is missing; \
+	fi
