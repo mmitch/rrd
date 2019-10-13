@@ -44,7 +44,7 @@ my $ipfile   = "$conf{FRITZ_IP_FILE}";
 # global error variable
 my $ERR;
 
-# global Net::Fritz::Device instance
+# global Net::Fritz::Box instance
 my $fritz;
 
 ############################### subroutines ###############################
