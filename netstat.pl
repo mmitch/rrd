@@ -2,7 +2,7 @@
 #
 # RRD script to display io stats
 #
-# Copyright (C) 2003, 2004, 2006-2008, 2011, 2015, 2017  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2003, 2004, 2006-2008, 2011, 2015, 2017, 2019  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This file is part of my rrd scripts (https://github.com/mmitch/rrd).
@@ -27,6 +27,27 @@
 use strict;
 use warnings;
 use RRDs;
+
+# subroutines
+
+sub proc_to_map {
+    my ($keyline, $valueline) = @_;
+
+    chomp $keyline;
+    chomp $valueline;
+    
+    my @keys   = split /\s+/, $keyline;
+    my @values = split /\s+/, $valueline;
+
+    my $map = {};
+    while (@keys) {
+	my $key   = shift @keys;
+	my $value = shift @values;
+	$map->{$key} = $value;
+    }
+
+    return $map;
+}
 
 # parse configuration file
 my %conf;
@@ -72,44 +93,19 @@ if ( ! -e $datafile ) {
 }
 
 # get netstats
-open NETSTAT, "netstat -s|" or die "can't open `netstat -s|': $!\n";
-my $string='N';
-while (my $line = <NETSTAT>) {
-    if ($line =~ /(\d+) active connection/) {
-	$string.=":$1";
-	last;
-    }
+open my $proc, '<', '/proc/net/snmp' or die "can't open `/proc/net/snmp': $!\n";
+my $line;
+while ($line = <$proc>) {
+    last if $line =~ /Tcp:/;
 }
-while (my $line = <NETSTAT>) {
-    if ($line =~ /(\d+) passive connection/) {
-	$string.=":$1";
-	last;
-    }
-}
-while (my $line = <NETSTAT>) {
-    if ($line =~ /(\d+) failed connection/) {
-	$string.=":$1";
-	last;
-    }
-}
-while (my $line = <NETSTAT>) {
-    if ($line =~ /(\d+) connection reset/) {
-	$string.=":$1";
-	last;
-    }
-}
-while (my $line = <NETSTAT>) {
-    if ($line =~ /(\d+) connections established/) {
-	$string.=":$1";
-	last;
-    }
-}
-close NETSTAT; ## ignore errors on kernel>2.6.18 ## or die "can't close `netstat -s|': $!\n";
+my $nextline = <$proc>;
+close $proc or die "can't open `/proc/net/snmp': $!\n";
 
+my $values = proc_to_map($line, $nextline);
 
 # update database
 RRDs::update($datafile,
-	     $string
+	     join(':', 'N', $values->{ActiveOpens}, $values->{PassiveOpens}, $values->{AttemptFails}, $values->{EstabResets}, $values->{CurrEstab})
 	     );
 $ERR=RRDs::error;
 die "ERROR while updating $datafile: $ERR\n" if $ERR;
