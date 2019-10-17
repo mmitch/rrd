@@ -99,7 +99,7 @@ esac
 
 /home/mitch/rrd/io.pl $DRAW_DETAILS 2> /dev/null
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/netstat.pl $DRAW_DETAILS 2>&1 | grep -F -v 'error parsing /proc/net/snmp: Success'
+/home/mitch/rrd/netstat.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
 /home/mitch/rrd/unbound.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
