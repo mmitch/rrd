@@ -2,7 +2,7 @@
 #
 # spreads all desired scripts over a 5 minute window
 #
-# Copyright (C) 2007, 2008, 2011, 2013, 2015-2018  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2007, 2008, 2011, 2013, 2015-2019  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This file is part of my rrd scripts (https://github.com/mmitch/rrd).
@@ -20,6 +20,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+#
+# set this to your git checkout; either relative or absolute
+SCRIPTPATH=.
 
 #
 # set sleep time in seconds between calls
@@ -78,47 +82,47 @@ esac
 #
 # call the scripts and wait between calls to spread the load
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/network.pl $DRAW_DETAILS
+"$SCRIPTPATH"/network.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/tunnels.pl $DRAW_DETAILS
+"$SCRIPTPATH"/tunnels.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/temperature.pl $DRAW_DETAILS 2> /dev/null
+"$SCRIPTPATH"/temperature.pl $DRAW_DETAILS 2> /dev/null
 
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/memory.pl $DRAW_DETAILS
+"$SCRIPTPATH"/memory.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/load.pl $DRAW_DETAILS
+"$SCRIPTPATH"/load.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/diskfree.pl $DRAW_DETAILS 2> /dev/null
+"$SCRIPTPATH"/diskfree.pl $DRAW_DETAILS 2> /dev/null
 
 /bin/sleep "$RRD_WAIT"
-#/home/mitch/rrd/ups.pl $DRAW_DETAILS 2>&1 | grep -F -v 'Init SSL without certificate database'
+#"$SCRIPTPATH"/ups.pl $DRAW_DETAILS 2>&1 | grep -F -v 'Init SSL without certificate database'
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/cpu.pl $DRAW_DETAILS
+"$SCRIPTPATH"/cpu.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
 
-/home/mitch/rrd/io.pl $DRAW_DETAILS 2> /dev/null
+"$SCRIPTPATH"/io.pl $DRAW_DETAILS 2> /dev/null
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/netstat.pl $DRAW_DETAILS
+"$SCRIPTPATH"/netstat.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/unbound.pl $DRAW_DETAILS
+"$SCRIPTPATH"/unbound.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/firewall.pl $DRAW_DETAILS
+"$SCRIPTPATH"/firewall.pl $DRAW_DETAILS
 
 /bin/sleep "$RRD_WAIT"
-# /home/mitch/rrd/connecttime.pl $DRAW_DETAILS -- superseded by fritz.pl
-/home/mitch/rrd/fritz.pl $DRAW_DETAILS
+# "$SCRIPTPATH"/connecttime.pl $DRAW_DETAILS -- superseded by fritz.pl
+"$SCRIPTPATH"/fritz.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/bogofilter.pl $DRAW_DETAILS
+"$SCRIPTPATH"/bogofilter.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/cpufreq.pl $DRAW_DETAILS
+"$SCRIPTPATH"/cpufreq.pl $DRAW_DETAILS
 
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/roundtrip.pl $DRAW_DETAILS
+"$SCRIPTPATH"/roundtrip.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/ntpd.pl $DRAW_DETAILS
+"$SCRIPTPATH"/ntpd.pl $DRAW_DETAILS
 /bin/sleep "$RRD_WAIT"
-/home/mitch/rrd/entropy.pl $DRAW_DETAILS
+"$SCRIPTPATH"/entropy.pl $DRAW_DETAILS
 
 # remove lockfile
 rm -f $LOCKFILE
