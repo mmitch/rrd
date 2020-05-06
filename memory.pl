@@ -53,14 +53,14 @@ chomp $hostname;
 
 # generate database if absent
 if ( ! -e $datafile ) {
-    # max 10G for each value
+    # max 40G for each value
     RRDs::create($datafile,
-		 "DS:used:GAUGE:600:0:10000000000",
-		 "DS:free:GAUGE:600:0:10000000000",
-		 "DS:buffer:GAUGE:600:0:10000000000",
-		 "DS:cache:GAUGE:600:0:10000000000",
-		 "DS:swap_used:GAUGE:600:0:10000000000",
-		 "DS:swap_free:GAUGE:600:0:10000000000",
+		 "DS:used:GAUGE:600:0:40000000000",
+		 "DS:free:GAUGE:600:0:40000000000",
+		 "DS:buffer:GAUGE:600:0:40000000000",
+		 "DS:cache:GAUGE:600:0:40000000000",
+		 "DS:swap_used:GAUGE:600:0:40000000000",
+		 "DS:swap_free:GAUGE:600:0:40000000000",
 		 "RRA:AVERAGE:0.5:1:600",
 		 "RRA:AVERAGE:0.5:6:700",
 		 "RRA:AVERAGE:0.5:24:775",
