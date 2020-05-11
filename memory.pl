@@ -95,6 +95,7 @@ if ($version =~ /^MemTotal/) {
 	    }
 	}
     }
+
     $total *= 1024;
     $buffer *= 1024;
     $free *= 1024;
@@ -103,6 +104,17 @@ if ($version =~ /^MemTotal/) {
     $swap_free *= 1024;
     $used = $total - $free;
     $swap_used = $swap_total - $swap_free;
+
+    # count ZFS ARC as cache if present
+    if (open my $zfs, '<', '/proc/spl/kstat/zfs/arcstats') {
+	while (my $line = <$zfs>) {
+	    if ($line =~ /^size\s+\d+\s+(\d+)/) {
+		$cache += $1;
+		last;
+	    }
+	}
+	close $zfs or die "can't close /proc/spl/kstat/zfs/arcstats: $!\n";
+    }
 
 } else {
     # 2.4
