@@ -56,7 +56,7 @@ SECONDS=0
 # dynamic graph details depending on time
 if [ $DRAW_DETAILS -eq 0 ] ; then
     printf -v MINUTE '%(%M)T' -1
-    MINUTE=$(( MINUTE % 30 ))
+    MINUTE=$(( ${MINUTE#0} % 30 ))
     if [ $MINUTE -lt 5 ] ; then
 	DRAW_DETAILS=1
     else
