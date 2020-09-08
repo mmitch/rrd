@@ -59,6 +59,10 @@ foreach my $time (@time) {
        body { margin: 0; background-color: #f3f3f3; font-family: serif; }
        footer { text-align: right; background-color: lightgray; padding: 0.5em; font-style: italic; }
        img { margin: 3px; }
+       \@media (prefers-color-scheme: dark) {
+          body { background-color: #090909; }
+          div.timespans, img, footer { filter: invert(1) brightness(75%); }
+       }
     </style>
   </head>
   <body>
