@@ -54,7 +54,7 @@ my $hostname = `/bin/hostname`;
 chomp $hostname;
 
 # remove non-tuns
-@devices = grep { @{$_}[0] =~ /^tun/ } @devices;
+@devices = grep { @{$_}[0] =~ /^(tun|wg)/ } @devices;
 
 # set up cache
 my (@def, @cdef, @line1, @line2);
