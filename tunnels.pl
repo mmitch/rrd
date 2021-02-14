@@ -2,7 +2,7 @@
 #
 # RRD script to display network statistics
 #
-# Copyright (C) 2005, 2007, 2008, 2011, 2015-2017  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2005, 2007, 2008, 2011, 2015-2017, 2021  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This file is part of my rrd scripts (https://github.com/mmitch/rrd).
