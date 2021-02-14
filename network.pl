@@ -78,8 +78,8 @@ foreach ( @devices ) {
     if ( ! -e $datafile ) {
 	RRDs::create($datafile,
 		     "--step=60",
-		     "DS:input:COUNTER:600:0:${input_max}",
-		     "DS:output:COUNTER:600:0:${output_max}",
+		     "DS:input:DERIVE:600:0:${input_max}",
+		     "DS:output:DERIVE:600:0:${output_max}",
 		     'RRA:AVERAGE:0.5:1:600',
 		     'RRA:AVERAGE:0.5:6:700',
 		     'RRA:AVERAGE:0.5:24:775',
