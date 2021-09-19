@@ -61,8 +61,9 @@ select( get_reading_name | strings | test(reading_suffix) )
 
 # convert name/value pairs to space separated strings
 | join(" ")
+'
 
-' %;
+%;
 
 # same script in one line
 #my $cmdline  = q% sensors -j | jq -r --stream 'def regex: "_input$"; def path: .[0]; def value: .[1]; def sensor: path|.[0]; def reading: path|.[2]; def reading_short: reading|sub(regex;""); select(reading|strings|test(regex)) | select(value|numbers) | [sensor+"::"+reading_short,value] | join(" ")' %;
