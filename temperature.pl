@@ -2,7 +2,7 @@
 #
 # RRD script to display hardware temperature
 #
-# Copyright (C) 2003-2009, 2011, 2015, 2017  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2003-2009, 2011, 2015, 2017, 2021  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This file is part of my rrd scripts (https://github.com/mmitch/rrd).
@@ -37,11 +37,46 @@ die $@ if $@;
 my $datafile = "$conf{DBPATH}/temperature.rrd";
 my $picbase  = "$conf{OUTPATH}/temperature-";
 
-my $sensors  = $conf{SENSORS_BINARY};
-my $hddtemp  = $conf{HDDTEMP_BINARY};
+my $cmdline  = q%
+
+sensors -j | jq -r --stream '
+# suffix of readings interesting to us
+def reading_suffix: "_input$" ;
+
+# in streaming mode, all objects are streamed as [[path], value] elements, with path having multiple parts
+def get_path:  .[0] ;
+def get_value: .[1] ;
+
+# extract information from stream elements
+def get_sensor_name:    get_path  | .[0]  ; # first path element
+def get_reading_name:   get_path  | .[2]  ; # third path element
+def get_short_reading_name: get_reading_name | sub(reading_suffix; "") ; # remove suffix
+
+# select only those stream elements which contain current values
+select( get_reading_name | strings | test(reading_suffix) )
+| select( get_value | numbers )
+
+# combine each sensor and reading name with their temperature
+| [ get_sensor_name + "::" + get_short_reading_name , get_value ]
+
+# convert name/value pairs to space separated strings
+| join(" ")
+
+' %;
+
+# same script in one line
+#my $cmdline  = q% sensors -j | jq -r --stream 'def regex: "_input$"; def path: .[0]; def value: .[1]; def sensor: path|.[0]; def reading: path|.[2]; def reading_short: reading|sub(regex;""); select(reading|strings|test(regex)) | select(value|numbers) | [sensor+"::"+reading_short,value] | join(" ")' %;
+
+# same script in short form
+#my $cmdline  = q% sensors -j | jq -r --stream 'select(.[0]|.[2]|strings|test("_input$")) | select(.[1]|numbers) | [(.[0]|.[0])+"::"+(.[0]|.[2]|sub("_input$";"")),(.[1]|round)] | join(" ")' %;
+
+# alternative script with same outcome
+# my $cmdline  = q% sensors -j | jq -r '(paths | select(length == 3) | select( .[2] | test("_input$"))) as $inputs | [ ($inputs | .[0]+"::"+ (.[2]| sub("_input$";"")) ), getpath($inputs) ] | join(" ")' %;
+
 my $cpus     = $conf{SENSOR_MAPPING_CPU};
 my $fans     = $conf{SENSOR_MAPPING_FAN};
 my $temps    = $conf{SENSOR_MAPPING_TEMP};
+my $disks    = $conf{SENSOR_MAPPING_DISK};
 
 # global error variable
 my $ERR;
@@ -91,42 +126,16 @@ if ( ! -e $datafile ) {
       print "created $datafile\n";
 }
 
-# get disk data
+# read sensor data
 my %val;
-open HDDTEMP, "$hddtemp |", or die "can't open $hddtemp: $!\n";
-while (my $hd = <HDDTEMP>) {
-    $hd =~ tr /0-9//cd;
-    if (length $hd) {
-	$val{'HDD_TEMP_' . ($. - 1)} = $hd;
-    }
-}
-close HDDTEMP, or die "can't close $hddtemp: $!\n";
-
-# get cpu data
-open SENSORS, "$sensors -A |", or die "can't open $sensors: $!\n";
-my $multiline = 0;
-while (my $line = <SENSORS>) {
+open my $sensors, '-|', "$cmdline" or die "can't open sensors/jq: $!\n";
+while (my $line = <$sensors>) {
     chomp $line;
-    # celcius sign is garbaged, so pre-treat string 
-    $line =~ y/-.:a-zA-Z0-9 / /c;
-
-    if ($multiline and $line !~ /:/) {
-	if ($line =~ /^\s+\+?(-?\d+(\.\d+)?) /) {
-	    $val{$multiline} = $1;
-	}
-	$multiline = 0;
-    } else {
-	if ($line =~ /^([^:]+):(\s+\+?(-?\d+(\.\d+)?) )?/) {
-	    if (defined $2) {
-		$val{$1} = $3;
-	    } else {
-		$multiline = $1;
-	    }
-	}
-    }
+    my ($key, $value, $rest) = split / /, $line, 3;
+    die "unparseable line <$line>" if defined $rest;
+    $val{$key} = $value;
 }
-close SENSORS, or die "can't close $sensors: $!\n";
-
+close $sensors or die "can't close sensors/jq: $!\n";
 
 # prepare values
 sub getval($)
@@ -151,7 +160,7 @@ foreach my $i (0..3) {
 }
 
 foreach my $i (0..7) {
-    $rrdstring .= ':' . getval("HDD_TEMP_$i");
+    $rrdstring .= ':' . getval($disks->[$i]);
 }
 
 # update database
