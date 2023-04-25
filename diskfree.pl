@@ -98,14 +98,23 @@ for my $idx ( 0..19 ) {
 
     if (defined $path and $path) {
 
-	open my $df, '-|', "df -P \"$path\"" or die "can't open df for `$path': $!";
-	while ( my $line = <$df> ) {
-	    chomp $line;
-	    if ($line =~ /\s(\d{1,3})% (\/.*)$/) {
-		$size = $1 if $2 eq $path;
-	    }
+	if ($path =~ /^zpool:(.+)$/) {
+	    $path[$idx] = $1;
+	    open my $zpool, '-|', "/sbin/zpool list -Hp $1" or die "can't open zpool for `$1': $!";
+	    # NAME         SIZE      ALLOC        FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP    HEALTH  ALTROOT
+	    $size = (split /\t/, <$zpool>)[7];
+	    close $zpool or die "can't close zpool for `$1': $!";
 	}
-	close $df or die "can't close df for `$path': $!";
+	else {
+	    open my $df, '-|', "df -P \"$path\"" or die "can't open df for `$path': $!";
+	    while ( my $line = <$df> ) {
+		chomp $line;
+		if ($line =~ /\s(\d{1,3})% (\/.*)$/) {
+		    $size = $1 if $2 eq $path;
+		}
+	    }
+	    close $df or die "can't close df for `$path': $!";
+	}
     }
     $size[ $idx ] = $size;
 }
