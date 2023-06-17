@@ -28,7 +28,7 @@ SCRIPTPATH=.
 #
 # set sleep time in seconds between calls
 # total script runtime should not exceed 5 minutes!
-RRD_WAIT=${RRD_WAIT:-16}
+RRD_WAIT=${RRD_WAIT:-2}
 
 #
 # how many graphs should be rendered?

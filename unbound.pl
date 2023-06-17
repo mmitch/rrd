@@ -75,7 +75,7 @@ if ( ! -e $datafile ) {
 }
 
 # get data
-open STATUS, '/usr/sbin/unbound-control stats|' or die "can't open unbound-control: $!";
+open STATUS, 'sudo /usr/local/sbin/unbound-stats|' or die "can't open unbound-stats: $!";
 my %stats = (
     'total.num.cachehits' => 0,
     'total.num.cachemiss' => 0,
@@ -87,7 +87,7 @@ while (my $line = <STATUS>) {
     my ($key, $value) = split /=/, $line, 2;
     $stats{$key} = $value;
 }
-close STATUS or die "can't close unbound-control: $!";
+close STATUS or die "can't close unbound-stats: $!";
 
 # update database
 RRDs::update($datafile,
