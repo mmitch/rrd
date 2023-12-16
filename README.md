@@ -1,7 +1,6 @@
 my rrd statistic scripts
 ========================
 
-[![Build Status](https://travis-ci.org/mmitch/rrd.svg?branch=master)](https://travis-ci.org/mmitch/rrd)
 [![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
 This is a collection of scripts that draw some nice graphs with
