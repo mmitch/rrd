@@ -14,9 +14,9 @@ clean:
 
 test: test-perl test-bash
 
-travis-install-deps: travis-install-perl-deps
+ci-install-deps: ci-install-perl-deps
 
-travis-install-perl-deps:
+ci-install-perl-deps:
 	@grep ^use $(PERL_SOURCES) | awk '{print $$2}' | sed 's/;$$//' | egrep -v '^(strict|warnings)$$' | sort | uniq | while read MOD; do perl -Itest/ -M"$$MOD" -e '1;' 2>/dev/null || echo "$$MOD" ; done | cpanm --skip-satisfied
 
 test-perl:

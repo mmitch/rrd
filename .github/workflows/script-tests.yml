@@ -1,0 +1,26 @@
+---
+name: tests
+on:
+  push:
+  pull_request:
+    types: [opened]
+  schedule:
+    - cron: '16 19 27 * *'
+
+jobs:
+  test-scripts:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-latest']
+        perl: ['5.36']
+    name: Perl ${{ matrix.perl }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+      - run: perl -V
+      - run: make ci-install-deps
+      - run: make test

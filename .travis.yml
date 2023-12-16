@@ -1,9 +1,0 @@
-language: perl
-
-perl:
-  # newer Perl -> fewer dependencies to install for the Perl modules -> faster
-  - "5.22"
-
-install: make travis-install-deps
-
-script: make test
