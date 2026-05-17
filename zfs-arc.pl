@@ -145,7 +145,10 @@ foreach ( [3600, 'hour'], [86400, 'day'], [604800, 'week'], [31536000, 'year'] )
 
 		'CDEF:hitrate=hits,hits,misses,+,/,100,*',
 
-		'LINE2:hitrate#F000F0:cache hit rate\n',
+		'LINE2:hitrate#F000F0:cache hit rate',
+		'GPRINT:hitrate:MIN: min=%.02lf%%',
+		'GPRINT:hitrate:AVERAGE: avg=%.02lf%%',
+		'GPRINT:hitrate:MAX: max=%.02lf%%\n',
 	);
     $ERR=RRDs::error;
     die "ERROR while drawing $datafile $time: $ERR\n" if $ERR;
