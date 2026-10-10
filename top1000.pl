@@ -28,7 +28,7 @@
 use strict;
 use warnings;
 use RRDs;
-use LWP::Simple;
+use LWP::Simple qw(get $ua);
 
 # parse configuration file
 my %conf;
@@ -45,8 +45,8 @@ if (@sites < 10) {
     $sites[9] = undef;
 }
 
-my $url_participants = 'http://top1000.anthologeek.net/participants.current.txt';
-my $url_top1000 =      'http://top1000.anthologeek.net/top1000.current.txt';
+my $url_participants = 'https://top1000.anthologeek.net/participants.current.txt';
+my $url_top1000 =      'https://top1000.anthologeek.net/top1000.current.txt';
 
 # global error variable
 my $ERR;
@@ -89,6 +89,7 @@ if ( ! -e $datafile ) {
 }
 
 # get data
+$ua->agent('');
 my $content = get($url_participants) or die "Couldn't get $url_participants!";
 my $submitted = 0;
 foreach my $line (split /\n/, $content) {
